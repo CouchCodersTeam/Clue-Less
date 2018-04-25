@@ -1,0 +1,43 @@
+﻿<Page
+    x:Class="ClueLess_Mockups.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClueLess_Mockups"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Button x:Name="button" Content="Join Game" HorizontalAlignment="Left" Margin="646,556,0,0" VerticalAlignment="Top" Width="150"/>
+        <Button x:Name="button1" Content="Create Game" HorizontalAlignment="Left" VerticalAlignment="Top" Height="32" Width="150" Margin="472,556,0,0"/>
+
+        <ListView x:Name="listView" HorizontalAlignment="Left" Height="215" Margin="472,247,0,0" VerticalAlignment="Top" Width="324" SelectionMode="Single" IsItemClickEnabled="False">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Border Background="LightGray" Height="200" Width="200">
+                            <TextBlock Text="{Binding}"
+                                       FontSize="48" Foreground="Green"/>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="FontSize" Value="24"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.Items>
+                <ListViewItem>Ryan</ListViewItem>
+                <ListViewItem>PwrUser</ListViewItem>
+                <ListViewItem>Colonel Mustard</ListViewItem>
+            </ListView.Items>
+        </ListView>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="472,134,0,0" TextWrapping="Wrap" Text="Available Games" VerticalAlignment="Top" FontSize="36" Width="324" TextAlignment="Center" IsReadOnly="True">
+        </TextBox>
+        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Margin="472,467,0,0" TextWrapping="Wrap" Text="Player Name:" VerticalAlignment="Top" TextChanged="textBox1_TextChanged" FontSize="24" IsReadOnly="True"/>
+        <TextBox x:Name="textBox2" HorizontalAlignment="Left" Margin="646,467,0,0" TextWrapping="Wrap" Text="BonJovi" VerticalAlignment="Top" Width="150" FontSize="24" TextAlignment="Right" TextChanged="textBox2_TextChanged"/>
+
+    </Grid>
+</Page>
