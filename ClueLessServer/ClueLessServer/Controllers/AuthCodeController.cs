@@ -28,6 +28,8 @@ namespace ClueLessServer.Controllers
             test.Add("PlayerName", value.PlayerName);
             test.Add("AuthCode", "123abc");
 
+            // TODO: use PlayerIdentity class to get auth code
+
             // return empty location. There is not a location to view this
             // item
             return Created("", test);
