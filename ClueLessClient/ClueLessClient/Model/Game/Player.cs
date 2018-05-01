@@ -8,5 +8,6 @@ namespace ClueLessClient.Model.Game
 {
     class Player
     {
+        string characterName = "";
     }
 }
