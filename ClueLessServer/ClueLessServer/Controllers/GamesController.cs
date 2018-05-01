@@ -8,27 +8,8 @@ using System.Web.Http;
 
 namespace ClueLessServer.Controllers
 {
-    public class GamesController : ApiController
+    public class GamesController : ClueLessController
     {
-        // TODO: replace pGames with GameDatabase function calls
-        private Dictionary<long, GameModel> pGames = new Dictionary<long, GameModel>();
-
-        public GamesController() : base()
-        {
-            // Generate Dummy Data
-            List<GameModel> games = new List<GameModel>();
-
-            games.Add(new GameModel("John Doe"));
-            games.Add(new GameModel("Sean Connery"));
-            games.Add(new GameModel("ClueMaster779"));
-
-            foreach (GameModel game in games)
-            {
-                pGames.Add(game.Id, game);
-            }
-
-        }
-
         // GET: /games
         [Route("games")]
         [HttpGet]
@@ -43,11 +24,12 @@ namespace ClueLessServer.Controllers
         [HttpGet]
         public IHttpActionResult GetGame(long id)
         {
-            GameModel game = GetActiveGame(id);
-            if (game != null)
-                return Ok(game);
+            AuthResult auth = authorizeGame(id);
+
+            if (auth.result != null)
+                return auth.result;
             else
-                return NotFound();
+                return Ok(auth.game);
         }
 
         // POST: /games
@@ -55,12 +37,12 @@ namespace ClueLessServer.Controllers
         [HttpPost]
         public IHttpActionResult CreateGame()
         {
-            PlayerModel player = authorizePlayer();
+            AuthResult auth = authorizePlayer();
 
-            if (player == null)
-            {
-                return Unauthorized();
-            }
+            if (auth.result != null)
+                return auth.result;
+
+            PlayerModel player = auth.player;
 
             GameModel newGame = new GameModel(player.Name);
             pGames.Add(newGame.Id, newGame);
@@ -74,13 +56,10 @@ namespace ClueLessServer.Controllers
         [HttpPost]
         public IHttpActionResult JoinGame(long id)
         {
-            PlayerModel player = authorizePlayer();
-            if (player == null)
-                return Unauthorized();
+            AuthResult auth = authorizePlayerAndGame(id);
 
-            GameModel game = GetActiveGame(id);
-            if (game == null)
-                return NotFound();
+            if (auth.result != null)
+                return auth.result;
 
             // TODO: add player to game
 
@@ -93,13 +72,10 @@ namespace ClueLessServer.Controllers
         // This API can only be called by the host player
         public IHttpActionResult StartGame(long id)
         {
-            var player = authorizePlayer();
-            var game = GetActiveGame(id);
+            AuthResult auth = authorizePlayerAndGame(id);
 
-            if (player == null)
-                return Unauthorized();
-            else if (game == null)
-                return NotFound();
+            if (auth.result != null)
+                return auth.result;
 
             // TODO: start game, signal to other players that game has started
 
@@ -111,13 +87,10 @@ namespace ClueLessServer.Controllers
         [HttpGet]
         public IHttpActionResult WaitForGame(long id)
         {
-            var player = authorizePlayer();
-            var game = GetActiveGame(id);
+            AuthResult auth = authorizePlayerAndGame(id);
 
-            if (player == null)
-                return Unauthorized();
-            else if (game == null)
-                return NotFound();
+            if (auth.result != null)
+                return auth.result;
 
             // TODO: wait for game to start. Turn API into async and
             // return a timeout if game has not started. Return OK
@@ -144,16 +117,5 @@ namespace ClueLessServer.Controllers
             }
         }
 
-        private PlayerModel authorizePlayer()
-        {
-            return PlayerIdentity.authorizePlayer(Request);
-        }
-
-        private GameModel GetActiveGame(long gameId)
-        {
-            GameModel game = null;
-            pGames.TryGetValue(gameId, out game);
-            return game;
-        }
     }
 }

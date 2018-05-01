@@ -13,7 +13,7 @@ namespace ClueLessServer.Tests.Controllers
     public class AuthCodeControllerTest
     {
         [TestMethod]
-        public async Task TestGetAuthCode()
+        public void TestGetAuthCode()
         {
             AuthCodeController controller = new AuthCodeController();
 
@@ -27,8 +27,6 @@ namespace ClueLessServer.Tests.Controllers
 
             result = controller.GetAuthCode(testData);
 
-            CancellationToken token = new CancellationToken();
-            
             // Assert successful result
             Assert.IsInstanceOfType(result, typeof(CreatedNegotiatedContentResult<Dictionary<string, object>>));
             var response = (CreatedNegotiatedContentResult<Dictionary<string, object>>)result;

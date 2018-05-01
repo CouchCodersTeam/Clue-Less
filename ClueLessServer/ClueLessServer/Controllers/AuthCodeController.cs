@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace ClueLessServer.Controllers
 {
-    public class AuthCodeController : ApiController
+    public class AuthCodeController : ClueLessController
     {
         private const string PROVIDE_PLAYER_NAME = "Provide a {'PlayerName': [PlayerName]} in request body.";
         
