@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClueLessClient.Model.Game
 {
-    class Board
+    public class Board
     {
         int locations[][] = new int [][] {};
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClueLessClient.Model.Game
 {
-    class Game
+    public class Game
     {
         private List<Player> players;  // Ryan changed from set to list
         private Board board;

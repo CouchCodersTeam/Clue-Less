@@ -46,7 +46,7 @@ namespace ClueLessClient.Model.Game
         Wrench
     }
 
-    class Card
+    public class Card
     {
         private CardType cardType;
         private String cardValue;
