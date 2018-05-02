@@ -12,6 +12,7 @@ namespace ClueLessServer.Controllers
     {
         // GET: /games
         [Route("games")]
+        [Route("")] // default
         [HttpGet]
         public IHttpActionResult GetGames()
         {
