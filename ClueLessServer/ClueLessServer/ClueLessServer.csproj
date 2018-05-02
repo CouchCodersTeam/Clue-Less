@@ -157,10 +157,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AuthCodeGenerator.cs" />
     <Compile Include="Helpers\GameDatabase.cs" />
     <Compile Include="Models\GameModel.cs" />
     <Compile Include="Models\LobbyModel.cs" />
     <Compile Include="Helpers\PlayerIdentity.cs" />
+    <Compile Include="Helpers\PlayerDatabase.cs" />
     <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

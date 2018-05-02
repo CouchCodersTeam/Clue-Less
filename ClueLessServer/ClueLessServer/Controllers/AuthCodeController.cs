@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+using ClueLessServer.Models;
 using Newtonsoft.Json;
 
 namespace ClueLessServer.Controllers
@@ -8,31 +9,28 @@ namespace ClueLessServer.Controllers
     {
         private const string PROVIDE_PLAYER_NAME = "Provide a {'PlayerName': [PlayerName]} in request body.";
         
-        public class PlayerNameData
+        public class PlayerData
         {
             public string PlayerName { get; set; }
+            public string AuthCode { get; set; }
         }
 
         // POST: /auth_code
         [Route("auth_code")]
         [HttpPost]
-        public IHttpActionResult GetAuthCode([FromBody]PlayerNameData value)
+        public IHttpActionResult GetAuthCode([FromBody]PlayerData value)
         {
             if (value.PlayerName == null)
             {
                 return BadRequest(PROVIDE_PLAYER_NAME);
             }
 
-            // return dummy data
-            Dictionary<string, object> test = new Dictionary<string, object>();
-            test.Add("PlayerName", value.PlayerName);
-            test.Add("AuthCode", "123abc");
-
-            // TODO: use PlayerIdentity class to get auth code
+            PlayerModel player = new PlayerModel(value.PlayerName);
+            value.AuthCode = PlayerDatabase.GetOrCreateAuthCode(player);
 
             // return empty location. There is not a location to view this
             // item
-            return Created("", test);
+            return Created("", value);
         }
     }
 }
