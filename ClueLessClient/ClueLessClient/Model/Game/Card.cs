@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ClueLessClient.Model.Game
 {
-    enum CardType
+    public enum CardType
     {
         Room,
         Suspect,
         Weapon
     }
 
-    enum Room
+    public enum Room
     {
         Study,
         Kitchen,
@@ -26,7 +26,7 @@ namespace ClueLessClient.Model.Game
         Dining
     }
 
-    enum Suspect
+    public enum Suspect
     {
         Scarlet,
         Mustard,
@@ -36,7 +36,7 @@ namespace ClueLessClient.Model.Game
         Plum
     }
 
-    enum Weapon
+    public enum Weapon
     {
         Candlestick,
         Revolver,
@@ -51,82 +51,30 @@ namespace ClueLessClient.Model.Game
         private CardType cardType;
         private String cardValue;
 
-        if (CardType == 0)
-            {
-                int Study = (int)Room.Study;
-                int Kitchen = (int)Room.Kitchen;
-                int Ballroom = (int)Room.Ballroom;
-                int Conservatory = (int)Room.Conservatory;
-                int Billiard = (int)Room.Billiard;
-                int Library = (int)Room.Library;
-                int Hall = (int)Room.Hall;
-                int Lounge = (int)Room.Lounge;
-                int Dining = (int)Room.Dining;
+        // Constructors
+        // Usage:
+        // Card card = new Card(Study);
+        public Card(Room room)
+        {
+            cardType = CardType.Room;
+            cardValue = room.ToString();
+        }
 
-                if (Study == 0)
-                    cardValue = "Study";
-                else-if(Kitchen == 1)
-                    cardValue = "Kitchen";
-                else-if(Ballroom == 2)
-                    cardValue = "Ballroom";
-                else-if(Conservatory == 3)
-                    cardValue = "Conservatory";
-                else-if(Billiard == 4)
-                    cardValue = "Billarad";
-                else-if(Library == 5)
-                    cardValue = "Library";
-                else-if(Hall == 6)
-                    cardValue = "Hall";
-                else-if(Lounge == 7)
-                    cardValue = "Lounge";
-                else-if(Dining == 8)
-                    cardValue = "Dining";
+        // Usage:
+        // Card card = new Card(Mustard);
+        public Card(Suspect suspect)
+        {
+            cardType = CardType.Suspect;
+            cardValue = suspect.ToString();
+        }
 
-            }
-        else-if (CardType == 1)
-            {
-                int Scarlet = (int)Suspect.Scarlet;
-                int Mustard = (int)Suspect.Mustard;
-                int White = (int)Suspect.White;
-                int Green = (int)Suspect.Green;
-                int Peacock = (int)Suspect.Peacock;
-                int Plum = (int)Suspect.Plum;
-
-                if (Scarlet == 0)
-                    cardValue = "Scarlet";
-                else-if(Mustard == 1)
-                    cardValue = "Mustard";
-                else-if(White == 2)
-                    cardValue = "White";
-                else-if(Green == 3)
-                    cardValue = "Green";
-                else-if(Peacock == 4)
-                    cardValue = "Peacock";
-                else-if(Plum == 5)
-                    cardValue = "Plum";
-            }
-        else-if (CardType == 2)
-            {
-                int Candlestick = (int)Weapon.Candlestick;
-                int Revolver = (int)Weapon.Revolver;
-                int Knife = (int)Weapon.Knife;
-                int Pipe = (int)Weapon.Pipe;
-                int Rope = (int)Weapon.Rope;
-                int Wrench = (int)Weapon.Wrench;
-
-                if (Candlestick == 0)
-                    cardValue = "Candlestick";
-                else-if(Revolver == 1)
-                    cardValue = "Revolver";
-                else-if(Knife == 2)
-                    cardValue = "Knife";
-                else-if(Pipe == 3)
-                    cardValue = "Pipe";
-                else-if(Rope == 4)
-                    cardValue = "Rope";
-                else-if(Wrench == 5)
-                    cardValue = "Wrench";
-            }
+        // Usage:
+        // Card card = new Card(Rope);
+        public Card(Weapon weapon)
+        {
+            cardType = CardType.Weapon;
+            cardValue = weapon.ToString();
+        }
 
 
     }

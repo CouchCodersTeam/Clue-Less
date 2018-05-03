@@ -8,6 +8,6 @@ namespace ClueLessClient.Model.Game
 {
     public class Board
     {
-        int locations[][] = new int [][] {};
+        int[][] locations = new int [][] {};
     }
 }
