@@ -11,6 +11,7 @@ namespace WpfApp1.ViewModel
         public TestClient() { }
 
         public event EventHandler MoveEvent;
+        public event EventHandler SuggestionEvent;
 
         public bool MoveUp()
         {
@@ -93,6 +94,18 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+        //As player to disprove suggestion
+        public void DisproveSuggestion()
+        {
+
+            var args = new EventArgStructures.SuggestionIncomming(Board_Controller.Person.Peacock, 
+                                                                  Board_Controller.Person.White,
+                                                                  Board_Controller.Room.Study,
+                                                                  Board_Controller.Weapon.Knife);
+            SuggestionEvent(this, args);
+        }
+
+        //Player makes a suggestion
         public bool MakeSuggestion(Board_Controller.Person person, Board_Controller.Room room, Board_Controller.Weapon weapon)
         {
             bool success = true;

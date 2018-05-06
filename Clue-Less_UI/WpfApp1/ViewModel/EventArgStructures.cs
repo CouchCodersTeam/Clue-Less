@@ -22,5 +22,20 @@ namespace WpfApp1.ViewModel
             }
         }
 
+        public class SuggestionIncomming : EventArgs
+        {
+            public Board_Controller.Person suggester;
+            public Board_Controller.Person p;
+            public Board_Controller.Room r;
+            public Board_Controller.Weapon w;
+
+            public SuggestionIncomming(Board_Controller.Person suggester, Board_Controller.Person p, Board_Controller.Room r, Board_Controller.Weapon w)
+            {
+                this.suggester = suggester;
+                this.p = p;
+                this.r = r;
+                this.w = w;
+            }
+        }
     }
 }

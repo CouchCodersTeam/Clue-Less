@@ -186,6 +186,7 @@ namespace WpfApp1.ViewModel
             };
 
             client.MoveEvent += this.HandleMoveEvent;
+            client.SuggestionEvent += this.HandleDisprovingSuggestionEvent;
         }
 
         void MovePerson(Person person, Room fromHere, Room toHere)
@@ -392,14 +393,36 @@ namespace WpfApp1.ViewModel
             {
                 AddPersonToRoom(p.person, p.room);
             }
+
+            client.DisproveSuggestion();
         }
         // End of the functions used to interact
 
+        //Start of the list of event handlers that take data from the client
         void HandleMoveEvent(object sender, EventArgs m)
         {
             EventArgStructures.MoveEventCommand moveData = (EventArgStructures.MoveEventCommand) m;
 
             MovePerson(moveData.p, moveData.from, moveData.to);
+        }
+
+        void HandleDisprovingSuggestionEvent(object sender, EventArgs m)
+        {
+            EventArgStructures.SuggestionIncomming suggestionData = (EventArgStructures.SuggestionIncomming)m;
+
+
+            MessageBoxResult result = MessageBox.Show(suggestionData.suggester + "Has accused " + suggestionData.p + 
+                                                    " of killing the victim using the " + suggestionData.w + 
+                                                    " in the " + suggestionData.r + ". Can you disprove this?", 
+                                                    "Suggestion Received", MessageBoxButton.YesNo);
+             if (result == MessageBoxResult.Yes)
+             {
+                 //make them disprove it
+             }
+             else if (result == MessageBoxResult.No)
+             {
+                 //do nothing?
+             }
         }
 
         //Start of the list of commands used to bind to objects in GUI
