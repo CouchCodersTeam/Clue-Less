@@ -11,7 +11,7 @@ namespace WpfApp1.ViewModel
 {
     class Board_Controller : ObservableObject
     {
-        //These enums might make sense beingn defined elsewhere
+        //These enums might make more sense if defined elsewhere
         public enum Person { Scarlet, Mustard, Plum, Peacock, Green, White, None};
         public enum Room { Study, Hall, Lounge, Library, Billiard, Dining, Conservatory, Ballroom, Kitchen,
             StudyHall_Hallway, HallLounge_Hallway, StudyLibrary_Hallway, HallBilliardRoom_Hallway,
@@ -30,7 +30,6 @@ namespace WpfApp1.ViewModel
                 person = p;
                 room = r;
             }
-
         }
 
         //Room contents
@@ -185,6 +184,8 @@ namespace WpfApp1.ViewModel
                 { Room.ConservatoryBallroom_Hallway, ConservatoryBallroom_HallwayOccupant },
                 { Room.BallroomKitchen_Hallway, BallroomKitchen_HallwayOccupant }
             };
+
+            client.MoveEvent += this.HandleMoveEvent;
         }
 
         void MovePerson(Person person, Room fromHere, Room toHere)
@@ -312,67 +313,43 @@ namespace WpfApp1.ViewModel
         //Insert client/game functions into these
         private void MoveUp()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-            MovePerson(Person.Scarlet, Room.Billiard, Room.HallBilliardRoom_Hallway);
+            client.MoveUp();
         }
 
         private void MoveDown()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-            MovePerson(Person.Plum, Room.Billiard, Room.BilliardRoomBallroom_Hallway);
+            client.MoveDown();
         }
 
         private void MoveLeft()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-            MovePerson(Person.Mustard, Room.Billiard, Room.LibraryBilliardRoom_Hallway);
+            client.MoveLeft();
         }
 
         private void MoveRight()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-            MovePerson(Person.Peacock, Room.Billiard, Room.BilliardRoomDiningRoom_Hallway);
+            client.MoveRight();
         }
 
         private void ActivateLoungeSecretPassage()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-            MovePerson(Person.White, Room.Lounge, Room.Conservatory);
+            client.ActivateLoungeSecretPassage();
         }
 
         private void ActivateConservatorySecretPassage()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-            MovePerson(Person.Peacock, Room.Conservatory, Room.Lounge);
+            client.ActivateConservatorySecretPassage();
         }
 
         private void ActivateKitchenSecretPassage()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-            MovePerson(Person.Mustard, Room.Kitchen, Room.Study);
+            client.ActivateKitchenSecretPassage();
         }
 
 
         private void ActivateStudySecretPassage()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-            MovePerson(Person.White, Room.Study, Room.Kitchen);
+            client.ActivateStudySecretPassage();
         }
 
         private void MakeSuggestion()
@@ -417,7 +394,14 @@ namespace WpfApp1.ViewModel
             }
         }
         // End of the functions used to interact
-        
+
+        void HandleMoveEvent(object sender, EventArgs m)
+        {
+            EventArgStructures.MoveEventCommand moveData = (EventArgStructures.MoveEventCommand) m;
+
+            MovePerson(moveData.p, moveData.from, moveData.to);
+        }
+
         //Start of the list of commands used to bind to objects in GUI
         public ICommand MoveUpCommand
         {

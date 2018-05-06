@@ -10,31 +10,86 @@ namespace WpfApp1.ViewModel
     {
         public TestClient() { }
 
+        public event EventHandler MoveEvent;
+
         public bool MoveUp()
         {
-            bool success = false;
-
+            bool success = true;
+            var args = new EventArgStructures.MoveEventCommand(Board_Controller.Person.Scarlet, 
+                                                               Board_Controller.Room.Billiard, 
+                                                               Board_Controller.Room.HallBilliardRoom_Hallway);
+            MoveEvent(this, args);
             return success;
         }
 
         public bool MoveDown()
         {
-            bool success = false;
-
+            bool success = true;
+            var args = new EventArgStructures.MoveEventCommand(Board_Controller.Person.Plum,
+                                                               Board_Controller.Room.Billiard,
+                                                               Board_Controller.Room.BilliardRoomBallroom_Hallway);
+            MoveEvent(this, args);
             return success;
         }
 
         public bool MoveLeft()
         {
-            bool success = false;
-
+            bool success = true;
+            var args = new EventArgStructures.MoveEventCommand(Board_Controller.Person.Mustard,
+                                                               Board_Controller.Room.Billiard,
+                                                               Board_Controller.Room.LibraryBilliardRoom_Hallway);
+            MoveEvent(this, args);
             return success;
         }
 
         public bool MoveRight()
         {
-            bool success = false;
+            bool success = true;
+            var args = new EventArgStructures.MoveEventCommand(Board_Controller.Person.Peacock,
+                                                               Board_Controller.Room.Billiard,
+                                                               Board_Controller.Room.BilliardRoomDiningRoom_Hallway);
+            MoveEvent(this, args);
+            return success;
+        }
 
+        public bool ActivateLoungeSecretPassage()
+        {
+            bool success = true;
+            var args = new EventArgStructures.MoveEventCommand(Board_Controller.Person.White,
+                                                               Board_Controller.Room.Lounge,
+                                                               Board_Controller.Room.Conservatory);
+            MoveEvent(this, args);
+            return success;
+        }
+
+        public bool ActivateConservatorySecretPassage()
+        {
+            bool success = true;
+            var args = new EventArgStructures.MoveEventCommand(Board_Controller.Person.Peacock,
+                                                               Board_Controller.Room.Conservatory,
+                                                               Board_Controller.Room.Lounge);
+            MoveEvent(this, args);
+            return success;
+        }
+
+        public bool ActivateKitchenSecretPassage()
+        {
+            bool success = true;
+            var args = new EventArgStructures.MoveEventCommand(Board_Controller.Person.Mustard,
+                                                               Board_Controller.Room.Kitchen,
+                                                               Board_Controller.Room.Study);
+            MoveEvent(this, args);
+            return success;
+        }
+
+
+        public bool ActivateStudySecretPassage()
+        {
+            bool success = true;
+            var args = new EventArgStructures.MoveEventCommand(Board_Controller.Person.White,
+                                                               Board_Controller.Room.Study,
+                                                               Board_Controller.Room.Kitchen);
+            MoveEvent(this, args);
             return success;
         }
 
