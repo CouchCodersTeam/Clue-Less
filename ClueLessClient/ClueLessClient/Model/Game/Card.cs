@@ -163,7 +163,7 @@ namespace ClueLessClient.Model.Game
                 return Room.Dining;
             else
             {
-                throw new ArgumentException("Unknown Suspect: " + value);
+                throw new ArgumentException("Unknown Room: " + value);
             }
 
         }
