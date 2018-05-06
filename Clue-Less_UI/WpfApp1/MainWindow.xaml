@@ -33,12 +33,7 @@
                         <TextBlock Text="My Cards" Margin="0 3" FontFamily="Broadway" FontSize="18" TextAlignment="Center" Foreground="White"/>
 
                         <!-- Cards in My Card Deck -->
-                        <TextBox x:Name="MyCardOne" IsReadOnly="True" Text="Rope" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                        <TextBox x:Name="MyCardTwo" IsReadOnly="True" Text="Revolver" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                        <TextBox x:Name="MyCardThree" IsReadOnly="True" Text="Lounge" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                        <TextBox x:Name="MyCardFour" IsReadOnly="True" Text="Ballroom" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-                        <TextBox x:Name="MyCardFive" IsReadOnly="True" Text="Colonel Mustard" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Orange"/>
-                        <TextBox x:Name="MyCardSix" IsReadOnly="True" Text="Mr Green" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Green"/>
+                        <ListBox x:Name="MyCards" Margin="0 0 0 0" FontFamily="Broadway" MinHeight="354" MaxHeight="354" MinWidth="100" Background="White" Foreground="Black" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
 
