@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace ClueLessClient.Model.Game
 {
-    public class Player
+    class Player
     {
-        string characterName = "";
+        public character()
+        {
+            string characterName = "";
+            Console.WriteLine("Enter Character name:");
+            characterName = Console.ReadLine();
+
+        }
+
     }
 }
