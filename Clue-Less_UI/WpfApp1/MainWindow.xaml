@@ -11,25 +11,593 @@
     <Window.Resources>
         <viewmodel:Board_Controller x:Key="Board_Controller"/>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <ListBox ItemsSource="{Binding StudyOccupants}" HorizontalAlignment="Left" Height="70" Margin="170,80,0,0" VerticalAlignment="Top" Width="90"/>
-                    <ListBox ItemsSource="{Binding HallOccupants}" HorizontalAlignment="Left" Height="70" Margin="100,80,0,0" VerticalAlignment="Top" Width="90"/>
-                    <ListBox ItemsSource="{Binding LoungeOccupants}" HorizontalAlignment="Left" Height="70" Margin="100,80,0,0" VerticalAlignment="Top" Width="90"/>
-                    <ListBox ItemsSource="{Binding LibraryOccupants}" HorizontalAlignment="Left" Height="70" Margin="-470,220,0,0" VerticalAlignment="Top" Width="90"/>
-                    <ListBox ItemsSource="{Binding BilliardOccupants}" HorizontalAlignment="Left" Height="70" Margin="-280,220,0,0" VerticalAlignment="Top" Width="90"/>
-                    <ListBox ItemsSource="{Binding DiningOccupants}" HorizontalAlignment="Left" Height="70" Margin="-90,220,0,0" VerticalAlignment="Top" Width="90"/>
-                    <ListBox ItemsSource="{Binding ConservatoryOccupants}" HorizontalAlignment="Left" Height="70" Margin="-470,360,0,0" VerticalAlignment="Top" Width="90"/>
-                    <ListBox ItemsSource="{Binding BallroomOccupants}" HorizontalAlignment="Left" Height="70" Margin="-280,360,0,0" VerticalAlignment="Top" Width="90"/>
-                    <ListBox ItemsSource="{Binding KitchenOccupants}" HorizontalAlignment="Left" Height="70" Margin="-90,360,0,0" VerticalAlignment="Top" Width="90"/>
-                </StackPanel>
-            </StackPanel>
-        </ScrollViewer>
-    </Grid>
+    <Border Padding="10">
+        <StackPanel>
+
+            <!-- Main Title "Clue-Less" -->
+            <TextBlock Grid.Column="0" Text="Clue-Less" Margin="0 3" FontFamily="Broadway" FontSize="35" TextAlignment="Center"/>
+
+            <!-- My Cards, Game Board, Detectives Notepad -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="14*" />
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- My Cards -->
+                <Border Grid.Column="0" BorderBrush="#fff" BorderThickness="1" Padding="1" Background="Black">
+                    <StackPanel>
+
+                        <!-- Sub-Title "My Cards" -->
+                        <TextBlock Text="My Cards" Margin="0 3" FontFamily="Broadway" FontSize="18" TextAlignment="Center" Foreground="White"/>
+
+                        <!-- Cards in My Card Deck -->
+                        <TextBox x:Name="MyCardOne" IsReadOnly="True" Text="Rope" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <TextBox x:Name="MyCardTwo" IsReadOnly="True" Text="Revolver" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <TextBox x:Name="MyCardThree" IsReadOnly="True" Text="Lounge" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <TextBox x:Name="MyCardFour" IsReadOnly="True" Text="Ballroom" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                        <TextBox x:Name="MyCardFive" IsReadOnly="True" Text="Colonel Mustard" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Orange"/>
+                        <TextBox x:Name="MyCardSix" IsReadOnly="True" Text="Mr Green" Margin="1,3" FontFamily="Broadway" FontSize="16" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="52" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Green"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Game Board -->
+                <Border Grid.Column="1" BorderBrush="#fff" BorderThickness="1" Padding="1" Background="Black" MinHeight="8">
+                    <StackPanel>
+
+                        <!-- Sub-Title "Game Board" -->
+                        <TextBlock Text="Game Board" Margin="0 3" FontFamily="Broadway" FontSize="18" TextAlignment="Center" Foreground="White"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Column 1 of Game Board -->
+                            <StackPanel Grid.Column="0" MinHeight="335">
+                                <Button Command="{Binding StudySecretPassageCommand}" x:Name="SecretPassageNW_Button" Click="SecretPassageNW_Button_Click"  Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="#FF646464" BorderBrush="#FFABADB3" Foreground="White" FontSize="7">
+                                    <Button.Content>
+                                        <TextBlock TextWrapping="Wrap" Text="Secret Passage"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button Command="{Binding ConservatorySecretPassageCommand}" x:Name="SecretPassageSW_Button" Click="SecretPassageSW_Button_Click" Margin="0 305 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Foreground="White" BorderBrush="#FFABADB3" Background="#FF646464" FontSize="7">
+                                    <Button.Content>
+                                        <TextBlock TextWrapping="Wrap" Text="Secret Passage"/>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+
+                            <!-- Column 2 of Game Board -->
+                            <StackPanel Grid.Column="1" MinHeight="335">
+                                <TextBox IsReadOnly="True" Text="Study" Margin="0 25 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="Study_ListBox" ItemsSource="{Binding StudyOccupants}" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="60" MaxHeight="60" Foreground="Black" BorderBrush="#FFABADB3" Background="White" FontSize="10" />
+                                <ListBox x:Name="StudyLibrary_Hallway" ItemsSource="{Binding StudyLibrary_HallwayOccupant}" Margin="30 0 30 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                                <TextBox IsReadOnly="True" Text="Library" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="Library_ListBox" ItemsSource="{Binding LibraryOccupants}" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="60" MaxHeight="60" Foreground="Black" BorderBrush="#FFABADB3" Background="White" FontSize="10" />
+                                <ListBox x:Name="LibraryConservatory_Hallway" ItemsSource="{Binding LibraryConservatory_HallwayOccupant}" Margin="30 0 30 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                                <TextBox IsReadOnly="True" Text="Conservatory" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="Conservatory_ListBox" ItemsSource="{Binding ConservatoryOccupants}" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="60" MaxHeight="60" Foreground="Black" BorderBrush="#FFABADB3" Background="White" FontSize="10" />
+                            </StackPanel>
+
+                            <!-- Column 3 of Game Board -->
+                            <StackPanel Grid.Column="2" MinHeight="335">
+                                <ListBox x:Name="StudyHall_Hallway" ItemsSource="{Binding StudyHall_HallwayOccupant}" Margin="0 69 0 0" FontFamily="Broadway" VerticalContentAlignment="Center"  MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="LibraryBilliardRoom_Hallway" ItemsSource="{Binding LibraryBilliardRoom_HallwayOccupant}" Margin="0 83 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="ConservatoryBallroom_Hallway" ItemsSource="{Binding ConservatoryBallroom_HallwayOccupant}" Margin="0 83 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                            </StackPanel>
+
+                            <!-- Column 4 of Game Board -->
+                            <StackPanel Grid.Column="3" MinHeight="335">
+                                <TextBox IsReadOnly="True" Text="Hall" Margin="0 25 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="Hall_ListBox" ItemsSource="{Binding HallOccupants}" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="60" MaxHeight="60" Foreground="Black" BorderBrush="#FFABADB3" Background="White" FontSize="10" />
+                                <ListBox x:Name="HallBilliardRoom_Hallway" ItemsSource="{Binding HallBilliardRoom_HallwayOccupant}"  Margin="30 0 30 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                                <TextBox IsReadOnly="True" Text="Billiard Room" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="BilliardRoom_ListBox" ItemsSource="{Binding BilliardOccupants}" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="60" MaxHeight="60" Foreground="Black" BorderBrush="#FFABADB3" Background="White" FontSize="10" />
+                                <ListBox x:Name="BilliardRoomBallroom_Hallway" ItemsSource="{Binding BilliardRoomBallroom_HallwayOccupant}" Margin="30 0 30 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                                <TextBox IsReadOnly="True" Text="Ballroom" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="Ballroom_ListBox" ItemsSource="{Binding BallroomOccupants}" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="60" MaxHeight="60" Foreground="Black" BorderBrush="#FFABADB3" Background="White" FontSize="10" />
+                            </StackPanel>
+
+                            <!-- Column 5 of Game Board -->
+                            <StackPanel Grid.Column="4" MinHeight="335">
+                                <ListBox x:Name="HallLounge_Hallway" ItemsSource="{Binding HallLounge_HallwayOccupant}" Margin="0 69 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="BilliardRoomDiningRoom_Hallway" ItemsSource="{Binding BilliardRoomDiningRoom_HallwayOccupant}" Margin="0 83 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="BallroomKitchen_Hallway" ItemsSource="{Binding BallroomKitchen_HallwayOccupant}" Margin="0 83 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                            </StackPanel>
+
+                            <!-- Column 6 of Game Board -->
+                            <StackPanel Grid.Column="5" MinHeight="335">
+                                <TextBox IsReadOnly="True" Text="Lounge" Margin="0 25 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="Lounge_ListBox" ItemsSource="{Binding LoungeOccupants}" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="60" MaxHeight="60" Foreground="Black" BorderBrush="#FFABADB3" Background="White" FontSize="10" />
+                                <ListBox x:Name="LoungeDiningRoom_Hallway" ItemsSource="{Binding LoungeDiningRoom_HallwayOccupant}" Margin="30 0 30 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                                <TextBox IsReadOnly="True" Text="Dining Room" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="DiningRoom_ListBox" ItemsSource="{Binding DiningOccupants}" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="60" MaxHeight="60" Foreground="Black" BorderBrush="#FFABADB3" Background="White" FontSize="10" />
+                                <ListBox x:Name="DiningRoomKitchen_Hallway" ItemsSource="{Binding DiningRoomKitchen_HallwayOccupant}" Margin="30 0 30 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="White" Foreground="Black"/>
+                                <TextBox IsReadOnly="True" Text="Kitchen" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="25" Background="White" Foreground="Black"/>
+                                <ListBox x:Name="Kitchen_ListBox" ItemsSource="{Binding KitchenOccupants}" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="60" MaxHeight="60" Foreground="Black" BorderBrush="#FFABADB3" Background="White" FontSize="10" />
+                            </StackPanel>
+
+                            <!-- Column 7 of Game Board -->
+                            <StackPanel Grid.Column="6" MinHeight="335">
+                                <Button Command="{Binding LoungeSecretPassageCommand}" x:Name="SecretPassageNE_Button" Click="SecretPassageNE_Button_Click" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="#FF646464" BorderBrush="#FFABADB3" Foreground="White" FontSize="7" >
+                                    <Button.Content>
+                                        <TextBlock TextWrapping="Wrap" Text="Secret Passage"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button Command="{Binding KitchenSecretPassageCommand}" x:Name="SecretPassageSE_Button" Click="SecretPassageSE_Button_Click" Margin="0 305 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Foreground="White" BorderBrush="#FFABADB3" Background="#FF646464" FontSize="7" >
+                                    <Button.Content>
+                                        <TextBlock TextWrapping="Wrap" Text="Secret Passage"/>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Detective Notes -->
+                <Border Grid.Column="2" BorderBrush="#fff" BorderThickness="1" Padding="1" Background="Black">
+                    <StackPanel>
+
+                        <!-- Sub-Title "Detective Notes" -->
+                        <TextBlock Text="Detective Notes" Margin="0 3" FontFamily="Broadway" FontSize="18" TextAlignment="Center" Foreground="White"/>
+
+                        <!-- Sub-Sub-Title "Suspects" -->
+                        <TextBox IsReadOnly="True" Text="Suspects" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="20" Background="Silver" Foreground="Black" FontSize="12"/>
+
+                        <!-- Suspects Names & Checkboxes -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Column 1 - Suspect Names -->
+                            <StackPanel Grid.Column="0">
+                                <TextBox IsReadOnly="True" Text="Miss Scarlet" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="DarkRed" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Col Mustard" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="DarkOrange" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Mrs White" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Mr Green" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="Green" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Mrs Peacock" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="PeachPuff" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Prof Plum" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="Purple" Foreground="Black" FontSize="10"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #1 -->
+                            <StackPanel Grid.Column="1" Background="DarkRed">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #2 -->
+                            <StackPanel Grid.Column="2" Background="DarkOrange">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #3 -->
+                            <StackPanel Grid.Column="3" Background="White">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #4 -->
+                            <StackPanel Grid.Column="4" Background="Green">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #5 -->
+                            <StackPanel Grid.Column="5" Background="PeachPuff">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #6 -->
+                            <StackPanel Grid.Column="6" Background="Purple">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Sub-Sub-Title "Weapons" -->
+                        <TextBox IsReadOnly="True" Text="Weapons" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="20" Background="Silver" Foreground="Black" FontSize="12"/>
+
+                        <!-- Weapons Names & Checkboxes -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <!-- Column 1 - Weapons Names -->
+                            <StackPanel Grid.Column="0">
+                                <TextBox IsReadOnly="True" Text="Candlestick" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Knife" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Rope" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Revolver" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Lead Pipe" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Wrench" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #1 -->
+                            <StackPanel Grid.Column="1" Background="DarkRed">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #2 -->
+                            <StackPanel Grid.Column="2" Background="DarkOrange">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #3 -->
+                            <StackPanel Grid.Column="3" Background="White">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #4 -->
+                            <StackPanel Grid.Column="4" Background="Green">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #5 -->
+                            <StackPanel Grid.Column="5" Background="PeachPuff">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #6 -->
+                            <StackPanel Grid.Column="6" Background="Purple">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Sub-Sub-Title "Rooms" -->
+                        <TextBox IsReadOnly="True" Text="Rooms" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="20" Background="Silver" Foreground="Black" FontSize="12"/>
+
+                        <!-- Rooms Names & Checkboxes -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Column 1 - Rooms Names -->
+                            <StackPanel Grid.Column="0">
+                                <TextBox IsReadOnly="True" Text="Ball Room" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Billiard Room" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Conservatory" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Dining Room" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Hall" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Kitchen" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Library" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Lounge" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                                <TextBox IsReadOnly="True" Text="Study" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" TextAlignment="Center" TextWrapping="WrapWithOverflow" MinHeight="14" Background="White" Foreground="Black" FontSize="10"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #1 -->
+                            <StackPanel Grid.Column="1" Background="DarkRed">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #2 -->
+                            <StackPanel Grid.Column="2" Background="Orange">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #3 -->
+                            <StackPanel Grid.Column="3" Background="White">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #4 -->
+                            <StackPanel Grid.Column="4" Background="Green">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #5 -->
+                            <StackPanel Grid.Column="5" Background="PeachPuff">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Column 2 - Checkboxes Player #6 -->
+                            <StackPanel Grid.Column="6" Background="Purple">
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                                <CheckBox Margin="0 0 0 0" Height="14" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Accuse, Move, Suggest Main Grid -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="14*" />
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Accuse, Move, Suggest Sub Grid -->
+                <Border Grid.Column="1" BorderBrush="#fff" BorderThickness="1" Padding="1" Background="White">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Column 1 - Accusations Actions -->
+                        <StackPanel Grid.Column="0" MinHeight="125">
+                            <!-- Sub-Title "Accustation" -->
+                            <TextBlock Text="Accusation" Margin="0 3" FontFamily="Broadway" FontSize="15" TextAlignment="Center" Foreground="Black"/>
+
+                            <!-- Grid for Accusation Button and Dropdown Boxes -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Accusation Suspects Title and Dropdown Box-->
+                                <StackPanel Grid.Column="0">
+                                    <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                    <ComboBox SelectionChanged="AccuseSuspect_Dropdown_SelectionChanged" x:Name="AccuseSuspect_Dropdown" SelectedIndex="0" Padding="2">
+                                        <ComboBoxItem>Miss Scarlet</ComboBoxItem>
+                                        <ComboBoxItem>Col Mustard</ComboBoxItem>
+                                        <ComboBoxItem>Mrs White</ComboBoxItem>
+                                        <ComboBoxItem>Mr Green</ComboBoxItem>
+                                        <ComboBoxItem>Mrs Peacock</ComboBoxItem>
+                                        <ComboBoxItem>Prof Plum</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- Accusation Button & Weapon Dropdown Box -->
+                                <StackPanel Grid.Column="1">
+                                    <Button x:Name="Accuse_Button" Click="Accuse_Button_Click" Content="ACCUSE" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                    <ComboBox SelectionChanged="AccuseWeapon_Dropdown_SelectionChanged" x:Name="AccuseWeapon_Dropdown" SelectedIndex="0" Padding="2" >
+                                        <ComboBoxItem>Candlestick</ComboBoxItem>
+                                        <ComboBoxItem>Knife</ComboBoxItem>
+                                        <ComboBoxItem>Rope</ComboBoxItem>
+                                        <ComboBoxItem>Revolver</ComboBoxItem>
+                                        <ComboBoxItem>Lead Pipe</ComboBoxItem>
+                                        <ComboBoxItem>Wrench</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- Accusation Room Title and Dropdown Box -->
+                                <StackPanel Grid.Column="3">
+                                    <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                    <ComboBox SelectionChanged="AccuseRoom_Dropdown_SelectionChanged" x:Name="AccuseRoom_Dropdown" SelectedIndex="0" Padding="2" >
+                                        <ComboBoxItem>Study</ComboBoxItem>
+                                        <ComboBoxItem>Hall</ComboBoxItem>
+                                        <ComboBoxItem>Lounge</ComboBoxItem>
+                                        <ComboBoxItem>Library</ComboBoxItem>
+                                        <ComboBoxItem>Billiard Room</ComboBoxItem>
+                                        <ComboBoxItem>Dining Room</ComboBoxItem>
+                                        <ComboBoxItem>Library</ComboBoxItem>
+                                        <ComboBoxItem>Ballroom</ComboBoxItem>
+                                        <ComboBoxItem>Kitchen</ComboBoxItem>
+                                    </ComboBox>
+
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Column 2 - Move -->
+                        <StackPanel Grid.Column="1" Background="White"  MinHeight="125">
+                            <!-- Sub-Title "Move" -->
+                            <TextBlock Text="Move" Margin="0 3" FontFamily="Broadway" FontSize="15" TextAlignment="Center" Foreground="Black"/>
+
+                            <!-- Grid for Move Butttons -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Move Left Button -->
+                                <StackPanel Grid.Column="0">
+                                    <Button Command="{Binding MoveLeftCommand}" x:Name="MoveLeft_Button" Click="MoveLeft_Button_Click" Content="LEFT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                </StackPanel>
+
+                                <!-- Move Up & Move Down Buttons -->
+                                <StackPanel Grid.Column="1">
+                                    <Button Command="{Binding MoveUpCommand}" x:Name="MoveUp_Button" Click="MoveUp_Button_Click" Content="UP" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding MoveDownCommand}" x:Name="MoveDown_Button" Click="MoveDown_Button_Click" Content="DOWN" Margin="5 30 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                </StackPanel>
+
+                                <!-- Move Right Button -->
+                                <StackPanel Grid.Column="3">
+                                    <Button Command="{Binding MoveRightCommand}" x:Name="MoveRight_Button" Click="MoveRight_Button_Click" Content="RIGHT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+
+                        <!-- Column 1 - Suggestion Actions -->
+                        <StackPanel Grid.Column="2" MinHeight="125">
+                            <!-- Sub-Title "Suggestion" -->
+                            <TextBlock Text="Suggestion" Margin="0 3" FontFamily="Broadway" FontSize="15" TextAlignment="Center" Foreground="Black"/>
+
+                            <!-- Grid for Suggestion Button and Dropdown Boxes -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Suggestion Suspects Title and Dropdown Box-->
+                                <StackPanel Grid.Column="0">
+                                    <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                    <ComboBox x:Name="SuggestSuspect_Dropdown" SelectionChanged="SuggestSuspect_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2">
+                                        <ComboBoxItem>Miss Scarlet</ComboBoxItem>
+                                        <ComboBoxItem>Col Mustard</ComboBoxItem>
+                                        <ComboBoxItem>Mrs White</ComboBoxItem>
+                                        <ComboBoxItem>Mr Green</ComboBoxItem>
+                                        <ComboBoxItem>Mrs Peacock</ComboBoxItem>
+                                        <ComboBoxItem>Prof Plum</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- Suggestion Button & Weapon Dropdown Box -->
+                                <StackPanel Grid.Column="1">
+                                    <Button x:Name="Suggest_Button" Click="Suggest_Button_Click" Content="SUGGEST" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                    <ComboBox x:Name="SuggestWeapon_Dropdown" SelectionChanged="SuggestWeapon_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2" >
+                                        <ComboBoxItem>Candlestick</ComboBoxItem>
+                                        <ComboBoxItem>Knife</ComboBoxItem>
+                                        <ComboBoxItem>Rope</ComboBoxItem>
+                                        <ComboBoxItem>Revolver</ComboBoxItem>
+                                        <ComboBoxItem>Lead Pipe</ComboBoxItem>
+                                        <ComboBoxItem>Wrench</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <!-- Suggestion Room Title and Dropdown Box -->
+                                <StackPanel Grid.Column="3">
+                                    <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                    <ComboBox x:Name="SuggestRoom_Dropdown" SelectionChanged="SuggestRoom_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2" >
+                                        <ComboBoxItem>Study</ComboBoxItem>
+                                        <ComboBoxItem>Hall</ComboBoxItem>
+                                        <ComboBoxItem>Lounge</ComboBoxItem>
+                                        <ComboBoxItem>Library</ComboBoxItem>
+                                        <ComboBoxItem>Billiard Room</ComboBoxItem>
+                                        <ComboBoxItem>Dining Room</ComboBoxItem>
+                                        <ComboBoxItem>Library</ComboBoxItem>
+                                        <ComboBoxItem>Ballroom</ComboBoxItem>
+                                        <ComboBoxItem>Kitchen</ComboBoxItem>
+                                    </ComboBox>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </Border>
 </Window>
