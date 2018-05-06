@@ -55,17 +55,17 @@ namespace WpfApp1
 
         private void AccuseSuspect_Dropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AccusationSuspect_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
+            //AccusationSuspect_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
         }
 
         private void AccuseWeapon_Dropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AccusationWeapon_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
+            //AccusationWeapon_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
         }
 
         private void AccuseRoom_Dropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AccusationRoom_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
+            //AccusationRoom_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
         }
 
         private void Accuse_Button_Click(object sender, RoutedEventArgs e)
@@ -95,17 +95,17 @@ namespace WpfApp1
 
         private void SuggestSuspect_Dropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SuggestionSuspect_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
+            //SuggestionSuspect_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
         }
 
         private void SuggestWeapon_Dropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SuggestionWeapon_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
+            //SuggestionWeapon_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
         }
 
         private void SuggestRoom_Dropdown_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SuggestionRoom_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
+            //SuggestionRoom_String = (string)((ComboBoxItem)((ComboBox)sender).SelectedValue).Content;
         }
 
         private void Suggest_Button_Click(object sender, RoutedEventArgs e)

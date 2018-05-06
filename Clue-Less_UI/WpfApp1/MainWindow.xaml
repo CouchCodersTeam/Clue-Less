@@ -459,43 +459,22 @@
                                 <!-- Accusation Suspects Title and Dropdown Box-->
                                 <StackPanel Grid.Column="0">
                                     <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox SelectionChanged="AccuseSuspect_Dropdown_SelectionChanged" x:Name="AccuseSuspect_Dropdown" SelectedIndex="0" Padding="2">
-                                        <ComboBoxItem>Miss Scarlet</ComboBoxItem>
-                                        <ComboBoxItem>Col Mustard</ComboBoxItem>
-                                        <ComboBoxItem>Mrs White</ComboBoxItem>
-                                        <ComboBoxItem>Mr Green</ComboBoxItem>
-                                        <ComboBoxItem>Mrs Peacock</ComboBoxItem>
-                                        <ComboBoxItem>Prof Plum</ComboBoxItem>
+                                    <ComboBox ItemsSource="{Binding Path=AccusePeopleStrings}" SelectedValue="{Binding Path=AccusePerson}" SelectionChanged="AccuseSuspect_Dropdown_SelectionChanged" x:Name="AccuseSuspect_Dropdown" SelectedIndex="0" Padding="2">
                                     </ComboBox>
                                 </StackPanel>
 
                                 <!-- Accusation Button & Weapon Dropdown Box -->
                                 <StackPanel Grid.Column="1">
-                                    <Button x:Name="Accuse_Button" Click="Accuse_Button_Click" Content="ACCUSE" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding MakeAccusationCommand}" x:Name="Accuse_Button" Click="Accuse_Button_Click" Content="ACCUSE" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                     <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox SelectionChanged="AccuseWeapon_Dropdown_SelectionChanged" x:Name="AccuseWeapon_Dropdown" SelectedIndex="0" Padding="2" >
-                                        <ComboBoxItem>Candlestick</ComboBoxItem>
-                                        <ComboBoxItem>Knife</ComboBoxItem>
-                                        <ComboBoxItem>Rope</ComboBoxItem>
-                                        <ComboBoxItem>Revolver</ComboBoxItem>
-                                        <ComboBoxItem>Lead Pipe</ComboBoxItem>
-                                        <ComboBoxItem>Wrench</ComboBoxItem>
+                                    <ComboBox ItemsSource="{Binding Path=AccuseWeaponStrings}" SelectedValue="{Binding Path=AccuseWeapon}" SelectionChanged="AccuseWeapon_Dropdown_SelectionChanged" x:Name="AccuseWeapon_Dropdown" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
                                 </StackPanel>
 
                                 <!-- Accusation Room Title and Dropdown Box -->
                                 <StackPanel Grid.Column="3">
                                     <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox SelectionChanged="AccuseRoom_Dropdown_SelectionChanged" x:Name="AccuseRoom_Dropdown" SelectedIndex="0" Padding="2" >
-                                        <ComboBoxItem>Study</ComboBoxItem>
-                                        <ComboBoxItem>Hall</ComboBoxItem>
-                                        <ComboBoxItem>Lounge</ComboBoxItem>
-                                        <ComboBoxItem>Library</ComboBoxItem>
-                                        <ComboBoxItem>Billiard Room</ComboBoxItem>
-                                        <ComboBoxItem>Dining Room</ComboBoxItem>
-                                        <ComboBoxItem>Library</ComboBoxItem>
-                                        <ComboBoxItem>Ballroom</ComboBoxItem>
-                                        <ComboBoxItem>Kitchen</ComboBoxItem>
+                                    <ComboBox ItemsSource="{Binding Path=AccuseRoomStrings}" SelectedValue="{Binding Path=AccuseRoom}" SelectionChanged="AccuseRoom_Dropdown_SelectionChanged" x:Name="AccuseRoom_Dropdown" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
 
                                 </StackPanel>
@@ -549,43 +528,22 @@
                                 <!-- Suggestion Suspects Title and Dropdown Box-->
                                 <StackPanel Grid.Column="0">
                                     <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox x:Name="SuggestSuspect_Dropdown" SelectionChanged="SuggestSuspect_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2">
-                                        <ComboBoxItem>Miss Scarlet</ComboBoxItem>
-                                        <ComboBoxItem>Col Mustard</ComboBoxItem>
-                                        <ComboBoxItem>Mrs White</ComboBoxItem>
-                                        <ComboBoxItem>Mr Green</ComboBoxItem>
-                                        <ComboBoxItem>Mrs Peacock</ComboBoxItem>
-                                        <ComboBoxItem>Prof Plum</ComboBoxItem>
+                                    <ComboBox ItemsSource="{Binding Path=SuggestPeopleStrings}" SelectedValue="{Binding Path=SuggestionPerson}" x:Name="SuggestSuspect_Dropdown" SelectionChanged="SuggestSuspect_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2">
                                     </ComboBox>
                                 </StackPanel>
 
                                 <!-- Suggestion Button & Weapon Dropdown Box -->
                                 <StackPanel Grid.Column="1">
-                                    <Button x:Name="Suggest_Button" Click="Suggest_Button_Click" Content="SUGGEST" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding MakeSuggestionCommand}" x:Name="Suggest_Button" Click="Suggest_Button_Click" Content="SUGGEST" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                     <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox x:Name="SuggestWeapon_Dropdown" SelectionChanged="SuggestWeapon_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2" >
-                                        <ComboBoxItem>Candlestick</ComboBoxItem>
-                                        <ComboBoxItem>Knife</ComboBoxItem>
-                                        <ComboBoxItem>Rope</ComboBoxItem>
-                                        <ComboBoxItem>Revolver</ComboBoxItem>
-                                        <ComboBoxItem>Lead Pipe</ComboBoxItem>
-                                        <ComboBoxItem>Wrench</ComboBoxItem>
+                                    <ComboBox ItemsSource="{Binding Path=SuggestWeaponStrings}" SelectedValue="{Binding Path=SuggestionWeapon}" x:Name="SuggestWeapon_Dropdown" SelectionChanged="SuggestWeapon_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
                                 </StackPanel>
 
                                 <!-- Suggestion Room Title and Dropdown Box -->
                                 <StackPanel Grid.Column="3">
                                     <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox x:Name="SuggestRoom_Dropdown" SelectionChanged="SuggestRoom_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2" >
-                                        <ComboBoxItem>Study</ComboBoxItem>
-                                        <ComboBoxItem>Hall</ComboBoxItem>
-                                        <ComboBoxItem>Lounge</ComboBoxItem>
-                                        <ComboBoxItem>Library</ComboBoxItem>
-                                        <ComboBoxItem>Billiard Room</ComboBoxItem>
-                                        <ComboBoxItem>Dining Room</ComboBoxItem>
-                                        <ComboBoxItem>Library</ComboBoxItem>
-                                        <ComboBoxItem>Ballroom</ComboBoxItem>
-                                        <ComboBoxItem>Kitchen</ComboBoxItem>
+                                    <ComboBox ItemsSource="{Binding Path=SuggestRoomStrings}" SelectedValue="{Binding Path=SuggestionRoom}" x:Name="SuggestRoom_Dropdown" SelectionChanged="SuggestRoom_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
                                 </StackPanel>
                             </Grid>

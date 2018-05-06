@@ -11,12 +11,14 @@ namespace WpfApp1.ViewModel
     class Board_Controller : ObservableObject
     {
         //This should probably be somewhere else
-        public enum Person { Scarlet, Mustard, Plum, Peacock, Green, White};
+        public enum Person { Scarlet, Mustard, Plum, Peacock, Green, White, None};
         public enum Room { Study, Hall, Lounge, Library, Billiard, Dining, Conservatory, Ballroom, Kitchen,
             StudyHall_Hallway, HallLounge_Hallway, StudyLibrary_Hallway, HallBilliardRoom_Hallway,
             LoungeDiningRoom_Hallway, LibraryBilliardRoom_Hallway, BilliardRoomDiningRoom_Hallway,
             LibraryConservatory_Hallway, BilliardRoomBallroom_Hallway, DiningRoomKitchen_Hallway,
-            ConservatoryBallroom_Hallway, BallroomKitchen_Hallway}
+            ConservatoryBallroom_Hallway, BallroomKitchen_Hallway, None}
+
+        public enum Weapon { Candlestick, Knife, Rope, Revolver, LeadPipe, Wrench, None};
 
         public ObservableCollection<string> StudyOccupants { get; set; }
         public ObservableCollection<string> HallOccupants { get; set; }
@@ -41,6 +43,19 @@ namespace WpfApp1.ViewModel
         public ObservableCollection<string> ConservatoryBallroom_HallwayOccupant { get; set; }
         public ObservableCollection<string> BallroomKitchen_HallwayOccupant { get; set; }
 
+
+        public ObservableCollection<string> SuggestPeopleStrings { get; set; }
+        public ObservableCollection<string> SuggestRoomStrings { get; set; }
+        public ObservableCollection<string> SuggestWeaponStrings { get; set; }
+        public ObservableCollection<string> AccusePeopleStrings { get; set; }
+        public ObservableCollection<string> AccuseRoomStrings { get; set; }
+        public ObservableCollection<string> AccuseWeaponStrings { get; set; }
+        public string SuggestionPerson { get; set; }
+        public string SuggestionRoom { get; set; }
+        public string SuggestionWeapon { get; set; }
+        public string AccusePerson { get; set; }
+        public string AccuseRoom { get; set; }
+        public string AccuseWeapon { get; set; }
 
         public Dictionary<Room, ObservableCollection<string>> RoomContents { get; set; }
 
@@ -70,7 +85,59 @@ namespace WpfApp1.ViewModel
             DiningRoomKitchen_HallwayOccupant = new ObservableCollection<string>();
             ConservatoryBallroom_HallwayOccupant = new ObservableCollection<string>();
             BallroomKitchen_HallwayOccupant = new ObservableCollection<string>();
-            
+
+            AccusePeopleStrings = new ObservableCollection<string>();
+            AccusePeopleStrings.Add("Miss Scarlet");
+            AccusePeopleStrings.Add("Col Mustard");
+            AccusePeopleStrings.Add("Mrs White");
+            AccusePeopleStrings.Add("Mr Green");
+            AccusePeopleStrings.Add("Mrs Peacock");
+            AccusePeopleStrings.Add("Prof Plum");
+
+            SuggestPeopleStrings = new ObservableCollection<string>();
+            SuggestPeopleStrings.Add("Miss Scarlet");
+            SuggestPeopleStrings.Add("Col Mustard");
+            SuggestPeopleStrings.Add("Mrs White");
+            SuggestPeopleStrings.Add("Mr Green");
+            SuggestPeopleStrings.Add("Mrs Peacock");
+            SuggestPeopleStrings.Add("Prof Plum");
+
+            AccuseWeaponStrings = new ObservableCollection<string>();
+            AccuseWeaponStrings.Add("Candlestick");
+            AccuseWeaponStrings.Add("Knife");
+            AccuseWeaponStrings.Add("Rope");
+            AccuseWeaponStrings.Add("Revolver");
+            AccuseWeaponStrings.Add("Lead Pipe");
+            AccuseWeaponStrings.Add("Wrench");
+            SuggestWeaponStrings = new ObservableCollection<string>();
+            SuggestWeaponStrings.Add("Candlestick");
+            SuggestWeaponStrings.Add("Knife");
+            SuggestWeaponStrings.Add("Rope");
+            SuggestWeaponStrings.Add("Revolver");
+            SuggestWeaponStrings.Add("Lead Pipe");
+            SuggestWeaponStrings.Add("Wrench");
+
+            AccuseRoomStrings = new ObservableCollection<string>();
+            AccuseRoomStrings.Add("Study");
+            AccuseRoomStrings.Add("Hall");
+            AccuseRoomStrings.Add("Lounge");
+            AccuseRoomStrings.Add("Library");
+            AccuseRoomStrings.Add("Billiard Room");
+            AccuseRoomStrings.Add("Dining Room");
+            AccuseRoomStrings.Add("Conservatory");
+            AccuseRoomStrings.Add("Ballroom");
+            AccuseRoomStrings.Add("Kitchen");
+            SuggestRoomStrings = new ObservableCollection<string>();
+            SuggestRoomStrings.Add("Study");
+            SuggestRoomStrings.Add("Hall");
+            SuggestRoomStrings.Add("Lounge");
+            SuggestRoomStrings.Add("Library");
+            SuggestRoomStrings.Add("Billiard Room");
+            SuggestRoomStrings.Add("Dining Room");
+            SuggestRoomStrings.Add("Conservatory");
+            SuggestRoomStrings.Add("Ballroom");
+            SuggestRoomStrings.Add("Kitchen");
+
             RoomContents = new Dictionary<Room, ObservableCollection<string>>()
             {
                 { Room.Study, StudyOccupants },
@@ -127,6 +194,75 @@ namespace WpfApp1.ViewModel
         {
             if(!RoomContents[room].Contains(person.ToString()))
                 RoomContents[room].Add(person.ToString());
+        }
+
+        Person ConvertStringToPerson(string personName)
+        {
+            switch (personName)
+            {
+                case "Miss Scarlet":
+                    return Person.Scarlet;
+                case "Col Mustard":
+                    return Person.Mustard;
+                case "Mrs White":
+                    return Person.White;
+                case "Mr Green":
+                    return Person.Green;
+                case "Mrs Peacock":
+                    return Person.Peacock;
+                case "Prof Plum":
+                    return Person.Plum;
+                default:
+                    return Person.None; //should trigger an error if this comes out...
+            }
+        }
+
+        Weapon ConvertStringToWeapon(string weaponName)
+        {
+            switch (weaponName)
+            {
+                case "Candlestick":
+                    return Weapon.Candlestick;
+                case "Knife":
+                    return Weapon.Knife;
+                case "Rope":
+                    return Weapon.Rope;
+                case "Revolver":
+                    return Weapon.Revolver;
+                case "Lead Pipe":
+                    return Weapon.LeadPipe;
+                case "Wrench":
+                    return Weapon.Wrench;
+                default:
+                    return Weapon.None; //should trigger an error if this comes out...
+            }
+        }
+
+        Room ConvertStringToRoom(string roomName)
+        {
+            switch(roomName)
+            {
+                case "Study":
+                    return Room.Study;
+                case "Hall":
+                    return Room.Hall;
+                case "Lounge":
+                    return Room.Lounge;
+                case "Library":
+                    return Room.Library;
+                case "Billiard Room":
+                    return Room.Billiard;
+                case "Dining Room":
+                    return Room.Dining;
+                case "Conservatory":
+                    return Room.Conservatory;
+                case "Ballroom":
+                    return Room.Ballroom;
+                case "Kitchen":
+                    return Room.Kitchen;
+                default:
+                    return Room.None;
+            }
         }
 
         //Test Client Functions
@@ -234,6 +370,38 @@ namespace WpfApp1.ViewModel
             //MovePerson(Person person, Room fromHere, Room toHere)
             //pass call to client as well
             MovePerson(Person.White, Room.Study, Room.Kitchen);
+        }
+
+        public ICommand MakeSuggestionCommand
+        {
+            get { return new DelegateCommand(MakeSuggestion); }
+        }
+       
+        private void MakeSuggestion()
+        {
+            //insert game logic to determine how to use this function
+            //MovePerson(Person person, Room fromHere, Room toHere)
+            //pass call to client as well
+
+            bool success = client.MakeSuggestion(ConvertStringToPerson(SuggestionPerson), 
+                                                ConvertStringToRoom(SuggestionRoom), 
+                                                ConvertStringToWeapon(SuggestionWeapon));
+        }
+
+        public ICommand MakeAccusationCommand
+        {
+            get { return new DelegateCommand(MakeAccusation); }
+        }
+
+        private void MakeAccusation()
+        {
+            //insert game logic to determine how to use this function
+            //MovePerson(Person person, Room fromHere, Room toHere)
+            //pass call to client as well
+
+            bool success = client.MakeAccusation(ConvertStringToPerson(AccusePerson),
+                                                ConvertStringToRoom(AccuseRoom),
+                                                ConvertStringToWeapon(AccuseWeapon));
         }
         //End Test Code
 

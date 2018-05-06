@@ -10,30 +10,44 @@ namespace WpfApp1.ViewModel
     {
         public TestClient() { }
 
-        bool MoveUp()
+        public bool MoveUp()
         {
             bool success = false;
 
             return success;
         }
 
-        bool MoveDown()
+        public bool MoveDown()
         {
             bool success = false;
 
             return success;
         }
 
-        bool MoveLeft()
+        public bool MoveLeft()
         {
             bool success = false;
 
             return success;
         }
 
-        bool MoveRight()
+        public bool MoveRight()
         {
             bool success = false;
+
+            return success;
+        }
+
+        public bool MakeSuggestion(Board_Controller.Person person, Board_Controller.Room room, Board_Controller.Weapon weapon)
+        {
+            bool success = true;
+
+            return success;
+        }
+
+        public bool MakeAccusation(Board_Controller.Person person, Board_Controller.Room room, Board_Controller.Weapon weapon)
+        {
+            bool success = true;
 
             return success;
         }
