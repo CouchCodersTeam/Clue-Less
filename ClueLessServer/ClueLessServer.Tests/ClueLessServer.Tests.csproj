@@ -100,6 +100,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AuthCodeControllerTest.cs" />
     <Compile Include="Controllers\GamesControllerTest.cs" />
+    <Compile Include="TestHelpers\TestData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

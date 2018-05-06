@@ -17,7 +17,7 @@ namespace ClueLessServer.Controllers
         public IHttpActionResult GetGames()
         {
             // return a list of games
-            return Ok(pGames.Values.ToList());
+            return Ok(GameDatabase.GetAllLobbies());
         }
 
         // GET: /games/5
@@ -45,8 +45,7 @@ namespace ClueLessServer.Controllers
 
             PlayerModel player = auth.player;
 
-            GameModel newGame = new GameModel(player.Name);
-            pGames.Add(newGame.Id, newGame);
+            GameModel newGame = GameDatabase.CreateGame(player);
 
             string location = "/games/" + newGame.Id;
             return Created(location, newGame);
@@ -62,9 +61,10 @@ namespace ClueLessServer.Controllers
             if (auth.result != null)
                 return auth.result;
 
-            // TODO: add player to game
-
-            return StatusCode(HttpStatusCode.NoContent);
+            if (auth.game.addPlayer(auth.player))
+                return StatusCode(HttpStatusCode.NoContent);
+            else
+                return BadRequest();
         }
 
         // POST: /games/5/begin
@@ -78,9 +78,22 @@ namespace ClueLessServer.Controllers
             if (auth.result != null)
                 return auth.result;
 
+            PlayerModel player = auth.player;
+            GameModel game = auth.game;
             // TODO: start game, signal to other players that game has started
+            if (!game.Hostname.Equals(player.Name))
+                return Unauthorized();
 
-            return StatusCode(HttpStatusCode.NoContent);
+            if (game.start())
+            {
+                // TODO: inform other clients
+                return StatusCode(HttpStatusCode.NoContent);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
         }
 
         // GET: /games/5/begin
@@ -93,14 +106,20 @@ namespace ClueLessServer.Controllers
             if (auth.result != null)
                 return auth.result;
 
+            if (auth.game.isStarted)
+            {
+                return Ok();
+            }
+
             // TODO: wait for game to start. Turn API into async and
             // return a timeout if game has not started. Return OK
             // once host player hits start
 
+
             // will probably require use of a mutex and a condition variable
             // with a time out
 
-            return Ok();
+            return StatusCode(HttpStatusCode.RequestTimeout);
         }
 
         // DELETE: /games/5
@@ -108,14 +127,24 @@ namespace ClueLessServer.Controllers
         [HttpDelete]
         public IHttpActionResult LeaveGame(long id)
         {
-            if (!pGames.ContainsKey(id))
+            AuthResult auth = authorizePlayerMatchesGame(id);
+
+            if (auth.result != null)
+                return auth.result;
+
+            if (auth.game.removePlayer(auth.player))
             {
-                return NotFound();
-            }
-            else
-            {
+                // if host leaves, game is disbanded
+                if (auth.game.Hostname.Equals(auth.player.Name))
+                {
+                    GameDatabase.RemoveGame(auth.game);
+                    // TODO: notify remaining players in game
+                }
+
                 return Ok();
             }
+            else
+                return BadRequest();
         }
 
     }

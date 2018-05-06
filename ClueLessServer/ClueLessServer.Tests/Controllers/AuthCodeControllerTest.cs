@@ -48,5 +48,11 @@ namespace ClueLessServer.Tests.Controllers
             Assert.AreEqual(testData.PlayerName, responseData.PlayerName);
             Assert.AreEqual(GENERATED_AUTH_CODE, responseData.AuthCode);
         }
+
+        [TestCleanup]
+        public void AuthCodeCleanup()
+        {
+            PlayerDatabase.SetTestAuthCodeGenerator(new Helpers.AuthCodeGenerator());
+        }
     }
 }

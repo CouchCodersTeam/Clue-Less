@@ -14,9 +14,6 @@ namespace ClueLessServer.Controllers
      */
     public class ClueLessController : ApiController
     {
-        // TODO: replace pGames with GameDatabase function calls
-        protected Dictionary<long, GameModel> pGames = new Dictionary<long, GameModel>();
-
         /*
          * This class returns the requested data from child controllers.
          * If a request is not authorized, result will be non-null
@@ -45,22 +42,6 @@ namespace ClueLessServer.Controllers
             }
         }
 
-        public ClueLessController() : base()
-        {
-            // Generate Dummy Data
-            List<GameModel> games = new List<GameModel>();
-
-            games.Add(new GameModel("John Doe"));
-            games.Add(new GameModel("Sean Connery"));
-            games.Add(new GameModel("ClueMaster779"));
-
-            foreach (GameModel game in games)
-            {
-                pGames.Add(game.Id, game);
-            }
-
-        }
-
         protected AuthResult authorizePlayer()
         {
             AuthResult result = new AuthResult();
@@ -82,7 +63,7 @@ namespace ClueLessServer.Controllers
         protected AuthResult authorizeGame(long gameId)
         {
             AuthResult result = new AuthResult();
-            result.game = GetActiveGame(gameId);
+            result.game = GameDatabase.GetGame(gameId);
             if (result.game == null)
                 result.result = NotFound();
             return result;
@@ -98,12 +79,21 @@ namespace ClueLessServer.Controllers
             return authorizeGame(gameId).merge(authorizePlayer());
         }
 
+        protected AuthResult authorizePlayerMatchesGame(long gameId)
+        {
+            AuthResult auth = authorizePlayerAndGame(gameId);
+            if (auth.game != null && !auth.game.containsPlayer(auth.player))
+            {
+                auth.game = null;
+                auth.player = null;
+                auth.result = NotFound();
+            }
+            return auth;
+        }
 
         private GameModel GetActiveGame(long gameId)
         {
-            GameModel game = null;
-            pGames.TryGetValue(gameId, out game);
-            return game;
+            return GameDatabase.GetGame(gameId);
         }
 
         private GameModel GetGameFromHeaders()
@@ -143,8 +133,7 @@ namespace ClueLessServer.Controllers
             PlayerModel player = null;
             if (authCode != null && authCode.Length != 0)
             {
-                // TODO: lookup authcode in player database
-                player = new PlayerModel(authCode);
+                player = PlayerDatabase.GetPlayer(authCode);
             }
 
             return player;
