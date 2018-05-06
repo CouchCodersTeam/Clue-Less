@@ -33,7 +33,7 @@
                         <TextBlock Text="My Cards" Margin="0 3" FontFamily="Broadway" FontSize="18" TextAlignment="Center" Foreground="White"/>
 
                         <!-- Cards in My Card Deck -->
-                        <ListBox x:Name="MyCards" Margin="0 0 0 0" FontFamily="Broadway" MinHeight="354" MaxHeight="354" MinWidth="100" Background="White" Foreground="Black" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <ListBox ItemsSource="{Binding MyCards}" x:Name="MyCards" Margin="0 0 0 0" FontFamily="Broadway" MinHeight="354" MaxHeight="354" MinWidth="100" Background="White" Foreground="Black" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Border>
 
@@ -57,12 +57,12 @@
 
                             <!-- Column 1 of Game Board -->
                             <StackPanel Grid.Column="0" MinHeight="335">
-                                <Button Command="{Binding StudySecretPassageCommand}" x:Name="SecretPassageNW_Button" Click="SecretPassageNW_Button_Click"  Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="#FF646464" BorderBrush="#FFABADB3" Foreground="White" FontSize="7">
+                                <Button Command="{Binding StudySecretPassageCommand}" x:Name="SecretPassageNW_Button" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="#FF646464" BorderBrush="#FFABADB3" Foreground="White" FontSize="7">
                                     <Button.Content>
                                         <TextBlock TextWrapping="Wrap" Text="Secret Passage"/>
                                     </Button.Content>
                                 </Button>
-                                <Button Command="{Binding ConservatorySecretPassageCommand}" x:Name="SecretPassageSW_Button" Click="SecretPassageSW_Button_Click" Margin="0 305 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Foreground="White" BorderBrush="#FFABADB3" Background="#FF646464" FontSize="7">
+                                <Button Command="{Binding ConservatorySecretPassageCommand}" x:Name="SecretPassageSW_Button" Margin="0 305 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Foreground="White" BorderBrush="#FFABADB3" Background="#FF646464" FontSize="7">
                                     <Button.Content>
                                         <TextBlock TextWrapping="Wrap" Text="Secret Passage"/>
                                     </Button.Content>
@@ -121,12 +121,12 @@
 
                             <!-- Column 7 of Game Board -->
                             <StackPanel Grid.Column="6" MinHeight="335">
-                                <Button Command="{Binding LoungeSecretPassageCommand}" x:Name="SecretPassageNE_Button" Click="SecretPassageNE_Button_Click" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="#FF646464" BorderBrush="#FFABADB3" Foreground="White" FontSize="7" >
+                                <Button Command="{Binding LoungeSecretPassageCommand}" x:Name="SecretPassageNE_Button" Margin="0 0 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Background="#FF646464" BorderBrush="#FFABADB3" Foreground="White" FontSize="7" >
                                     <Button.Content>
                                         <TextBlock TextWrapping="Wrap" Text="Secret Passage"/>
                                     </Button.Content>
                                 </Button>
-                                <Button Command="{Binding KitchenSecretPassageCommand}" x:Name="SecretPassageSE_Button" Click="SecretPassageSE_Button_Click" Margin="0 305 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Foreground="White" BorderBrush="#FFABADB3" Background="#FF646464" FontSize="7" >
+                                <Button Command="{Binding KitchenSecretPassageCommand}" x:Name="SecretPassageSE_Button" Margin="0 305 0 0" FontFamily="Broadway" VerticalContentAlignment="Center" MinHeight="25" Foreground="White" BorderBrush="#FFABADB3" Background="#FF646464" FontSize="7" >
                                     <Button.Content>
                                         <TextBlock TextWrapping="Wrap" Text="Secret Passage"/>
                                     </Button.Content>
@@ -429,13 +429,14 @@
             <!-- Accuse, Move, Suggest Main Grid -->
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="14*" />
-                    <ColumnDefinition Width="6*" />
+                    <ColumnDefinition Width="106*" />
+                    <ColumnDefinition Width="747*" />
+                    <ColumnDefinition Width="52*" />
+                    <ColumnDefinition Width="268*"/>
                 </Grid.ColumnDefinitions>
 
                 <!-- Accuse, Move, Suggest Sub Grid -->
-                <Border Grid.Column="1" BorderBrush="#fff" BorderThickness="1" Padding="1" Background="White">
+                <Border BorderBrush="#fff" BorderThickness="1" Padding="1" Background="White" Grid.ColumnSpan="3" Margin="106,0,51.2,-0.2">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -459,22 +460,22 @@
                                 <!-- Accusation Suspects Title and Dropdown Box-->
                                 <StackPanel Grid.Column="0">
                                     <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=AccusePeopleStrings}" SelectedValue="{Binding Path=AccusePerson}" SelectionChanged="AccuseSuspect_Dropdown_SelectionChanged" x:Name="AccuseSuspect_Dropdown" SelectedIndex="0" Padding="2">
+                                    <ComboBox ItemsSource="{Binding Path=AccusePeopleStrings}" SelectedValue="{Binding Path=AccusePerson}" x:Name="AccuseSuspect_Dropdown" SelectedIndex="0" Padding="2">
                                     </ComboBox>
                                 </StackPanel>
 
                                 <!-- Accusation Button & Weapon Dropdown Box -->
                                 <StackPanel Grid.Column="1">
-                                    <Button Command="{Binding MakeAccusationCommand}" x:Name="Accuse_Button" Click="Accuse_Button_Click" Content="ACCUSE" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding MakeAccusationCommand}" x:Name="Accuse_Button" Content="ACCUSE" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                     <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=AccuseWeaponStrings}" SelectedValue="{Binding Path=AccuseWeapon}" SelectionChanged="AccuseWeapon_Dropdown_SelectionChanged" x:Name="AccuseWeapon_Dropdown" SelectedIndex="0" Padding="2" >
+                                    <ComboBox ItemsSource="{Binding Path=AccuseWeaponStrings}" SelectedValue="{Binding Path=AccuseWeapon}" x:Name="AccuseWeapon_Dropdown" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
                                 </StackPanel>
 
                                 <!-- Accusation Room Title and Dropdown Box -->
                                 <StackPanel Grid.Column="3">
                                     <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=AccuseRoomStrings}" SelectedValue="{Binding Path=AccuseRoom}" SelectionChanged="AccuseRoom_Dropdown_SelectionChanged" x:Name="AccuseRoom_Dropdown" SelectedIndex="0" Padding="2" >
+                                    <ComboBox ItemsSource="{Binding Path=AccuseRoomStrings}" SelectedValue="{Binding Path=AccuseRoom}" x:Name="AccuseRoom_Dropdown" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
 
                                 </StackPanel>
@@ -496,18 +497,18 @@
 
                                 <!-- Move Left Button -->
                                 <StackPanel Grid.Column="0">
-                                    <Button Command="{Binding MoveLeftCommand}" x:Name="MoveLeft_Button" Click="MoveLeft_Button_Click" Content="LEFT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding MoveLeftCommand}" x:Name="MoveLeft_Button" Content="LEFT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                 </StackPanel>
 
                                 <!-- Move Up & Move Down Buttons -->
                                 <StackPanel Grid.Column="1">
-                                    <Button Command="{Binding MoveUpCommand}" x:Name="MoveUp_Button" Click="MoveUp_Button_Click" Content="UP" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                    <Button Command="{Binding MoveDownCommand}" x:Name="MoveDown_Button" Click="MoveDown_Button_Click" Content="DOWN" Margin="5 30 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding MoveUpCommand}" x:Name="MoveUp_Button" Content="UP" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding MoveDownCommand}" x:Name="MoveDown_Button" Content="DOWN" Margin="5 30 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                 </StackPanel>
 
                                 <!-- Move Right Button -->
                                 <StackPanel Grid.Column="3">
-                                    <Button Command="{Binding MoveRightCommand}" x:Name="MoveRight_Button" Click="MoveRight_Button_Click" Content="RIGHT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding MoveRightCommand}" x:Name="MoveRight_Button" Content="RIGHT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>
@@ -528,23 +529,24 @@
                                 <!-- Suggestion Suspects Title and Dropdown Box-->
                                 <StackPanel Grid.Column="0">
                                     <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=SuggestPeopleStrings}" SelectedValue="{Binding Path=SuggestionPerson}" x:Name="SuggestSuspect_Dropdown" SelectionChanged="SuggestSuspect_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2">
+                                    <ComboBox ItemsSource="{Binding Path=SuggestPeopleStrings}" SelectedValue="{Binding Path=SuggestionPerson}" x:Name="SuggestSuspect_Dropdown" SelectedIndex="0" Padding="2">
                                     </ComboBox>
                                 </StackPanel>
 
                                 <!-- Suggestion Button & Weapon Dropdown Box -->
                                 <StackPanel Grid.Column="1">
-                                    <Button Command="{Binding MakeSuggestionCommand}" x:Name="Suggest_Button" Click="Suggest_Button_Click" Content="SUGGEST" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding MakeSuggestionCommand}" x:Name="Suggest_Button" Content="SUGGEST" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                     <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=SuggestWeaponStrings}" SelectedValue="{Binding Path=SuggestionWeapon}" x:Name="SuggestWeapon_Dropdown" SelectionChanged="SuggestWeapon_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2" >
+                                    <ComboBox ItemsSource="{Binding Path=SuggestWeaponStrings}" SelectedValue="{Binding Path=SuggestionWeapon}" x:Name="SuggestWeapon_Dropdown" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
                                 </StackPanel>
 
                                 <!-- Suggestion Room Title and Dropdown Box -->
                                 <StackPanel Grid.Column="3">
                                     <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=SuggestRoomStrings}" SelectedValue="{Binding Path=SuggestionRoom}" x:Name="SuggestRoom_Dropdown" SelectionChanged="SuggestRoom_Dropdown_SelectionChanged" SelectedIndex="0" Padding="2" >
+                                    <ComboBox ItemsSource="{Binding Path=SuggestRoomStrings}" SelectedValue="{Binding Path=SuggestionRoom}" x:Name="SuggestRoom_Dropdown" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
+                                    <Button Command="{Binding JoinGameCommand}" x:Name="JoinGame" Content="JOIN" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>

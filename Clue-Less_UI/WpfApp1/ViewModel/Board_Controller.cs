@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows;
 
 namespace WpfApp1.ViewModel
 {
     class Board_Controller : ObservableObject
     {
-        //This should probably be somewhere else
+        //These enums might make sense beingn defined elsewhere
         public enum Person { Scarlet, Mustard, Plum, Peacock, Green, White, None};
         public enum Room { Study, Hall, Lounge, Library, Billiard, Dining, Conservatory, Ballroom, Kitchen,
             StudyHall_Hallway, HallLounge_Hallway, StudyLibrary_Hallway, HallBilliardRoom_Hallway,
@@ -20,6 +21,19 @@ namespace WpfApp1.ViewModel
 
         public enum Weapon { Candlestick, Knife, Rope, Revolver, LeadPipe, Wrench, None};
 
+        public struct PersonLocation
+        {
+            public Person person;
+            public Room room;
+            public PersonLocation(Person p, Room r)
+            {
+                person = p;
+                room = r;
+            }
+
+        }
+
+        //Room contents
         public ObservableCollection<string> StudyOccupants { get; set; }
         public ObservableCollection<string> HallOccupants { get; set; }
         public ObservableCollection<string> LoungeOccupants { get; set; }
@@ -30,6 +44,7 @@ namespace WpfApp1.ViewModel
         public ObservableCollection<string> BallroomOccupants { get; set; }
         public ObservableCollection<string> KitchenOccupants { get; set; }
 
+        //Hallway Contents
         public ObservableCollection<string> StudyHall_HallwayOccupant { get; set; }
         public ObservableCollection<string> HallLounge_HallwayOccupant { get; set; }
         public ObservableCollection<string> StudyLibrary_HallwayOccupant { get; set; }
@@ -43,7 +58,7 @@ namespace WpfApp1.ViewModel
         public ObservableCollection<string> ConservatoryBallroom_HallwayOccupant { get; set; }
         public ObservableCollection<string> BallroomKitchen_HallwayOccupant { get; set; }
 
-
+        //Suggest/Accuse Contents
         public ObservableCollection<string> SuggestPeopleStrings { get; set; }
         public ObservableCollection<string> SuggestRoomStrings { get; set; }
         public ObservableCollection<string> SuggestWeaponStrings { get; set; }
@@ -57,7 +72,13 @@ namespace WpfApp1.ViewModel
         public string AccuseRoom { get; set; }
         public string AccuseWeapon { get; set; }
 
+        public ObservableCollection<string> MyCards { get; set; }
+
         public Dictionary<Room, ObservableCollection<string>> RoomContents { get; set; }
+
+        //Test Client used to try things out
+        //Should be replaced once we have a real client
+        TestClient client = new TestClient();
 
         //Just using this as a testing ground for now.
         //Eventually the Client should control this class and use MovePerson etc.
@@ -138,6 +159,8 @@ namespace WpfApp1.ViewModel
             SuggestRoomStrings.Add("Ballroom");
             SuggestRoomStrings.Add("Kitchen");
 
+            MyCards = new ObservableCollection<string>();
+
             RoomContents = new Dictionary<Room, ObservableCollection<string>>()
             {
                 { Room.Study, StudyOccupants },
@@ -162,38 +185,58 @@ namespace WpfApp1.ViewModel
                 { Room.ConservatoryBallroom_Hallway, ConservatoryBallroom_HallwayOccupant },
                 { Room.BallroomKitchen_Hallway, BallroomKitchen_HallwayOccupant }
             };
-            
-
-            AddPersonToRoom(Person.Scarlet, Room.Billiard);
-            AddPersonToRoom(Person.Mustard, Room.Billiard);
-            AddPersonToRoom(Person.Peacock, Room.Billiard);
-            AddPersonToRoom(Person.Plum, Room.Billiard);
-            AddPersonToRoom(Person.White, Room.Study);
-            AddPersonToRoom(Person.Green, Room.Study);
-            AddPersonToRoom(Person.Peacock, Room.Conservatory);
-            AddPersonToRoom(Person.Mustard, Room.Kitchen);
-            AddPersonToRoom(Person.White, Room.Lounge);
-            AddPersonToRoom(Person.Green, Room.Lounge);
-         
-            MovePerson(Person.Scarlet, Room.Study, Room.Hall);
         }
 
-        public void MovePerson(Person person, Room fromHere, Room toHere)
+        void MovePerson(Person person, Room fromHere, Room toHere)
         {
-            RemovePersonFromRoom(person, fromHere);
-            AddPersonToRoom(person, toHere);
+            if(RemovePersonFromRoom(person, fromHere))
+            {
+                AddPersonToRoom(person, toHere);
+            }
+            else
+            {
+                //Can't move someone from one room to another room if they aren't in the room they're coming from!
+                MessageBox.Show($"Move Command Failed: " + person.ToString() + " was not in the "+ fromHere);
+            }
         }
 
-        void RemovePersonFromRoom(Person person, Room room)
+        bool RemovePersonFromRoom(Person person, Room room)
         {
+            bool success = false;
             if (RoomContents[room].Contains(person.ToString()))
+            {
+                success = true;
                 RoomContents[room].Remove(person.ToString());
+            }
+            return success;
         }
 
-        void AddPersonToRoom(Person person, Room room)
+        bool AddPersonToRoom(Person person, Room room)
         {
-            if(!RoomContents[room].Contains(person.ToString()))
+            bool success = false;
+            if (!RoomContents[room].Contains(person.ToString()))
+            {
+                success = true;
                 RoomContents[room].Add(person.ToString());
+            }
+            else
+            {
+                MessageBox.Show($"Add Person to Room Command Failed: " + person.ToString() + " was already in the " + room);
+            }
+            return success;
+        }
+
+        void AddCardToHand(string card)
+        {
+            if (!MyCards.Contains(card))
+            {
+                MyCards.Add(card);
+            }
+            else
+            {
+                //Can't place 2 of the same card in your hand
+                MessageBox.Show($"Add Card Command Failed: " + card + " was already in your hand ");
+            }
         }
 
         Person ConvertStringToPerson(string personName)
@@ -264,26 +307,15 @@ namespace WpfApp1.ViewModel
                     return Room.None;
             }
         }
-
-        //Test Client Functions
-        TestClient client = new TestClient();
-
-        public ICommand MoveUpCommand
-        {
-            get { return new DelegateCommand(MoveUp); }
-        }
-
+        
+        //Start of the functions usd to interact with the GUI
+        //Insert client/game functions into these
         private void MoveUp()
         {
             //insert game logic to determine how to use this function
             //MovePerson(Person person, Room fromHere, Room toHere)
             //pass call to client as well
             MovePerson(Person.Scarlet, Room.Billiard, Room.HallBilliardRoom_Hallway);
-        }
-
-        public ICommand MoveDownCommand
-        {
-            get { return new DelegateCommand(MoveDown); }
         }
 
         private void MoveDown()
@@ -294,22 +326,12 @@ namespace WpfApp1.ViewModel
             MovePerson(Person.Plum, Room.Billiard, Room.BilliardRoomBallroom_Hallway);
         }
 
-        public ICommand MoveLeftCommand
-        {
-            get { return new DelegateCommand(MoveLeft); }
-        }
-
         private void MoveLeft()
         {
             //insert game logic to determine how to use this function
             //MovePerson(Person person, Room fromHere, Room toHere)
             //pass call to client as well
             MovePerson(Person.Mustard, Room.Billiard, Room.LibraryBilliardRoom_Hallway);
-        }
-
-        public ICommand MoveRightCommand
-        {
-            get { return new DelegateCommand(MoveRight); }
         }
 
         private void MoveRight()
@@ -320,22 +342,12 @@ namespace WpfApp1.ViewModel
             MovePerson(Person.Peacock, Room.Billiard, Room.BilliardRoomDiningRoom_Hallway);
         }
 
-        public ICommand LoungeSecretPassageCommand
-        {
-            get { return new DelegateCommand(ActivateLoungeSecretPassage); }
-        }
-
         private void ActivateLoungeSecretPassage()
         {
             //insert game logic to determine how to use this function
             //MovePerson(Person person, Room fromHere, Room toHere)
             //pass call to client as well
             MovePerson(Person.White, Room.Lounge, Room.Conservatory);
-        }
-
-        public ICommand ConservatorySecretPassageCommand
-        {
-            get { return new DelegateCommand(ActivateConservatorySecretPassage); }
         }
 
         private void ActivateConservatorySecretPassage()
@@ -346,11 +358,6 @@ namespace WpfApp1.ViewModel
             MovePerson(Person.Peacock, Room.Conservatory, Room.Lounge);
         }
 
-        public ICommand KitchenSecretPassageCommand
-        {
-            get { return new DelegateCommand(ActivateKitchenSecretPassage); }
-        }
-
         private void ActivateKitchenSecretPassage()
         {
             //insert game logic to determine how to use this function
@@ -359,10 +366,6 @@ namespace WpfApp1.ViewModel
             MovePerson(Person.Mustard, Room.Kitchen, Room.Study);
         }
 
-        public ICommand StudySecretPassageCommand
-        {
-            get { return new DelegateCommand(ActivateStudySecretPassage); }
-        }
 
         private void ActivateStudySecretPassage()
         {
@@ -372,11 +375,6 @@ namespace WpfApp1.ViewModel
             MovePerson(Person.White, Room.Study, Room.Kitchen);
         }
 
-        public ICommand MakeSuggestionCommand
-        {
-            get { return new DelegateCommand(MakeSuggestion); }
-        }
-       
         private void MakeSuggestion()
         {
             //insert game logic to determine how to use this function
@@ -386,11 +384,8 @@ namespace WpfApp1.ViewModel
             bool success = client.MakeSuggestion(ConvertStringToPerson(SuggestionPerson), 
                                                 ConvertStringToRoom(SuggestionRoom), 
                                                 ConvertStringToWeapon(SuggestionWeapon));
-        }
 
-        public ICommand MakeAccusationCommand
-        {
-            get { return new DelegateCommand(MakeAccusation); }
+            MessageBox.Show($"You have suggested that " + SuggestionPerson + " killed the victim using the " + SuggestionWeapon + " in the " + SuggestionRoom);
         }
 
         private void MakeAccusation()
@@ -402,8 +397,81 @@ namespace WpfApp1.ViewModel
             bool success = client.MakeAccusation(ConvertStringToPerson(AccusePerson),
                                                 ConvertStringToRoom(AccuseRoom),
                                                 ConvertStringToWeapon(AccuseWeapon));
+            MessageBox.Show($"You have accused " + AccusePerson + " of killing the victim using the " + AccuseWeapon + " in the " + AccuseRoom);
         }
-        //End Test Code
+        private void JoinGame()
+        {
+            //insert game logic to determine how to use this function
+            //May use this to join a server and get the board state etc.
+            List<string> cards = client.GetCards();
+            foreach(string card in cards)
+            {
+                AddCardToHand(card);
+            }
 
+            List<Board_Controller.PersonLocation> boardState = client.GetBoardState();
+
+            foreach (Board_Controller.PersonLocation p in boardState)
+            {
+                AddPersonToRoom(p.person, p.room);
+            }
+        }
+        // End of the functions used to interact
+        
+        //Start of the list of commands used to bind to objects in GUI
+        public ICommand MoveUpCommand
+        {
+            get { return new DelegateCommand(MoveUp); }
+        }
+
+        public ICommand MoveDownCommand
+        {
+            get { return new DelegateCommand(MoveDown); }
+        }
+
+        public ICommand MoveLeftCommand
+        {
+            get { return new DelegateCommand(MoveLeft); }
+        }
+
+        public ICommand MoveRightCommand
+        {
+            get { return new DelegateCommand(MoveRight); }
+        }
+
+        public ICommand LoungeSecretPassageCommand
+        {
+            get { return new DelegateCommand(ActivateLoungeSecretPassage); }
+        }
+        public ICommand ConservatorySecretPassageCommand
+        {
+            get { return new DelegateCommand(ActivateConservatorySecretPassage); }
+        }
+
+        public ICommand KitchenSecretPassageCommand
+        {
+            get { return new DelegateCommand(ActivateKitchenSecretPassage); }
+        }
+
+        public ICommand StudySecretPassageCommand
+        {
+            get { return new DelegateCommand(ActivateStudySecretPassage); }
+        }
+
+        public ICommand MakeSuggestionCommand
+        {
+            get { return new DelegateCommand(MakeSuggestion); }
+        }
+
+        public ICommand MakeAccusationCommand
+        {
+            get { return new DelegateCommand(MakeAccusation); }
+        }
+
+        public ICommand JoinGameCommand
+        {
+            get { return new DelegateCommand(JoinGame); }
+        }
+        //End of command list
     }
 }

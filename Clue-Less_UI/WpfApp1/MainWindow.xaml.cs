@@ -20,6 +20,7 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        /*
         string AccusationSuspect_String = "";
         string AccusationWeapon_String = "";
         string AccusationRoom_String = "";
@@ -27,12 +28,12 @@ namespace WpfApp1
         string SuggestionSuspect_String = "";
         string SuggestionWeapon_String = "";
         string SuggestionRoom_String = "";
-
+        */
         public MainWindow()
         {
             InitializeComponent();
         }
-
+        /*
         private void SecretPassageNW_Button_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show($"This is the NorthWest Secret Passage Button");
@@ -111,6 +112,6 @@ namespace WpfApp1
         private void Suggest_Button_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show($"You have suggested that " + SuggestionSuspect_String + " killed the victim using the " + SuggestionWeapon_String + " in the " + SuggestionRoom_String);
-        }
+        }*/
     }
 }
