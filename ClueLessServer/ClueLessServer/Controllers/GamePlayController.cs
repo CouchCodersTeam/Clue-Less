@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClueLessClient.Model.Game;
+using ClueLessServer.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -18,19 +20,24 @@ namespace ClueLessServer.Controllers
         // [Authorize]
         public IHttpActionResult GetPlayerCards()
         {
-            AuthResult auth = authorizePlayerAndGame();
+            AuthResult auth = authorizeAndVerifyGameStart();
             if (auth.result != null)
                 return auth.result;
 
+            var game = auth.game.getGame();
+            var playerModel = auth.player;
+
+            var cards = game.getPlayerHand(playerModel.asPlayer());
+
             // Return the calling player's cards
-            return NotFound();
+            return Ok(new CardListModel(cards));
         }
 
         [Route("charaters")]
         [HttpGet]
         public IHttpActionResult GetAvailableCharacters()
         {
-            AuthResult auth = authorizePlayerAndGame();
+            AuthResult auth = authorizeAndVerifyGameStart();
             if (auth.result != null)
                 return auth.result;
 
@@ -41,7 +48,7 @@ namespace ClueLessServer.Controllers
         [HttpPost]
         public IHttpActionResult ChooseCharacter(string characterName)
         {
-            AuthResult auth = authorizePlayerAndGame();
+            AuthResult auth = authorizeAndVerifyGameStart();
             if (auth.result != null)
                 return auth.result;
 

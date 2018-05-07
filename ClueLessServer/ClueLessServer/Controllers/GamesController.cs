@@ -73,7 +73,7 @@ namespace ClueLessServer.Controllers
         // This API can only be called by the host player
         public IHttpActionResult StartGame(long id)
         {
-            AuthResult auth = authorizePlayerAndGame(id);
+            AuthResult auth = authorizePlayerMatchesGame(id);
 
             if (auth.result != null)
                 return auth.result;
@@ -101,7 +101,7 @@ namespace ClueLessServer.Controllers
         [HttpGet]
         public IHttpActionResult WaitForGame(long id)
         {
-            AuthResult auth = authorizePlayerAndGame(id);
+            AuthResult auth = authorizePlayerMatchesGame(id);
 
             if (auth.result != null)
                 return auth.result;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClueLessClient.Model.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,11 @@ namespace ClueLessServer.Models
         public PlayerModel(string name)
         {
             Name = name;
+        }
+
+        public Player asPlayer()
+        {
+            return new Player(Name);
         }
 
         public override bool Equals(object obj)

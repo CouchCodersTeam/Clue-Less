@@ -79,6 +79,17 @@ namespace ClueLessServer.Controllers
             return authorizeGame(gameId).merge(authorizePlayer());
         }
 
+        protected AuthResult authorizePlayerMatchesGame()
+        {
+            AuthResult result = new AuthResult();
+            var game = GetGameFromHeaders();
+            if (game == null)
+                result.result = NotFound();
+            else
+                result = authorizePlayerMatchesGame(game.Id);
+            return result;
+        }
+
         protected AuthResult authorizePlayerMatchesGame(long gameId)
         {
             AuthResult auth = authorizePlayerAndGame(gameId);
@@ -90,6 +101,22 @@ namespace ClueLessServer.Controllers
             }
             return auth;
         }
+
+        protected AuthResult authorizeAndVerifyGameStart()
+        {
+            AuthResult auth = authorizePlayerMatchesGame();
+            if (auth.result != null)
+                return auth;
+
+            if (!auth.game.isStarted)
+            {
+                auth.player = null;
+                auth.game = null;
+                auth.result = BadRequest("Game has not started yet");
+            }
+            return auth;
+        }
+
 
         private GameModel GetActiveGame(long gameId)
         {

@@ -19,6 +19,7 @@ namespace ClueLessServer.Models
         private List<PlayerModel> players; // TODO: this could be added to Game object
 
         public bool isStarted { get; }
+        public bool isEnded { get; }
 
         public GameModel(string hostname)
         {
@@ -53,6 +54,11 @@ namespace ClueLessServer.Models
         public bool start()
         {
             return false;
+        }
+        
+        public Game getGame()
+        {
+            return game;
         }
     }
 }

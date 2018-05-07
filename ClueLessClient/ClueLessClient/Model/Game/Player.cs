@@ -8,13 +8,11 @@ namespace ClueLessClient.Model.Game
 {
     public class Player
     {
-        public character()
+        private string name;
+
+        public Player(string playerName)
         {
-            string characterName = "";
-            Console.WriteLine("Enter Character name:");
-            characterName = Console.ReadLine();
-
+            name = playerName;
         }
-
     }
 }
