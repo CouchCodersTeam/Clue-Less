@@ -68,6 +68,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Game\Accusation.cs" />
     <Compile Include="Model\Game\Board.cs" />
     <Compile Include="Model\Game\Card.cs" />
     <Compile Include="Model\Game\Game.cs" />

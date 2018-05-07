@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClueLessClient.Model.Game
 {
-    class Player
+    public class Player
     {
         public character()
         {
