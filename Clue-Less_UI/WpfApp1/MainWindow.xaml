@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:viewmodel="clr-namespace:WpfApp1.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1200"
+        Title="MainWindow" Height="608.4" Width="1200"
         DataContext="{DynamicResource Board_Controller}">
     <Window.Resources>
         <viewmodel:Board_Controller x:Key="Board_Controller"/>
@@ -530,6 +530,9 @@
                                 <StackPanel Grid.Column="0">
                                     <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
                                     <ComboBox ItemsSource="{Binding Path=SuggestPeopleStrings}" SelectedValue="{Binding Path=SuggestionPerson}" x:Name="SuggestSuspect_Dropdown" SelectedIndex="0" Padding="2">
+                                    </ComboBox>
+                                    <Button Command="{Binding DisproveSuggestionCommand}" IsEnabled="{Binding Path=DisproveEnabled}" x:Name="Disprove" Content="DISPROVE" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <ComboBox ItemsSource="{Binding Path=MyCards}" IsEnabled="{Binding Path= DisproveEnabled}" SelectedValue="{Binding Path=DisproveCard}" x:Name="DisproveSuggestion_Dropdown" Margin="0 0 0 0" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
                                 </StackPanel>
 

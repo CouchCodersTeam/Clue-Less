@@ -94,7 +94,7 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
-        //As player to disprove suggestion
+        //Ask player to disprove suggestion
         public void DisproveSuggestion()
         {
 
@@ -103,6 +103,19 @@ namespace WpfApp1.ViewModel
                                                                   Board_Controller.Room.Study,
                                                                   Board_Controller.Weapon.Knife);
             SuggestionEvent(this, args);
+        }
+
+        public void WaitForDisproveInfo()
+        {
+            //some logic to wait till the UI submits disproval data?
+        }
+
+        public bool ReceiveDisproval(string card)
+        {
+            //no smarts here, waiting for real code to decide if it was a success
+            bool success = false;
+
+            return success;
         }
 
         //Player makes a suggestion

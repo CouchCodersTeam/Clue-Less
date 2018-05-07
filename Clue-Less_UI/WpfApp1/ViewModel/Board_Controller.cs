@@ -73,6 +73,9 @@ namespace WpfApp1.ViewModel
 
         public ObservableCollection<string> MyCards { get; set; }
 
+        public string DisproveCard { get; set; }
+        public bool DisproveEnabled { get; set; }
+
         public Dictionary<Room, ObservableCollection<string>> RoomContents { get; set; }
 
         //Test Client used to try things out
@@ -159,6 +162,8 @@ namespace WpfApp1.ViewModel
             SuggestRoomStrings.Add("Kitchen");
 
             MyCards = new ObservableCollection<string>();
+
+            DisproveEnabled = false;
 
             RoomContents = new Dictionary<Room, ObservableCollection<string>>()
             {
@@ -394,6 +399,7 @@ namespace WpfApp1.ViewModel
                 AddPersonToRoom(p.person, p.room);
             }
 
+            //Testing this functionality
             client.DisproveSuggestion();
         }
         // End of the functions used to interact
@@ -417,12 +423,31 @@ namespace WpfApp1.ViewModel
                                                     "Suggestion Received", MessageBoxButton.YesNo);
              if (result == MessageBoxResult.Yes)
              {
-                 //make them disprove it
+                client.WaitForDisproveInfo();
+                DisproveEnabled = true;
+                RaisePropertyChangedEvent("DisproveEnabled");
              }
-             else if (result == MessageBoxResult.No)
-             {
-                 //do nothing?
-             }
+            else
+            {
+                DisproveEnabled = false;
+                RaisePropertyChangedEvent("DisproveEnabled");
+            }
+        }
+
+        void DisproveSuggestion()
+        {
+            bool success = client.ReceiveDisproval(DisproveCard);
+
+            if (success)
+            {
+                MessageBox.Show("Suggestion successfully disproven.");
+            }
+            else
+            {
+                MessageBox.Show("Failed to disprove suggestion");
+            }
+            DisproveEnabled = false;
+            RaisePropertyChangedEvent("DisproveEnabled");
         }
 
         //Start of the list of commands used to bind to objects in GUI
@@ -478,6 +503,11 @@ namespace WpfApp1.ViewModel
         public ICommand JoinGameCommand
         {
             get { return new DelegateCommand(JoinGame); }
+        }
+
+        public ICommand DisproveSuggestionCommand
+        {
+            get { return new DelegateCommand(DisproveSuggestion); }
         }
         //End of command list
     }
