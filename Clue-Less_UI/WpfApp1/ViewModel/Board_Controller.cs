@@ -21,6 +21,7 @@ namespace WpfApp1.ViewModel
 
         public enum Weapon { Candlestick, Knife, Rope, Revolver, LeadPipe, Wrench, None};
 
+        //Used when receiving info on where people are located from the client
         public struct PersonLocation
         {
             public Person person;
@@ -82,8 +83,7 @@ namespace WpfApp1.ViewModel
         //Should be replaced once we have a real client
         TestClient client = new TestClient();
 
-        //Just using this as a testing ground for now.
-        //Eventually the Client should control this class and use MovePerson etc.
+        //Initialize all variables and set up the starting UI state
         public Board_Controller()
         {
             StudyOccupants = new ObservableCollection<string>();
@@ -194,6 +194,7 @@ namespace WpfApp1.ViewModel
             client.SuggestionEvent += this.HandleDisprovingSuggestionEvent;
         }
 
+        //Moves a person from one location to another location
         void MovePerson(Person person, Room fromHere, Room toHere)
         {
             if(RemovePersonFromRoom(person, fromHere))
@@ -207,6 +208,7 @@ namespace WpfApp1.ViewModel
             }
         }
 
+        //Remove a person from a room
         bool RemovePersonFromRoom(Person person, Room room)
         {
             bool success = false;
@@ -218,6 +220,7 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+        //Adds a person to a room if they weren't already in that roo
         bool AddPersonToRoom(Person person, Room room)
         {
             bool success = false;
@@ -233,6 +236,7 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+        //Used to build up a hand of cards
         void AddCardToHand(string card)
         {
             if (!MyCards.Contains(card))
@@ -243,75 +247,6 @@ namespace WpfApp1.ViewModel
             {
                 //Can't place 2 of the same card in your hand
                 MessageBox.Show($"Add Card Command Failed: " + card + " was already in your hand ");
-            }
-        }
-
-        Person ConvertStringToPerson(string personName)
-        {
-            switch (personName)
-            {
-                case "Miss Scarlet":
-                    return Person.Scarlet;
-                case "Col Mustard":
-                    return Person.Mustard;
-                case "Mrs White":
-                    return Person.White;
-                case "Mr Green":
-                    return Person.Green;
-                case "Mrs Peacock":
-                    return Person.Peacock;
-                case "Prof Plum":
-                    return Person.Plum;
-                default:
-                    return Person.None; //should trigger an error if this comes out...
-            }
-        }
-
-        Weapon ConvertStringToWeapon(string weaponName)
-        {
-            switch (weaponName)
-            {
-                case "Candlestick":
-                    return Weapon.Candlestick;
-                case "Knife":
-                    return Weapon.Knife;
-                case "Rope":
-                    return Weapon.Rope;
-                case "Revolver":
-                    return Weapon.Revolver;
-                case "Lead Pipe":
-                    return Weapon.LeadPipe;
-                case "Wrench":
-                    return Weapon.Wrench;
-                default:
-                    return Weapon.None; //should trigger an error if this comes out...
-            }
-        }
-
-        Room ConvertStringToRoom(string roomName)
-        {
-            switch(roomName)
-            {
-                case "Study":
-                    return Room.Study;
-                case "Hall":
-                    return Room.Hall;
-                case "Lounge":
-                    return Room.Lounge;
-                case "Library":
-                    return Room.Library;
-                case "Billiard Room":
-                    return Room.Billiard;
-                case "Dining Room":
-                    return Room.Dining;
-                case "Conservatory":
-                    return Room.Conservatory;
-                case "Ballroom":
-                    return Room.Ballroom;
-                case "Kitchen":
-                    return Room.Kitchen;
-                default:
-                    return Room.None;
             }
         }
         
@@ -360,10 +295,6 @@ namespace WpfApp1.ViewModel
 
         private void MakeSuggestion()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-
             bool success = client.MakeSuggestion(ConvertStringToPerson(SuggestionPerson), 
                                                 ConvertStringToRoom(SuggestionRoom), 
                                                 ConvertStringToWeapon(SuggestionWeapon));
@@ -373,19 +304,16 @@ namespace WpfApp1.ViewModel
 
         private void MakeAccusation()
         {
-            //insert game logic to determine how to use this function
-            //MovePerson(Person person, Room fromHere, Room toHere)
-            //pass call to client as well
-
             bool success = client.MakeAccusation(ConvertStringToPerson(AccusePerson),
                                                 ConvertStringToRoom(AccuseRoom),
                                                 ConvertStringToWeapon(AccuseWeapon));
             MessageBox.Show($"You have accused " + AccusePerson + " of killing the victim using the " + AccuseWeapon + " in the " + AccuseRoom);
         }
+
+        //Initializes the game
+        //May add calls into the client to search/connect to a server
         private void JoinGame()
         {
-            //insert game logic to determine how to use this function
-            //May use this to join a server and get the board state etc.
             List<string> cards = client.GetCards();
             foreach(string card in cards)
             {
@@ -399,7 +327,7 @@ namespace WpfApp1.ViewModel
                 AddPersonToRoom(p.person, p.room);
             }
 
-            //Testing this functionality
+            //ToDo: Testing this functionality make sure to remove from final version
             client.DisproveSuggestion();
         }
         // End of the functions used to interact
@@ -421,7 +349,10 @@ namespace WpfApp1.ViewModel
                                                     " of killing the victim using the " + suggestionData.w + 
                                                     " in the " + suggestionData.r + ". Can you disprove this?", 
                                                     "Suggestion Received", MessageBoxButton.YesNo);
-             if (result == MessageBoxResult.Yes)
+            //If the user says they can disprove the suggestion, enable the disprove button and combobox
+            //Added a call to tell the client to stop what it's doing until it receives the disprove info
+            //May not be the best idea, but I'm open to suggestions
+            if (result == MessageBoxResult.Yes)
              {
                 client.WaitForDisproveInfo();
                 DisproveEnabled = true;
@@ -510,5 +441,83 @@ namespace WpfApp1.ViewModel
             get { return new DelegateCommand(DisproveSuggestion); }
         }
         //End of command list
+
+        //Switch from string to enum
+        //Needed this for some of my GUI -> Enum action
+        //Probably not ideal...
+        Person ConvertStringToPerson(string personName)
+        {
+            switch (personName)
+            {
+                case "Miss Scarlet":
+                    return Person.Scarlet;
+                case "Col Mustard":
+                    return Person.Mustard;
+                case "Mrs White":
+                    return Person.White;
+                case "Mr Green":
+                    return Person.Green;
+                case "Mrs Peacock":
+                    return Person.Peacock;
+                case "Prof Plum":
+                    return Person.Plum;
+                default:
+                    return Person.None; //should trigger an error if this comes out...
+            }
+        }
+
+        //Switch from string to enum
+        //Needed this for some of my GUI -> Enum action
+        //Probably not ideal...
+        Weapon ConvertStringToWeapon(string weaponName)
+        {
+            switch (weaponName)
+            {
+                case "Candlestick":
+                    return Weapon.Candlestick;
+                case "Knife":
+                    return Weapon.Knife;
+                case "Rope":
+                    return Weapon.Rope;
+                case "Revolver":
+                    return Weapon.Revolver;
+                case "Lead Pipe":
+                    return Weapon.LeadPipe;
+                case "Wrench":
+                    return Weapon.Wrench;
+                default:
+                    return Weapon.None; //should trigger an error if this comes out...
+            }
+        }
+
+        //Switch from string to enum
+        //Needed this for some of my GUI -> Enum action
+        //Probably not ideal...
+        Room ConvertStringToRoom(string roomName)
+        {
+            switch (roomName)
+            {
+                case "Study":
+                    return Room.Study;
+                case "Hall":
+                    return Room.Hall;
+                case "Lounge":
+                    return Room.Lounge;
+                case "Library":
+                    return Room.Library;
+                case "Billiard Room":
+                    return Room.Billiard;
+                case "Dining Room":
+                    return Room.Dining;
+                case "Conservatory":
+                    return Room.Conservatory;
+                case "Ballroom":
+                    return Room.Ballroom;
+                case "Kitchen":
+                    return Room.Kitchen;
+                default:
+                    return Room.None;
+            }
+        }
     }
 }

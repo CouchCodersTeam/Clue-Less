@@ -10,9 +10,12 @@ namespace WpfApp1.ViewModel
     {
         public TestClient() { }
 
+        //These events can be packed and sent any time to invoke these actions on the UI
         public event EventHandler MoveEvent;
         public event EventHandler SuggestionEvent;
 
+        //Move Up command received from the GUI
+        //Should have logic to figure out where to move the main player this client is controlling
         public bool MoveUp()
         {
             bool success = true;
@@ -23,6 +26,8 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+        //Move Down command received from the GUI
+        //Should have logic to figure out where to move the main player this client is controlling
         public bool MoveDown()
         {
             bool success = true;
@@ -33,6 +38,8 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+        //Move Left command received from the GUI
+        //Should have logic to figure out where to move the main player this client is controlling
         public bool MoveLeft()
         {
             bool success = true;
@@ -43,6 +50,8 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+        //Move Right command received from the GUI
+        //Should have logic to figure out where to move the main player this client is controlling
         public bool MoveRight()
         {
             bool success = true;
@@ -53,6 +62,9 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+
+        //This command initiates movement through the Lounge secret passageway
+        //Should have logic to pass back the move command with the main player for this client
         public bool ActivateLoungeSecretPassage()
         {
             bool success = true;
@@ -63,6 +75,8 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+        //This command initiates movement through the Conservatory secret passageway
+        //Should have logic to pass back the move command with the main player for this client
         public bool ActivateConservatorySecretPassage()
         {
             bool success = true;
@@ -73,6 +87,8 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+        //This command initiates movement through the Kitchen secret passageway
+        //Should have logic to pass back the move command with the main player for this client
         public bool ActivateKitchenSecretPassage()
         {
             bool success = true;
@@ -83,7 +99,8 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
-
+        //This command initiates movement through the Study secret passageway
+        //Should have logic to pass back the move command with the main player for this client
         public bool ActivateStudySecretPassage()
         {
             bool success = true;
@@ -94,7 +111,8 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
-        //Ask player to disprove suggestion
+        //Send an event to the UI in order to ask player to disprove suggestion
+        //The real client should have data coming in from the server that it populates this event with
         public void DisproveSuggestion()
         {
 
@@ -105,11 +123,15 @@ namespace WpfApp1.ViewModel
             SuggestionEvent(this, args);
         }
 
+        //If the user says they can disprove the suggestion I thought the client might 
+        //want to know so it can put the game on hold until it receives the disproval info
         public void WaitForDisproveInfo()
         {
             //some logic to wait till the UI submits disproval data?
         }
 
+        //Command coming from the UI with the card that the user thinks disproves the suggestion
+        //May want to add a pop-up on the UI side that says if it was successfull or not
         public bool ReceiveDisproval(string card)
         {
             //no smarts here, waiting for real code to decide if it was a success
@@ -118,14 +140,17 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
-        //Player makes a suggestion
+        //Command coming from the UI that triggers a suggestion
+        //I'm guessing this routes through the server to another client and turns into a DisprovesSuggestion() call
         public bool MakeSuggestion(Board_Controller.Person person, Board_Controller.Room room, Board_Controller.Weapon weapon)
         {
             bool success = true;
 
             return success;
         }
-
+        
+        //Command coming from the UI that triggers a suggestion
+        //ToDo: create something that tells the UI if the game is over and who won based on an accusation
         public bool MakeAccusation(Board_Controller.Person person, Board_Controller.Room room, Board_Controller.Weapon weapon)
         {
             bool success = true;
@@ -133,6 +158,8 @@ namespace WpfApp1.ViewModel
             return success;
         }
 
+        //Returns a hand of cards
+        //Real code probably randomly deals these
         public List<string> GetCards()
         {
             List<string> hand = new List<string>();
@@ -147,6 +174,8 @@ namespace WpfApp1.ViewModel
             return hand;
         }
 
+        //Returns the initial board state
+        //This code just puts palyers into opportune places on the board so I could test the buttons
         public List<Board_Controller.PersonLocation> GetBoardState()
         {
             List<Board_Controller.PersonLocation> peoplesLocations = new List<Board_Controller.PersonLocation>();
