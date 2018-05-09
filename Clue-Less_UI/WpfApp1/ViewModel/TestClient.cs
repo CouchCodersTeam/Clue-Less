@@ -8,11 +8,35 @@ namespace WpfApp1.ViewModel
 {
     class TestClient
     {
-        public TestClient() { }
-
         //These events can be packed and sent any time to invoke these actions on the UI
         public event EventHandler MoveEvent;
         public event EventHandler SuggestionEvent;
+        public event EventHandler AddGameEvent;
+        public event EventHandler RemoveGameEvent;
+        public event EventHandler RemoveAvailableCharacterEvent;
+
+        public TestClient()
+        {
+        }
+
+        //Just used for test purposes
+        public void SendTestEvents()
+        {
+            AddGame("Game1");
+            AddGame("Game2");
+            AddGame("Game3");
+
+            RemoveGame("Game2");
+        }
+
+        //Join the selected game with the provided credentials
+        //May want to add error handling in case the user or character name is taken
+        public bool JoinGame(string gameName, string charName, string userName)
+        {
+            bool success = true;
+
+            return success;
+        }
 
         //Move Up command received from the GUI
         //Should have logic to figure out where to move the main player this client is controlling
@@ -123,6 +147,25 @@ namespace WpfApp1.ViewModel
             SuggestionEvent(this, args);
         }
 
+        //Client tells UI which games are availlable;
+        public void AddGame(string gameName)
+        {
+            EventArgs arg = new EventArgStructures.StringVal(gameName);
+            AddGameEvent(this, arg);
+        }
+
+        public void RemoveGame(string gameName)
+        {
+            EventArgs arg = new EventArgStructures.StringVal(gameName);
+            RemoveGameEvent(this, arg);
+        }
+
+        public void RemoveAvailableCharacter(string charName)
+        {
+            EventArgs arg = new EventArgStructures.StringVal(charName);
+            RemoveAvailableCharacterEvent(this, arg);
+        }
+
         //If the user says they can disprove the suggestion I thought the client might 
         //want to know so it can put the game on hold until it receives the disproval info
         public void WaitForDisproveInfo()
@@ -156,6 +199,29 @@ namespace WpfApp1.ViewModel
             bool success = true;
 
             return success;
+        }
+
+        //Command that returns available characters for the selected game
+        public List<string> GetAvailableCharacters(string gameName)
+        {
+            List<string> availableCharacters = new List<string>();
+
+            if (gameName == "Game1")
+            {
+                availableCharacters.Add("Miss Scarlet");
+                availableCharacters.Add("Col Mustard");
+                availableCharacters.Add("Mrs White");
+                availableCharacters.Add("Mr Green");
+                availableCharacters.Add("Mrs Peacock");
+                availableCharacters.Add("Prof Plum");
+            }
+            else if(gameName == "Game3")
+            {
+                availableCharacters.Add("Mr Green");
+                availableCharacters.Add("Mrs Peacock");
+                availableCharacters.Add("Prof Plum");
+            }
+            return availableCharacters;
         }
 
         //Returns a hand of cards

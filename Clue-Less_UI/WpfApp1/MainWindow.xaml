@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:viewmodel="clr-namespace:WpfApp1.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="608.4" Width="1200"
+        Title="MainWindow" Height="650" Width="1200"
         DataContext="{DynamicResource Board_Controller}">
     <Window.Resources>
         <viewmodel:Board_Controller x:Key="Board_Controller"/>
@@ -436,9 +436,10 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Accuse, Move, Suggest Sub Grid -->
-                <Border BorderBrush="#fff" BorderThickness="1" Padding="1" Background="White" Grid.ColumnSpan="3" Margin="106,0,51.2,-0.2">
+                <Border BorderBrush="#fff" BorderThickness="1" Padding="1" Background="White" Grid.ColumnSpan="4" Margin="106,0,51.2,-0.2">
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
@@ -549,6 +550,30 @@
                                     <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
                                     <ComboBox ItemsSource="{Binding Path=SuggestRoomStrings}" SelectedValue="{Binding Path=SuggestionRoom}" x:Name="SuggestRoom_Dropdown" SelectedIndex="0" Padding="2" >
                                     </ComboBox>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                        <!-- JoinGame Stuff -->
+                        <StackPanel Grid.Column="4">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Suggestion Suspects Title and Dropdown Box-->
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Available Games" Margin="0 3" FontFamily="Broadway" FontSize="6" TextAlignment="Center" Foreground="Black"/>
+                                    <ListBox x:Name="AvailableGamesLB" ItemsSource="{Binding GameStrings}" SelectedItem="{Binding SelectedGame}" Height="75" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Available Characters" Margin="0 3" FontFamily="Broadway" FontSize="6" TextAlignment="Center" Foreground="Black"/>
+                                    <ListBox x:Name="AvailableCharactersLB" ItemsSource="{Binding PeopleStrings}"  SelectedItem="{Binding SelectedPerson}" Height="75" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="User Name" Margin="0 3" FontFamily="Broadway" FontSize="12" TextAlignment="Center" Foreground="Black"/>
+                                    <TextBox x:Name="UserNameTB" Text="{Binding UserName}" Height="23" TextWrapping="Wrap" Margin="5,0,0,0"/>
                                     <Button Command="{Binding JoinGameCommand}" x:Name="JoinGame" Content="JOIN" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                 </StackPanel>
                             </Grid>

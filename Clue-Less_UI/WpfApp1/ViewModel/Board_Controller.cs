@@ -12,14 +12,14 @@ namespace WpfApp1.ViewModel
     class Board_Controller : ObservableObject
     {
         //These enums might make more sense if defined elsewhere
-        public enum Person { Scarlet, Mustard, Plum, Peacock, Green, White, None};
+        public enum Person { Scarlet, Mustard, Plum, Peacock, Green, White, None };
         public enum Room { Study, Hall, Lounge, Library, Billiard, Dining, Conservatory, Ballroom, Kitchen,
             StudyHall_Hallway, HallLounge_Hallway, StudyLibrary_Hallway, HallBilliardRoom_Hallway,
             LoungeDiningRoom_Hallway, LibraryBilliardRoom_Hallway, BilliardRoomDiningRoom_Hallway,
             LibraryConservatory_Hallway, BilliardRoomBallroom_Hallway, DiningRoomKitchen_Hallway,
-            ConservatoryBallroom_Hallway, BallroomKitchen_Hallway, None}
+            ConservatoryBallroom_Hallway, BallroomKitchen_Hallway, None }
 
-        public enum Weapon { Candlestick, Knife, Rope, Revolver, LeadPipe, Wrench, None};
+        public enum Weapon { Candlestick, Knife, Rope, Revolver, LeadPipe, Wrench, None };
 
         //Used when receiving info on where people are located from the client
         public struct PersonLocation
@@ -32,6 +32,24 @@ namespace WpfApp1.ViewModel
                 room = r;
             }
         }
+
+        //JoinGame WPF Variables
+        public ObservableCollection<string> PeopleStrings { get; set; }
+        public ObservableCollection<string> GameStrings { get; set; }
+
+        private string _SelectedGame;
+        //Update the avaiable character list when the selected game changes
+        public string SelectedGame
+        {
+            get { return _SelectedGame; }
+            set
+            {
+                _SelectedGame = value;
+                SelectedGameChanged();
+            }
+        }
+        public string SelectedPerson;
+        public string UserName;
 
         //Room contents
         public ObservableCollection<string> StudyOccupants { get; set; }
@@ -108,6 +126,12 @@ namespace WpfApp1.ViewModel
             DiningRoomKitchen_HallwayOccupant = new ObservableCollection<string>();
             ConservatoryBallroom_HallwayOccupant = new ObservableCollection<string>();
             BallroomKitchen_HallwayOccupant = new ObservableCollection<string>();
+
+
+            PeopleStrings = new ObservableCollection<string>();
+            GameStrings = new ObservableCollection<string>();
+            UserName = "Type Name Here";
+            RaisePropertyChangedEvent("UserName");
 
             AccusePeopleStrings = new ObservableCollection<string>();
             AccusePeopleStrings.Add("Miss Scarlet");
@@ -192,6 +216,11 @@ namespace WpfApp1.ViewModel
 
             client.MoveEvent += this.HandleMoveEvent;
             client.SuggestionEvent += this.HandleDisprovingSuggestionEvent;
+            client.AddGameEvent += this.HandleAddGameEvent;
+            client.RemoveGameEvent += this.HandleRemoveGameEvent;
+            client.RemoveAvailableCharacterEvent += this.HandleRemoveAvailableCharacterEvent;
+
+            client.SendTestEvents();
         }
 
         //Moves a person from one location to another location
@@ -314,25 +343,52 @@ namespace WpfApp1.ViewModel
         //May add calls into the client to search/connect to a server
         private void JoinGame()
         {
-            List<string> cards = client.GetCards();
-            foreach(string card in cards)
+            if (client.JoinGame(SelectedGame, SelectedPerson, UserName))
             {
-                AddCardToHand(card);
+                List<string> cards = client.GetCards();
+                foreach (string card in cards)
+                {
+                    AddCardToHand(card);
+                }
+
+                List<Board_Controller.PersonLocation> boardState = client.GetBoardState();
+
+                foreach (Board_Controller.PersonLocation p in boardState)
+                {
+                    AddPersonToRoom(p.person, p.room);
+                }
+
+                //ToDo: Testing this functionality make sure to remove from final version
+                client.DisproveSuggestion();
             }
-
-            List<Board_Controller.PersonLocation> boardState = client.GetBoardState();
-
-            foreach (Board_Controller.PersonLocation p in boardState)
-            {
-                AddPersonToRoom(p.person, p.room);
-            }
-
-            //ToDo: Testing this functionality make sure to remove from final version
-            client.DisproveSuggestion();
         }
         // End of the functions used to interact
 
         //Start of the list of event handlers that take data from the client
+
+        //Start of the list of event handlers that take data from the client
+        void HandleAddGameEvent(object sender, EventArgs m)
+        {
+            EventArgStructures.StringVal input = (EventArgStructures.StringVal)m;
+            if (!GameStrings.Contains(input.val))
+                GameStrings.Add(input.val);
+        }
+
+        //Start of the list of event handlers that take data from the client
+        void HandleRemoveGameEvent(object sender, EventArgs m)
+        {
+            EventArgStructures.StringVal input = (EventArgStructures.StringVal)m;
+            if (GameStrings.Contains(input.val))
+                GameStrings.Remove(input.val);
+        }
+        //Start of the list of event handlers that take data from the client
+        void HandleRemoveAvailableCharacterEvent(object sender, EventArgs m)
+        {
+            EventArgStructures.StringVal input = (EventArgStructures.StringVal)m;
+            if (PeopleStrings.Contains(input.val))
+                PeopleStrings.Remove(input.val);
+        }
+
         void HandleMoveEvent(object sender, EventArgs m)
         {
             EventArgStructures.MoveEventCommand moveData = (EventArgStructures.MoveEventCommand) m;
@@ -379,6 +435,20 @@ namespace WpfApp1.ViewModel
             }
             DisproveEnabled = false;
             RaisePropertyChangedEvent("DisproveEnabled");
+        }
+
+        public void SelectedGameChanged()
+        {
+            PeopleStrings.Clear();
+            if (_SelectedGame != null)
+            {
+                List<string> input = client.GetAvailableCharacters(_SelectedGame);
+
+                foreach (string s in input)
+                {
+                    PeopleStrings.Add(s);
+                }
+            }
         }
 
         //Start of the list of commands used to bind to objects in GUI

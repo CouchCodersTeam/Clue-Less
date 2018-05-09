@@ -37,5 +37,15 @@ namespace WpfApp1.ViewModel
                 this.w = w;
             }
         }
+
+        public class StringVal : EventArgs
+        {
+            public string val;
+
+            public StringVal(string val)
+            {
+                this.val = val;
+            }
+        }
     }
 }
