@@ -8,66 +8,72 @@ namespace ClueLessClient.Model.Game
 {
     public class Board
     {
-        int[][] locations = new int [][] {}; //Create array
+        public Location[][] locations = new Location[][] { }; //Create array
+
+        // Initializing the rooms and hallways
+        public Board()
+        {
+            locations[0][0] = new Location(0, 0, "Study");
+            locations[0][2] = new Location(0, 2, "Hall");
+            locations[0][4] = new Location(0, 4, "Lounge");
+            locations[2][0] = new Location(2, 0, "Library");
+            locations[2][2] = new Location(2, 2, "Billiard");
+            locations[2][4] = new Location(2, 4, "Dining");
+            locations[4][0] = new Location(4, 0, "Conservatory");
+            locations[4][2] = new Location(4, 2, "Ballroom");
+            locations[4][4] = new Location(4, 4, "Kitchen");
+
+            locations[0][1] = new Location(0, 1, "Hallway");
+            locations[0][3] = new Location(0, 3, "Hallway");
+            locations[2][1] = new Location(2, 1, "Hallway");
+            locations[2][3] = new Location(2, 3, "Hallway");
+            locations[4][1] = new Location(4, 1, "Hallway");
+            locations[4][3] = new Location(4, 3, "Hallway");
+            locations[1][0] = new Location(1, 0, "Hallway");
+            locations[1][2] = new Location(1, 2, "Hallway");
+            locations[1][4] = new Location(1, 4, "Hallway");
+            locations[3][0] = new Location(3, 0, "Hallway");
+            locations[3][2] = new Location(3, 2, "Hallway");
+            locations[3][4] = new Location(3, 4, "Hallway");
+        }
     }
-        public class Location
+
+    // Combination of Room and Hallway class in original design
+    public class Location
     {
-        private int xCoordinate;
-        private int yCoordinate;
-        string locations = new string[4, 4];
-        string playerLocation = new string[4, 4];
-        int hallwayOccupied = 0;
+        private int xCoordinate { get; }
+        private int yCoordinate { get; }
+        private string locationName { get; }
+        public List<Player> occupants = new List<Player>();
 
-        public Location()
+
+        public Location(int x, int y, string name)
         {
-            locations[0, 0] = "Study";
-            locations[0, 2] = "Hall";
-            locations[0, 4] = "Lounge";
-            locations[2, 0] = "Library";
-            locations[2, 2] = "Billiard";
-            locations[2, 4] = "Dining";
-            locations[4, 0] = "Conservatory";
-            locations[4, 2] = "Ballroom";
-            locations[4, 4] = "Kitchen";
-
-            locations[0, 1] = "Hallway";
-            locations[0, 3] = "Hallway";
-            locations[2, 1] = "Hallway";
-            locations[2, 3] = "Hallway";
-            locations[4, 1] = "Hallway";
-            locations[4, 3] = "Hallway";
-            locations[1, 0] = "Hallway";
-            locations[1, 2] = "Hallway";
-            locations[1, 4] = "Hallway";
-            locations[3, 0] = "Hallway";
-            locations[3, 2] = "Hallway";
-            locations[3, 4] = "Hallway";
-
-
-            playerLocation[0, 3] = "Scarlet";
-            playerLocation[1, 0] = "Plum";
-            playerLocation[1, 4] = "Mustard";
-            playerLocation[3, 0] = "Peacock";
-            playerLocation[4, 1] = "Green";
-            playerLocation[4, 3] = "White";
-
-
+            xCoordinate = x;
+            yCoordinate = y;
+            locationName = name;
         }
 
-        public addPlayer()
+        public bool addPlayer(Player player)
         {
-            if (Location.locations == "Hallway" && hallwayOccupied == 1)
+            if (locationName.Equals("Hallway"))
             {
-                throw new ArgumentException("Hallway is already occupied.");
-            }
-            else if (Location.locations == "Hallway" && hallwayOccupied == 0)
+                if (occupants.Count == 0)
+                {
+                    occupants.Add(player);
+                    return true;
+                } else
+                {
+                    return false;
+                }
+
+            } else
             {
-                playerLocation = new string[xCoordinate, yCoordinate];
-                playerLocation = Console.ReadLine;
+                occupants.Add(player);
+                return true;
             }
 
         }
-
 
     }
 }
