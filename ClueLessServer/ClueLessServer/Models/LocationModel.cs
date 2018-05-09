@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClueLessClient.Model.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -6,9 +7,6 @@ using System.Web;
 
 namespace ClueLessServer.Models
 {
-    // TODO: Temporary hack
-    using Location = String;
-
     public class LocationModel
     {
         [DataMember]
@@ -30,7 +28,7 @@ namespace ClueLessServer.Models
         public Location asLocation()
         {
             // TODO
-            return "";
+            return new Location(0, 0, "");
         }
     }
 }
