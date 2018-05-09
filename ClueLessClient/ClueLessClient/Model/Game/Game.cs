@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,12 +14,14 @@ namespace ClueLessClient.Model.Game
         private List<Player> players;  // Ryan changed from set to list
         private Board board;
         private Card[] caseFile;       // Casefile may be its own class, will leave as array for now
-        public RealPlayer currentTurn;
+        private int currentTurnIndex;  // The index in rotationOrders that starts with 0
+        public List<RealPlayer> rotationOrders;    // Also used for suggestions
+        public bool ended = false;
 
         public Game()
         {
             players = new List<Player>();
-
+            currentTurnIndex = 0;
             // initialize these variables in 'startGame'
             board = null;
             caseFile = null;
@@ -35,10 +37,12 @@ namespace ClueLessClient.Model.Game
             }
             else
             {
+                if (player is RealPlayer) {
+                    rotationOrders.Add((RealPlayer) player);
+                }
                 players.Add(player);
                 return true;
             }
-
         }
 
         public bool removePlayer(Player player)
@@ -57,18 +61,44 @@ namespace ClueLessClient.Model.Game
         public void startGame()
         {
             board = new Board();
+            caseFile = new Card[3];
+
+            // Random selection of card from 3 types for case File
+            Array rooms = Enum.GetValues(typeof(Room));
+            Room room = (Room) rooms.GetValue(new Random().Next(rooms.Length));
+            caseFile[0] = new Card(room);
+
+            Array suspects = Enum.GetValues(typeof(Suspect));
+            Suspect suspect = (Suspect) suspects.GetValue(new Random().Next(suspects.Length));
+            caseFile[1] = new Card(suspect);
+
+            Array weapons = Enum.GetValues(typeof(Weapon));
+            Weapon weapon = (Weapon) weapons.GetValue(new Random().Next(weapons.Length));
+            caseFile[2] = new Card(weapon);
+
+            // Distribute cards upon starting the game?
+
         }
 
         // returns the player whose turn it is
         public Player getPlayerTurn()
         {
-            return null;
+            return rotationOrders[currentTurnIndex];
+        }
+
+        // Move turn pointer to next
+        public void nextPlayer() {
+            currentTurnIndex = (currentTurnIndex + 1) % rotationOrders.Count;
         }
 
         // returns the cards for the given player
         public Card[] getPlayerHand(Player player)
         {
-            return null;
+            if (player is RealPlayer) {
+                return player.cards;
+            } else {
+                return null;
+            }
         }
 
         // TODO: getAvailableCharacters(), chooseCharacter()
@@ -84,7 +114,15 @@ namespace ClueLessClient.Model.Game
 
         public bool movePlayer(Player player, Location location)
         {
-            return false;
+            if (!player.location.isNextTo(location)) { return false; }
+
+            // Can't move to occupied hallways
+            if (location.locationName == "Hallway" && location.occupants.Count != 0) {
+                return false;
+            } else {
+                player.location = location;
+                return true;
+            }
         }
 
         // returns the first player after 'player' who can disprove the
@@ -98,13 +136,16 @@ namespace ClueLessClient.Model.Game
         // has lost the game and cannot make further accusations.
         public bool makeAccusation(Player player, Accusation accusation)
         {
-            return false;
+            // Checking if all cards in accusation are matching case files
+            return accusation.room == (Room) Enum.parse(typeof(Room), caseFile[0].cardValue) &&
+                accusation.suspect == (Suspect) Enum.parse(typeof(Suspect), caseFile[1].cardValue) &&
+                accusation.weapon == (Weapon) Enum.parse(typeof(Weapon), caseFile[2].cardValue);
         }
 
         // game is notified that game is over
-        public bool endGame()
+        public void endGame()
         {
-            return false;
+            ended = true;
         }
 
         // This function cannot be called until endGame has been called.
@@ -112,7 +153,14 @@ namespace ClueLessClient.Model.Game
         // caseFile is returned
         public Accusation getSolution()
         {
-            return null;
+            if (!ended) {
+                return null;
+            } else {
+                Room room = (Room) Enum.parse(typeof(Room), caseFile[0].cardValue);
+                Suspect suspect = (Suspect) Enum.parse(typeof(Suspect), caseFile[1].cardValue);
+                Weapon weapon = (Weapon) Enum.parse(typeof(Weapon), caseFile[2].cardValue);
+                return new Accusation(room, suspect, weapon);
+            }
         }
 
     }
