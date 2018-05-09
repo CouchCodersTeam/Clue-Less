@@ -8,13 +8,13 @@ namespace ClueLessClient.Model.Game
 {
     // TODO: Temporary hack to get code to build. Remove this
     // line once Location is added to the project
-    using Location = String;
 
     public class Game
     {
         private List<Player> players;  // Ryan changed from set to list
         private Board board;
         private Card[] caseFile;       // Casefile may be its own class, will leave as array for now
+        public RealPlayer currentTurn;
 
         public Game()
         {
@@ -22,27 +22,41 @@ namespace ClueLessClient.Model.Game
 
             // initialize these variables in 'startGame'
             board = null;
-            caseFile = null; 
+            caseFile = null;
         }
 
         // add a player to the game, the game has not started when
         // this function is called.
         public bool addPlayer(Player player)
         {
-            // TODO: implement
-            return false;
+            if (players.Count == 6)
+            {
+                return false;
+            }
+            else
+            {
+                players.Add(player);
+                return true;
+            }
+
         }
 
         public bool removePlayer(Player player)
         {
-            // TODO: implement
-            return false;
+            if (players.Count == 0)
+            {
+                return false;
+            }
+            else
+            {
+                players.Remove(player);
+                return true;
+            }
         }
 
-        public bool startGame()
+        public void startGame()
         {
-            // TODO: initialize board and caseFile
-            return false;
+            board = new Board();
         }
 
         // returns the player whose turn it is
