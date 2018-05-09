@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -73,6 +74,8 @@
     <Compile Include="Model\Game\Card.cs" />
     <Compile Include="Model\Game\Game.cs" />
     <Compile Include="Model\Game\Player.cs" />
+    <Compile Include="Network\CluelessServerConnection.cs" />
+    <Compile Include="Network\RequestModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
