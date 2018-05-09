@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,9 +43,8 @@ namespace ClueLessClient.Model.Game
     {
         private int xCoordinate { get; }
         private int yCoordinate { get; }
-        private string locationName { get; }
+        public string locationName { get; }
         public List<Player> occupants = new List<Player>();
-
 
         public Location(int x, int y, string name)
         {
@@ -58,6 +57,7 @@ namespace ClueLessClient.Model.Game
         {
             if (locationName.Equals("Hallway"))
             {
+                // Hallway holds up to 1 player only
                 if (occupants.Count == 0)
                 {
                     occupants.Add(player);
@@ -66,13 +66,45 @@ namespace ClueLessClient.Model.Game
                 {
                     return false;
                 }
-
             } else
             {
                 occupants.Add(player);
                 return true;
             }
+        }
 
+        // Return true if the location is directly accessible without
+        // considering the occupants in hallways.
+        public bool isNextTo(Location location) {
+            if (!location.isValid()) { return false; }
+
+            if (xCoordinate == location.xCoordinate) {
+                return Math.Abs(yCoordinate - location.yCoordinate) == 1;
+            } else if (yCoordinate == location.yCoordinate) {
+                return Math.Abs(xCoordinate - location.xCoordinate) == 1;
+            } else if (isSecretPassage() && location.isSecretPassage()) {
+                // Must be diagonal --> x's and y's should be different
+                return xCoordinate != location.xCoordinate &&
+                    yCoordinate != location.yCoordinate;
+            } else {
+                return false;
+            }
+        }
+
+        // Return true if location is at 4 corners
+        public bool isSecretPassage() {
+            return (xCoordinate == 0 && yCoordinate == 0) ||
+                (xCoordinate == 0 && yCoordinate == 4) ||
+                (xCoordinate == 4 && yCoordinate == 0) ||
+                (xCoordinate == 4 && yCoordinate == 4);
+        }
+
+        // Return true iff the location is neither hallway nor room
+        public bool isValid() {
+            return (xCoordinate == 1 && yCoordinate == 1) ||
+                (xCoordinate == 1 && yCoordinate == 3) ||
+                (xCoordinate == 3 && yCoordinate == 1) ||
+                (xCoordinate == 3 && yCoordinate == 3);
         }
 
     }
