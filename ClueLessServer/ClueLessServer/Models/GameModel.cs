@@ -16,9 +16,8 @@ namespace ClueLessServer.Models
         public string Hostname { get; set; }
 
         private Game game;
-        private List<PlayerModel> players; // TODO: this could be added to Game object
 
-        public bool isStarted { get; }
+        private bool isStarted;
         public bool isEnded { get; }
 
         public GameModel(string hostname)
@@ -27,32 +26,37 @@ namespace ClueLessServer.Models
             Id = -1;
             game = new Game();
             isStarted = false;
-            players = new List<PlayerModel>();
+        }
+
+        public bool Started()
+        {
+            return isStarted;
         }
 
         // TODO: these methods can be moved to 'Game'
         public bool addPlayer(PlayerModel player)
         {
-            if (!containsPlayer(player))
-            {
-                players.Add(player);
-                return true;
-            }
-            return false;
+            return game.addPlayer(player.asPlayer());
         }
 
         public bool removePlayer(PlayerModel player)
         {
-            return players.Remove(player);
+            return game.removePlayer(player.asPlayer());
         }
 
         public bool containsPlayer(PlayerModel player)
         {
-            return players.Contains(player);
+            return game.containsPlayer(player.asPlayer());
         }
 
         public bool start()
         {
+            if (game.canStartGame())
+            {
+                game.startGame();
+                isStarted = true;
+                return true;
+            }
             return false;
         }
         

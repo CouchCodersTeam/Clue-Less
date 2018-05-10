@@ -16,6 +16,9 @@ namespace ClueLessClient.Model.Game
         private Card[] caseFile;       // Casefile may be its own class, will leave as array for now
         public RealPlayer currentTurn;
 
+        private static readonly int MIN_PLAYERS = 3;
+        private static readonly int MAX_PLAYERS = 6;
+
         public Game()
         {
             players = new List<Player>();
@@ -33,12 +36,13 @@ namespace ClueLessClient.Model.Game
             {
                 return false;
             }
-            else
+            else if(!players.Contains(player))
             {
                 players.Add(player);
                 return true;
             }
 
+            return false;
         }
 
         public bool removePlayer(Player player)
@@ -52,6 +56,16 @@ namespace ClueLessClient.Model.Game
                 players.Remove(player);
                 return true;
             }
+        }
+
+        public bool containsPlayer(Player player)
+        {
+            return players.Contains(player);
+        }
+
+        public bool canStartGame()
+        {
+            return MIN_PLAYERS <= players.Count && players.Count <= MAX_PLAYERS;
         }
 
         public void startGame()

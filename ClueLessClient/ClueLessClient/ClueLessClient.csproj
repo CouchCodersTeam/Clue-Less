@@ -75,6 +75,8 @@
     <Compile Include="Model\Game\Game.cs" />
     <Compile Include="Model\Game\Player.cs" />
     <Compile Include="Network\CluelessServerConnection.cs" />
+    <Compile Include="Network\JSONHelper.cs" />
+    <Compile Include="Network\Lobbies.cs" />
     <Compile Include="Network\RequestModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

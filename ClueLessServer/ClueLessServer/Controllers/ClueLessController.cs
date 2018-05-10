@@ -108,7 +108,7 @@ namespace ClueLessServer.Controllers
             if (auth.result != null)
                 return auth;
 
-            if (!auth.game.isStarted)
+            if (!auth.game.Started())
             {
                 auth.player = null;
                 auth.game = null;

@@ -67,13 +67,13 @@ namespace ClueLessServer.Controllers
                 return BadRequest();
         }
 
-        // POST: /games/5/begin
-        [Route("games/{id}/begin")]
+        // POST: /games/begin
+        [Route("games/begin")]
         [HttpPost]
         // This API can only be called by the host player
-        public IHttpActionResult StartGame(long id)
+        public IHttpActionResult StartGame()
         {
-            AuthResult auth = authorizePlayerMatchesGame(id);
+            AuthResult auth = authorizePlayerMatchesGame();
 
             if (auth.result != null)
                 return auth.result;
@@ -96,17 +96,17 @@ namespace ClueLessServer.Controllers
 
         }
 
-        // GET: /games/5/begin
-        [Route("games/{id}/begin")]
+        // GET: /games/begin
+        [Route("games/begin")]
         [HttpGet]
-        public IHttpActionResult WaitForGame(long id)
+        public IHttpActionResult WaitForGame()
         {
-            AuthResult auth = authorizePlayerMatchesGame(id);
+            AuthResult auth = authorizePlayerMatchesGame();
 
             if (auth.result != null)
                 return auth.result;
 
-            if (auth.game.isStarted)
+            if (auth.game.Started())
             {
                 return Ok();
             }
