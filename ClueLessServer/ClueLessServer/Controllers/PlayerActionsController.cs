@@ -24,7 +24,7 @@ namespace ClueLessServer.Controllers
 
             var game = auth.game;
 
-            if (!game.isStarted)
+            if (!game.Started())
                 return BadRequest("Game has not started");
 
             return Ok(new GameStateModel(game.getGame()));

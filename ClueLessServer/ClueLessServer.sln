@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClueLessServer.Tests", "Clu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClueLessClient", "..\ClueLessClient\ClueLessClient\ClueLessClient.csproj", "{B63807F4-F514-48EF-A5EB-01FE8B0304EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CluelessServerHttp.Tests", "CluelessClientFlow\CluelessServerHttp.Tests.csproj", "{1601A293-0FEA-4614-8D61-6F80F9D3778B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{B63807F4-F514-48EF-A5EB-01FE8B0304EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B63807F4-F514-48EF-A5EB-01FE8B0304EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B63807F4-F514-48EF-A5EB-01FE8B0304EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1601A293-0FEA-4614-8D61-6F80F9D3778B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1601A293-0FEA-4614-8D61-6F80F9D3778B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1601A293-0FEA-4614-8D61-6F80F9D3778B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1601A293-0FEA-4614-8D61-6F80F9D3778B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,6 +15,15 @@ namespace ClueLessClient.Model.Game
         {
             name = playerName;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Player other = (Player)obj;
+            return this.name.Equals(other.name);
+        }
     }
 
     public class RealPlayer : Player

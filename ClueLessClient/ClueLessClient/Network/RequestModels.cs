@@ -7,15 +7,24 @@ using System.Threading.Tasks;
 
 namespace ClueLessClient.Network
 {
-    class RequestModels
+    public class RequestModels
     {
         [DataContract]
-        public class PlayerNameModel
+        public class PlayerIdentityModel
         {
             [DataMember]
             public string PlayerName { get; set; }
             [DataMember]
             public string AuthCode { get; set; }
+        }
+
+        [DataContract]
+        public class Lobby
+        {
+            [DataMember]
+            public long Id { get; set; }
+            [DataMember]
+            public string Hostname { get; set; }
         }
     }
 }

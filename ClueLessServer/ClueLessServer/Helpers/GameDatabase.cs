@@ -80,7 +80,7 @@ namespace ClueLessServer.Models
 
         private List<GameModel> getAllLobbies()
         {
-            return getAllGames().Where( game => !game.isStarted).ToList();
+            return getAllGames().Where( game => !game.Started()).ToList();
         }
     }
 }
