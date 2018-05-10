@@ -110,7 +110,7 @@ namespace ClueLessClient.Model.Game
         public Card[] getPlayerHand(Player player)
         {
             if (player is RealPlayer) {
-                return player.cards;
+                return ((RealPlayer)player).cards;
             } else {
                 return null;
             }
@@ -152,9 +152,9 @@ namespace ClueLessClient.Model.Game
         public bool makeAccusation(Player player, Accusation accusation)
         {
             // Checking if all cards in accusation are matching case files
-            return accusation.room == (Room) Enum.parse(typeof(Room), caseFile[0].cardValue) &&
-                accusation.suspect == (Suspect) Enum.parse(typeof(Suspect), caseFile[1].cardValue) &&
-                accusation.weapon == (Weapon) Enum.parse(typeof(Weapon), caseFile[2].cardValue);
+            return accusation.room == (Room) Enum.Parse(typeof(Room), caseFile[0].cardValue) &&
+                accusation.suspect == (Suspect) Enum.Parse(typeof(Suspect), caseFile[1].cardValue) &&
+                accusation.weapon == (Weapon) Enum.Parse(typeof(Weapon), caseFile[2].cardValue);
         }
 
         // game is notified that game is over
@@ -171,9 +171,9 @@ namespace ClueLessClient.Model.Game
             if (!ended) {
                 return null;
             } else {
-                Room room = (Room) Enum.parse(typeof(Room), caseFile[0].cardValue);
-                Suspect suspect = (Suspect) Enum.parse(typeof(Suspect), caseFile[1].cardValue);
-                Weapon weapon = (Weapon) Enum.parse(typeof(Weapon), caseFile[2].cardValue);
+                Room room = (Room) Enum.Parse(typeof(Room), caseFile[0].cardValue);
+                Suspect suspect = (Suspect) Enum.Parse(typeof(Suspect), caseFile[1].cardValue);
+                Weapon weapon = (Weapon) Enum.Parse(typeof(Weapon), caseFile[2].cardValue);
                 return new Accusation(room, suspect, weapon);
             }
         }

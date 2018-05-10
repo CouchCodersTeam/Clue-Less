@@ -49,8 +49,8 @@ namespace ClueLessClient.Model.Game
     public class Card
     {
         // Instance variables
-        private CardType cardType;
-        private String cardValue;
+        public CardType cardType { get; }
+        public String cardValue { get; }
 
         // Constructors
         // Usage:

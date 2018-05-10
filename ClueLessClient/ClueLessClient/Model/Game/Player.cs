@@ -8,8 +8,8 @@ namespace ClueLessClient.Model.Game
 {
     public class Player
     {
-        private string name { get; }
-        private Location location { get; }
+        public string name { get; }
+        public Location location { get; set; }
 
         public Player(string playerName)
         {
@@ -28,7 +28,7 @@ namespace ClueLessClient.Model.Game
 
     public class RealPlayer : Player
     {
-        private Card[] cards { set; get; }
+        public Card[] cards { set; get; }
 
         public RealPlayer(string playerName)
          : base(playerName)
