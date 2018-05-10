@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClueLessClient.Network
 {
-    class RequestModels
+    public class RequestModels
     {
         [DataContract]
         public class PlayerIdentityModel

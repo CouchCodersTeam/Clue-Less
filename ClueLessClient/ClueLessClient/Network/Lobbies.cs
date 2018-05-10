@@ -9,7 +9,7 @@ using static ClueLessClient.Network.RequestModels;
 
 namespace ClueLessClient.Network
 {
-    class Lobbies
+    public class Lobbies
     {
         // circular dependency
         private HttpClient client;
