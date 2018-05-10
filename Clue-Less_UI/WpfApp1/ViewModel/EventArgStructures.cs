@@ -47,5 +47,21 @@ namespace WpfApp1.ViewModel
                 this.val = val;
             }
         }
+
+        public class GameOver : EventArgs
+        {
+            public Board_Controller.Person winner;
+            public Board_Controller.Person p;
+            public Board_Controller.Room r;
+            public Board_Controller.Weapon w;
+
+            public GameOver(Board_Controller.Person winner, Board_Controller.Person p, Board_Controller.Room r, Board_Controller.Weapon w)
+            {
+                this.winner = winner;
+                this.p = p;
+                this.r = r;
+                this.w = w;
+            }
+        }
     }
 }

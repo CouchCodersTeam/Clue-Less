@@ -14,6 +14,7 @@ namespace WpfApp1.ViewModel
         public event EventHandler AddGameEvent;
         public event EventHandler RemoveGameEvent;
         public event EventHandler RemoveAvailableCharacterEvent;
+        public event EventHandler GameOverEvent;
 
         public TestClient()
         {
@@ -27,6 +28,7 @@ namespace WpfApp1.ViewModel
             AddGame("Game3");
 
             RemoveGame("Game2");
+            GameOver();
         }
 
         //Join the selected game with the provided credentials
@@ -166,6 +168,13 @@ namespace WpfApp1.ViewModel
             RemoveAvailableCharacterEvent(this, arg);
         }
 
+        //We'll need real logic to pick the winner
+        //This is just an example of the event being packed and sent to the UI
+        public void GameOver()
+        {
+            EventArgs arg = new EventArgStructures.GameOver(Board_Controller.Person.White, Board_Controller.Person.Scarlet, Board_Controller.Room.Ballroom, Board_Controller.Weapon.Knife);
+            GameOverEvent(this, arg);
+        }
         //If the user says they can disprove the suggestion I thought the client might 
         //want to know so it can put the game on hold until it receives the disproval info
         public void WaitForDisproveInfo()

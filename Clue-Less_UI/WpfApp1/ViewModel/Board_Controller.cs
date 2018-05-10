@@ -48,8 +48,24 @@ namespace WpfApp1.ViewModel
                 SelectedGameChanged();
             }
         }
-        public string SelectedPerson;
-        public string UserName;
+        private string _SelectedPerson;
+        public string SelectedPerson
+        {
+            get { return _SelectedPerson; }
+            set
+            {
+                _SelectedPerson = value;
+            }
+        }
+        private string _UserName;
+        public string UserName
+        {
+            get { return _UserName; }
+        set
+            {
+                _UserName = value;
+}
+        }
 
         //Room contents
         public ObservableCollection<string> StudyOccupants { get; set; }
@@ -130,7 +146,7 @@ namespace WpfApp1.ViewModel
 
             PeopleStrings = new ObservableCollection<string>();
             GameStrings = new ObservableCollection<string>();
-            UserName = "Type Name Here";
+            UserName = "Type Name";
             RaisePropertyChangedEvent("UserName");
 
             AccusePeopleStrings = new ObservableCollection<string>();
@@ -219,6 +235,7 @@ namespace WpfApp1.ViewModel
             client.AddGameEvent += this.HandleAddGameEvent;
             client.RemoveGameEvent += this.HandleRemoveGameEvent;
             client.RemoveAvailableCharacterEvent += this.HandleRemoveAvailableCharacterEvent;
+            client.GameOverEvent += this.HandleGameOverEvent;
 
             client.SendTestEvents();
         }
@@ -361,6 +378,10 @@ namespace WpfApp1.ViewModel
                 //ToDo: Testing this functionality make sure to remove from final version
                 client.DisproveSuggestion();
             }
+            else
+            {
+                MessageBox.Show("Failed to join game.  Please try again.");
+            }
         }
         // End of the functions used to interact
 
@@ -394,6 +415,15 @@ namespace WpfApp1.ViewModel
             EventArgStructures.MoveEventCommand moveData = (EventArgStructures.MoveEventCommand) m;
 
             MovePerson(moveData.p, moveData.from, moveData.to);
+        }
+
+        void HandleGameOverEvent(object sender, EventArgs m)
+        {
+            EventArgStructures.GameOver gameOverData = (EventArgStructures.GameOver) m;
+
+            MessageBox.Show(gameOverData.winner + "Has won the game! They correctly accused " + gameOverData.p +
+                                                    " of killing the victim using the " + gameOverData.w +
+                                                    " in the " + gameOverData.r + "!", "Game Over!");
         }
 
         void HandleDisprovingSuggestionEvent(object sender, EventArgs m)
