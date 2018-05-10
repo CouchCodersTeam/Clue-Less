@@ -20,7 +20,8 @@ namespace WpfApp1.ViewModel
         {
         }
 
-        //Just used for test purposes
+        //Just used for test purposes currently
+        //Eventually I'd expect the client to just populate these things when they're ready
         public void SendTestEvents()
         {
             AddGame("Game1");
@@ -156,12 +157,16 @@ namespace WpfApp1.ViewModel
             AddGameEvent(this, arg);
         }
 
+        //Remove a game from the list of available games
+        //I'm guessing we'll just have one game available for the demo
         public void RemoveGame(string gameName)
         {
             EventArgs arg = new EventArgStructures.StringVal(gameName);
             RemoveGameEvent(this, arg);
         }
 
+        //Removes a character from the list of available characters in a selected game
+        //This could change once the game is highlighted so the server can send updates to pull down the characters
         public void RemoveAvailableCharacter(string charName)
         {
             EventArgs arg = new EventArgStructures.StringVal(charName);
@@ -175,6 +180,7 @@ namespace WpfApp1.ViewModel
             EventArgs arg = new EventArgStructures.GameOver(Board_Controller.Person.White, Board_Controller.Person.Scarlet, Board_Controller.Room.Ballroom, Board_Controller.Weapon.Knife);
             GameOverEvent(this, arg);
         }
+
         //If the user says they can disprove the suggestion I thought the client might 
         //want to know so it can put the game on hold until it receives the disproval info
         public void WaitForDisproveInfo()
