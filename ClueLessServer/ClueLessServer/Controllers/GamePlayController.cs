@@ -27,10 +27,10 @@ namespace ClueLessServer.Controllers
             var game = auth.game.getGame();
             var playerModel = auth.player;
 
-            var cards = game.getPlayerHand(playerModel.asPlayer());
+            var cards = game.getPlayerHand(playerModel.Name);
 
             // Return the calling player's cards
-            return Ok(new CardListModel(cards));
+            return Ok(cards);
         }
 
         [Route("charaters")]

@@ -10,10 +10,12 @@ namespace ClueLessClient.Network
         private static readonly HttpClient client = new HttpClient();
 
         public Lobbies Lobbies { get; }
+        public Gameplay Gameplay { get; }
         
         private CluelessServerConnection(string host, int port)
         {
             Lobbies = new Lobbies(client);
+            Gameplay = new Gameplay(client);
 
             UriBuilder builder = new UriBuilder();
             builder.Host = host;

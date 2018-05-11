@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClueLessClient.Network;
+using ClueLessClient.Model.Game;
+using System.Collections.Generic;
 
 namespace CluelessClientFlow
 {
@@ -83,6 +85,26 @@ namespace CluelessClientFlow
             Assert.IsTrue(connect.registerAsPlayer("Hermione"));
             {
                 Assert.IsTrue(connect.Lobbies.WaitForGameStart());
+            }
+
+            // Play the game now
+
+            // Get cards
+            String[] players = { "Harry Potter", "Ron Weasley", "Hermione" };
+            List<Card> previousPlayersCards = null;
+            foreach (var playerName in players)
+            {
+                // verify that each player has a hand of cards
+                Assert.IsTrue(connect.registerAsPlayer(playerName));
+                var cards = connect.Gameplay.GetPlayerHand();
+
+                // TODO: this is not implemented in Game.cs yet
+                //Assert.IsNotNull(cards);
+                //Assert.AreNotEqual(0, cards.Count);
+
+                //// Make sure each hand is unique
+                //Assert.AreNotEqual(previousPlayersCards, cards);
+                //previousPlayersCards = cards;
             }
         }
     }

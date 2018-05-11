@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,10 +47,13 @@ namespace ClueLessClient.Model.Game
         Wrench
     }
 
+    [DataContract]
     public class Card
     {
         // Instance variables
+        [DataMember]
         public CardType cardType { get; }
+        [DataMember]
         public String cardValue { get; }
 
         // Constructors

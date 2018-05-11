@@ -33,20 +33,19 @@ namespace ClueLessServer.Models
             return isStarted;
         }
 
-        // TODO: these methods can be moved to 'Game'
         public bool addPlayer(PlayerModel player)
         {
-            return game.addPlayer(player.asPlayer());
+            return game.addPlayer(player.Name);
         }
 
         public bool removePlayer(PlayerModel player)
         {
-            return game.removePlayer(player.asPlayer());
+            return game.removePlayer(player.Name);
         }
 
         public bool containsPlayer(PlayerModel player)
         {
-            return game.containsPlayer(player.asPlayer());
+            return game.containsPlayer(player.Name);
         }
 
         public bool start()

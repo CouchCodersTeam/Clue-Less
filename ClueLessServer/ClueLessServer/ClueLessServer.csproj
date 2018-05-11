@@ -160,7 +160,6 @@
     <Compile Include="Helpers\AuthCodeGenerator.cs" />
     <Compile Include="Helpers\GameDatabase.cs" />
     <Compile Include="Models\AccusationModel.cs" />
-    <Compile Include="Models\CardListModel.cs" />
     <Compile Include="Models\GameModel.cs" />
     <Compile Include="Helpers\PlayerDatabase.cs" />
     <Compile Include="Models\GameStateModel.cs" />

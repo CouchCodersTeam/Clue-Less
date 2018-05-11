@@ -1,4 +1,5 @@
-﻿using ClueLessServer.Models;
+﻿using ClueLessClient.Model.Game;
+using ClueLessServer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,10 +52,10 @@ namespace ClueLessServer.Controllers
                 return auth.result;
 
             var game = auth.game.getGame();
-            var player = auth.player.asPlayer();
+            var player = auth.player;
             var loc = location.asLocation();
 
-            if (game.movePlayer(player, loc))
+            if (game.movePlayer(player.Name, loc))
             {
                 // TODO: notify other players of move
                 return Created("", "");
@@ -74,10 +75,10 @@ namespace ClueLessServer.Controllers
             // TODO: validate accusationData data
 
             var game = auth.game.getGame();
-            var player = auth.player.asPlayer();
+            var player = auth.player;
             var accusation = accusationData.asAccusation();
 
-            var disprovingPlayer = game.makeSuggestion(player, accusation);
+            var disprovingPlayer = game.makeSuggestion(player.Name, accusation);
             if (disprovingPlayer == null)
             {
                 // TODO: notify other players that no one could disprove
@@ -95,7 +96,7 @@ namespace ClueLessServer.Controllers
 
         [Route("disprove")]
         [HttpPost]
-        public IHttpActionResult DisproveSuggestion([FromBody] CardListModel cardList)
+        public IHttpActionResult DisproveSuggestion([FromBody] Card card)
         {
             AuthResult auth = authorizeAndVerifyGameStart();
             if (auth.result != null)
@@ -116,10 +117,10 @@ namespace ClueLessServer.Controllers
                 return auth.result;
 
             var game = auth.game.getGame();
-            var player = auth.player.asPlayer();
+            var player = auth.player;
             var accusation = accusationData.asAccusation();
 
-            bool isCorrect = game.makeAccusation(player, accusation);
+            bool isCorrect = game.makeAccusation(player.Name, accusation);
             if (isCorrect)
             {
                 // TODO: notify everyone of game win/end

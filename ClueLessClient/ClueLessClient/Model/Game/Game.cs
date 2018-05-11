@@ -32,8 +32,9 @@ namespace ClueLessClient.Model.Game
 
         // add a player to the game, the game has not started when
         // this function is called.
-        public bool addPlayer(Player player)
+        public bool addPlayer(string playerName)
         {
+            Player player = new RealPlayer(playerName);
             if (players.Count == 6)
             {
                 return false;
@@ -50,7 +51,7 @@ namespace ClueLessClient.Model.Game
             return false;
         }
 
-        public bool removePlayer(Player player)
+        public bool removePlayer(string player)
         {
             if (players.Count == 0)
             {
@@ -58,14 +59,14 @@ namespace ClueLessClient.Model.Game
             }
             else
             {
-                players.Remove(player);
+                players.Remove(new RealPlayer(player));
                 return true;
             }
         }
 
-        public bool containsPlayer(Player player)
+        public bool containsPlayer(string player)
         {
-            return players.Contains(player);
+            return players.Contains(new RealPlayer(player));
         }
 
         public bool canStartGame()
@@ -107,8 +108,9 @@ namespace ClueLessClient.Model.Game
         }
 
         // returns the cards for the given player
-        public Card[] getPlayerHand(Player player)
+        public Card[] getPlayerHand(string playerName)
         {
+            Player player = new RealPlayer(playerName);
             if (player is RealPlayer) {
                 return ((RealPlayer)player).cards;
             } else {
@@ -127,8 +129,9 @@ namespace ClueLessClient.Model.Game
         // probably doesn't belong in 'Game'
 
 
-        public bool movePlayer(Player player, Location location)
+        public bool movePlayer(string playerName, Location location)
         {
+            Player player = players.Find(x => x.name.Equals(playerName));
             if (!player.location.isNextTo(location)) { return false; }
 
             // Can't move to occupied hallways
@@ -142,14 +145,14 @@ namespace ClueLessClient.Model.Game
 
         // returns the first player after 'player' who can disprove the
         // accusation. If no other player can disprove, null is returned.
-        public Player makeSuggestion(Player player, Accusation accusation)
+        public Player makeSuggestion(string player, Accusation accusation)
         {
             return null;
         }
 
         // Returns true/false if accusation is correct. If false, 'player'
         // has lost the game and cannot make further accusations.
-        public bool makeAccusation(Player player, Accusation accusation)
+        public bool makeAccusation(string playerName, Accusation accusation)
         {
             // Checking if all cards in accusation are matching case files
             return accusation.room == (Room) Enum.Parse(typeof(Room), caseFile[0].cardValue) &&
