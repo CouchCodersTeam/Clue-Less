@@ -1,4 +1,5 @@
 ﻿using ClueLessClient.Model.Game;
+using ClueLessClient.Network;
 using ClueLessServer.Models;
 using System;
 using System.Collections.Generic;
@@ -39,13 +40,17 @@ namespace ClueLessServer.Controllers
             if (auth.result != null)
                 return auth.result;
 
+
             // TODO: this will require waiting/async behavior
-            return NotFound();
+            Command command = new Command();
+            command.command = CommandType.TakeTurn;
+
+            return Ok(command);
         }
 
         [Route("move")]
         [HttpPost]
-        public IHttpActionResult MovePlayer([FromBody] LocationModel location)
+        public IHttpActionResult MovePlayer([FromBody] Location location)
         {
             AuthResult auth = authorizeAndVerifyGameStart();
             if (auth.result != null)
@@ -53,9 +58,8 @@ namespace ClueLessServer.Controllers
 
             var game = auth.game.getGame();
             var player = auth.player;
-            var loc = location.asLocation();
 
-            if (game.movePlayer(player.Name, loc))
+            if (game.movePlayer(player.Name, location))
             {
                 // TODO: notify other players of move
                 return Created("", "");
@@ -66,7 +70,7 @@ namespace ClueLessServer.Controllers
 
         [Route("suggest")]
         [HttpPost]
-        public IHttpActionResult MakeSuggestion([FromBody] AccusationModel accusationData)
+        public IHttpActionResult MakeSuggestion([FromBody] Accusation accusation)
         {
             AuthResult auth = authorizeAndVerifyGameStart();
             if (auth.result != null)
@@ -76,7 +80,6 @@ namespace ClueLessServer.Controllers
 
             var game = auth.game.getGame();
             var player = auth.player;
-            var accusation = accusationData.asAccusation();
 
             var disprovingPlayer = game.makeSuggestion(player.Name, accusation);
             if (disprovingPlayer == null)
@@ -84,6 +87,9 @@ namespace ClueLessServer.Controllers
                 // TODO: notify other players that no one could disprove
                 return Created("", "");
             }
+
+            // Receive this from 'DisproveSuggestion'
+            SuggestionResult result = null;
 
             // WARNING: Complicated
             // TODO: notify disprovingPlayer to disprove,
@@ -102,15 +108,18 @@ namespace ClueLessServer.Controllers
             if (auth.result != null)
                 return auth.result;
 
-            // TODO: validate cardList (validate it is only 1 card)
+            SuggestionResult result = new SuggestionResult();
+            result.card = card;
+            result.playerName = auth.player.Name;
+
             // TODO: send card to player that is waiting in MakeSuggestion call
 
-            return NotFound();
+            return Created("", "");
         }
 
         [Route("accuse")]
         [HttpPost]
-        public IHttpActionResult MakeAccusation([FromBody] AccusationModel accusationData)
+        public IHttpActionResult MakeAccusation([FromBody] Accusation accusation)
         {
             AuthResult auth = authorizeAndVerifyGameStart();
             if (auth.result != null)
@@ -118,7 +127,6 @@ namespace ClueLessServer.Controllers
 
             var game = auth.game.getGame();
             var player = auth.player;
-            var accusation = accusationData.asAccusation();
 
             bool isCorrect = game.makeAccusation(player.Name, accusation);
             if (isCorrect)
@@ -131,6 +139,20 @@ namespace ClueLessServer.Controllers
             }
 
             return Created("", isCorrect);
+        }
+
+        [Route("finish")]
+        [HttpPost]
+        public IHttpActionResult EndTurn()
+        {
+            AuthResult auth = authorizeAndVerifyGameStart();
+            if (auth.result != null)
+                return auth.result;
+
+
+            // TODO
+
+            return Created("", "");
         }
 
         [Route("solution")]
@@ -146,7 +168,7 @@ namespace ClueLessServer.Controllers
                 return Unauthorized();
 
             // Game must be over for this API to be called
-            return Ok(new AccusationModel(game.getGame().getSolution()));
+            return Ok(game.getGame().getSolution());
         }
     }
 }

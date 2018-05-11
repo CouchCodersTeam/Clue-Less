@@ -11,11 +11,11 @@ namespace ClueLessClient.Model.Game
     public class Accusation
     {
         [DataMember]
-        public Room room { get; }
+        public Room room { get; set; }
         [DataMember]
-        public Suspect suspect { get; }
+        public Suspect suspect { get; set; }
         [DataMember]
-        public Weapon weapon { get; }
+        public Weapon weapon { get; set; }
 
         public Accusation(Room _room, Suspect _suspect, Weapon _weapon)
         {
