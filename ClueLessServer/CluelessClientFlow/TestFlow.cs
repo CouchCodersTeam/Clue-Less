@@ -22,8 +22,12 @@ namespace CluelessClientFlow
             {
                 // Success
                 var lobbies = connect.Lobbies.GetLobbies();
+                Assert.IsNotNull(lobbies);
                 var lobby = connect.Lobbies.CreateLobby();
+                Assert.IsNotNull(lobby);
                 lobbies = connect.Lobbies.GetLobbies();
+                Assert.IsNotNull(lobbies);
+                Assert.AreNotEqual(0, lobbies.Count);
 
                 // Harry is host, he is already in game
                 Assert.IsFalse(connect.Lobbies.JoinLobby(lobby));
@@ -105,6 +109,14 @@ namespace CluelessClientFlow
                 //// Make sure each hand is unique
                 //Assert.AreNotEqual(previousPlayersCards, cards);
                 //previousPlayersCards = cards;
+            }
+
+            // take turn
+            Assert.IsTrue(connect.registerAsPlayer("Harry Potter"));
+            {
+                // Get game state to verify correct information
+                Game game = connect.Gameplay.GetState();
+                Assert.IsNotNull(game);
             }
         }
     }

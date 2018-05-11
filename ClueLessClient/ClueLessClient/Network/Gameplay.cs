@@ -29,5 +29,16 @@ namespace ClueLessClient.Network
 
             return null;
         }
+
+        public Game GetState()
+        {
+            var response = client.GetAsync("/state").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                var body = response.Content.ReadAsStringAsync().Result;
+                return Json.fromJson<Game>(response);
+            }
+            return null;
+        }
     }
 }

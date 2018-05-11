@@ -28,7 +28,7 @@ namespace ClueLessServer.Controllers
             if (!game.Started())
                 return BadRequest("Game has not started");
 
-            return Ok(new GameStateModel(game.getGame()));
+            return Ok(game.getGame());
         }
 
         [Route("command")]

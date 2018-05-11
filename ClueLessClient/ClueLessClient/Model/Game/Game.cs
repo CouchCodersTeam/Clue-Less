@@ -31,6 +31,7 @@ namespace ClueLessClient.Model.Game
         public Game()
         {
             players = new List<Player>();
+            rotationOrders = new List<RealPlayer>();
             currentTurnIndex = 0;
             // initialize these variables in 'startGame'
             board = null;
