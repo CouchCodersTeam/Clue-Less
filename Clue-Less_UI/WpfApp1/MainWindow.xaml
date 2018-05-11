@@ -426,161 +426,148 @@
                 </Border>
             </Grid>
 
-            <!-- Accuse, Move, Suggest Main Grid -->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="106*" />
-                    <ColumnDefinition Width="747*" />
-                    <ColumnDefinition Width="52*" />
-                    <ColumnDefinition Width="268*"/>
-                </Grid.ColumnDefinitions>
+            <!-- Accuse, Move, Suggest, Join Grid -->
+            <Border BorderBrush="White" BorderThickness="1" Padding="1" Background="White" Grid.ColumnSpan="4" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                <!-- Accuse, Move, Suggest Sub Grid -->
-                <Border BorderBrush="#fff" BorderThickness="1" Padding="1" Background="White" Grid.ColumnSpan="4" Margin="106,0,51.2,-0.2">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                    <!-- Column 1 - Accusations Actions -->
+                    <StackPanel Grid.Column="0" MinHeight="125">
+                        <!-- Sub-Title "Accustation" -->
+                        <TextBlock Text="Accusation" Margin="0 3" FontFamily="Broadway" FontSize="15" TextAlignment="Center" Foreground="Black"/>
 
-                        <!-- Column 1 - Accusations Actions -->
-                        <StackPanel Grid.Column="0" MinHeight="125">
-                            <!-- Sub-Title "Accustation" -->
-                            <TextBlock Text="Accusation" Margin="0 3" FontFamily="Broadway" FontSize="15" TextAlignment="Center" Foreground="Black"/>
+                        <!-- Grid for Accusation Button and Dropdown Boxes -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                            <!-- Grid for Accusation Button and Dropdown Boxes -->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                            <!-- Accusation Suspects Title and Dropdown Box-->
+                            <StackPanel Grid.Column="0">
+                                <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                <ComboBox ItemsSource="{Binding Path=AccusePeopleStrings}" SelectedValue="{Binding Path=AccusePerson}" x:Name="AccuseSuspect_Dropdown" SelectedIndex="0" Padding="2">
+                                </ComboBox>
+                            </StackPanel>
 
-                                <!-- Accusation Suspects Title and Dropdown Box-->
-                                <StackPanel Grid.Column="0">
-                                    <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=AccusePeopleStrings}" SelectedValue="{Binding Path=AccusePerson}" x:Name="AccuseSuspect_Dropdown" SelectedIndex="0" Padding="2">
-                                    </ComboBox>
-                                </StackPanel>
+                            <!-- Accusation Button & Weapon Dropdown Box -->
+                            <StackPanel Grid.Column="1">
+                                <Button Command="{Binding MakeAccusationCommand}" x:Name="Accuse_Button" Content="ACCUSE" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                <ComboBox ItemsSource="{Binding Path=AccuseWeaponStrings}" SelectedValue="{Binding Path=AccuseWeapon}" x:Name="AccuseWeapon_Dropdown" SelectedIndex="0" Padding="2" >
+                                </ComboBox>
+                            </StackPanel>
 
-                                <!-- Accusation Button & Weapon Dropdown Box -->
-                                <StackPanel Grid.Column="1">
-                                    <Button Command="{Binding MakeAccusationCommand}" x:Name="Accuse_Button" Content="ACCUSE" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                    <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=AccuseWeaponStrings}" SelectedValue="{Binding Path=AccuseWeapon}" x:Name="AccuseWeapon_Dropdown" SelectedIndex="0" Padding="2" >
-                                    </ComboBox>
-                                </StackPanel>
+                            <!-- Accusation Room Title and Dropdown Box -->
+                            <StackPanel Grid.Column="3">
+                                <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                <ComboBox ItemsSource="{Binding Path=AccuseRoomStrings}" SelectedValue="{Binding Path=AccuseRoom}" x:Name="AccuseRoom_Dropdown" SelectedIndex="0" Padding="2" >
+                                </ComboBox>
 
-                                <!-- Accusation Room Title and Dropdown Box -->
-                                <StackPanel Grid.Column="3">
-                                    <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=AccuseRoomStrings}" SelectedValue="{Binding Path=AccuseRoom}" x:Name="AccuseRoom_Dropdown" SelectedIndex="0" Padding="2" >
-                                    </ComboBox>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
 
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
+                    <!-- Column 2 - Move -->
+                    <StackPanel Grid.Column="1" Background="White"  MinHeight="125">
+                        <!-- Sub-Title "Move" -->
+                        <TextBlock Text="Move" Margin="0 3" FontFamily="Broadway" FontSize="15" TextAlignment="Center" Foreground="Black"/>
 
-                        <!-- Column 2 - Move -->
-                        <StackPanel Grid.Column="1" Background="White"  MinHeight="125">
-                            <!-- Sub-Title "Move" -->
-                            <TextBlock Text="Move" Margin="0 3" FontFamily="Broadway" FontSize="15" TextAlignment="Center" Foreground="Black"/>
+                        <!-- Grid for Move Butttons -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                            <!-- Grid for Move Butttons -->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                            <!-- Move Left Button -->
+                            <StackPanel Grid.Column="0">
+                                <Button Command="{Binding MoveLeftCommand}" x:Name="MoveLeft_Button" Content="LEFT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                            </StackPanel>
 
-                                <!-- Move Left Button -->
-                                <StackPanel Grid.Column="0">
-                                    <Button Command="{Binding MoveLeftCommand}" x:Name="MoveLeft_Button" Content="LEFT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                </StackPanel>
+                            <!-- Move Up & Move Down Buttons -->
+                            <StackPanel Grid.Column="1">
+                                <Button Command="{Binding MoveUpCommand}" x:Name="MoveUp_Button" Content="UP" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <Button Command="{Binding MoveDownCommand}" x:Name="MoveDown_Button" Content="DOWN" Margin="5 30 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                            </StackPanel>
 
-                                <!-- Move Up & Move Down Buttons -->
-                                <StackPanel Grid.Column="1">
-                                    <Button Command="{Binding MoveUpCommand}" x:Name="MoveUp_Button" Content="UP" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                    <Button Command="{Binding MoveDownCommand}" x:Name="MoveDown_Button" Content="DOWN" Margin="5 30 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                </StackPanel>
+                            <!-- Move Right Button -->
+                            <StackPanel Grid.Column="3">
+                                <Button Command="{Binding MoveRightCommand}" x:Name="MoveRight_Button" Content="RIGHT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
 
-                                <!-- Move Right Button -->
-                                <StackPanel Grid.Column="3">
-                                    <Button Command="{Binding MoveRightCommand}" x:Name="MoveRight_Button" Content="RIGHT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
+                    <!-- Column 1 - Suggestion Actions -->
+                    <StackPanel Grid.Column="2" MinHeight="125">
+                        <!-- Sub-Title "Suggestion" -->
+                        <TextBlock Text="Suggestion" Margin="0 3" FontFamily="Broadway" FontSize="15" TextAlignment="Center" Foreground="Black"/>
 
-                        <!-- Column 1 - Suggestion Actions -->
-                        <StackPanel Grid.Column="2" MinHeight="125">
-                            <!-- Sub-Title "Suggestion" -->
-                            <TextBlock Text="Suggestion" Margin="0 3" FontFamily="Broadway" FontSize="15" TextAlignment="Center" Foreground="Black"/>
+                        <!-- Grid for Suggestion Button and Dropdown Boxes -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                            <!-- Grid for Suggestion Button and Dropdown Boxes -->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                            <!-- Suggestion Suspects Title and Dropdown Box-->
+                            <StackPanel Grid.Column="0">
+                                <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                <ComboBox ItemsSource="{Binding Path=SuggestPeopleStrings}" SelectedValue="{Binding Path=SuggestionPerson}" x:Name="SuggestSuspect_Dropdown" SelectedIndex="0" Padding="2" />
+                                
+                            </StackPanel>
 
-                                <!-- Suggestion Suspects Title and Dropdown Box-->
-                                <StackPanel Grid.Column="0">
-                                    <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=SuggestPeopleStrings}" SelectedValue="{Binding Path=SuggestionPerson}" x:Name="SuggestSuspect_Dropdown" SelectedIndex="0" Padding="2">
-                                    </ComboBox>
-                                    <Button Command="{Binding DisproveSuggestionCommand}" IsEnabled="{Binding Path=DisproveEnabled}" x:Name="Disprove" Content="DISPROVE" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                    <ComboBox ItemsSource="{Binding Path=MyCards}" IsEnabled="{Binding Path= DisproveEnabled}" SelectedValue="{Binding Path=DisproveCard}" x:Name="DisproveSuggestion_Dropdown" Margin="0 0 0 0" SelectedIndex="0" Padding="2" >
-                                    </ComboBox>
-                                </StackPanel>
+                            <!-- Suggestion Button & Weapon Dropdown Box -->
+                            <StackPanel Grid.Column="1">
+                                <Button Command="{Binding MakeSuggestionCommand}" x:Name="Suggest_Button" Content="SUGGEST" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                <ComboBox ItemsSource="{Binding Path=SuggestWeaponStrings}" SelectedValue="{Binding Path=SuggestionWeapon}" x:Name="SuggestWeapon_Dropdown" SelectedIndex="0" Padding="2" />
+                                <Button Command="{Binding DisproveSuggestionCommand}" IsEnabled="{Binding Path=DisproveEnabled}" x:Name="Disprove" Content="DISPROVE" Margin="0 10 0 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <ComboBox ItemsSource="{Binding Path=MyCards}" IsEnabled="{Binding Path= DisproveEnabled}" SelectedValue="{Binding Path=DisproveCard}" x:Name="DisproveSuggestion_Dropdown" Margin="0 0 0 0" SelectedIndex="0" Padding="2" />
+                            </StackPanel>
 
-                                <!-- Suggestion Button & Weapon Dropdown Box -->
-                                <StackPanel Grid.Column="1">
-                                    <Button Command="{Binding MakeSuggestionCommand}" x:Name="Suggest_Button" Content="SUGGEST" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                    <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=SuggestWeaponStrings}" SelectedValue="{Binding Path=SuggestionWeapon}" x:Name="SuggestWeapon_Dropdown" SelectedIndex="0" Padding="2" >
-                                    </ComboBox>
-                                </StackPanel>
+                            <!-- Suggestion Room Title and Dropdown Box -->
+                            <StackPanel Grid.Column="3">
+                                <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
+                                <ComboBox ItemsSource="{Binding Path=SuggestRoomStrings}" SelectedValue="{Binding Path=SuggestionRoom}" x:Name="SuggestRoom_Dropdown" SelectedIndex="0" Padding="2" />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                    <!-- JoinGame Stuff -->
+                    <StackPanel Grid.Column="4">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="2*" />
+                            </Grid.ColumnDefinitions>
 
-                                <!-- Suggestion Room Title and Dropdown Box -->
-                                <StackPanel Grid.Column="3">
-                                    <TextBox Text="Room" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
-                                    <ComboBox ItemsSource="{Binding Path=SuggestRoomStrings}" SelectedValue="{Binding Path=SuggestionRoom}" x:Name="SuggestRoom_Dropdown" SelectedIndex="0" Padding="2" >
-                                    </ComboBox>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
-                        <!-- JoinGame Stuff -->
-                        <StackPanel Grid.Column="4">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-
-                                <!-- Suggestion Suspects Title and Dropdown Box-->
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock Text="Available Games" Margin="0 3" FontFamily="Broadway" FontSize="6" TextAlignment="Center" Foreground="Black"/>
-                                    <ListBox x:Name="AvailableGamesLB" ItemsSource="{Binding GameStrings}" SelectedItem="{Binding SelectedGame}" Height="75" Margin="5,0,0,0"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Text="Available Characters" Margin="0 3" FontFamily="Broadway" FontSize="6" TextAlignment="Center" Foreground="Black"/>
-                                    <ListBox x:Name="AvailableCharactersLB" ItemsSource="{Binding PeopleStrings}"  SelectedItem="{Binding SelectedPerson}" Height="75" Margin="5,0,0,0"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="User Name" Margin="0 3" FontFamily="Broadway" FontSize="12" TextAlignment="Center" Foreground="Black"/>
-                                    <TextBox x:Name="UserNameTB" Text="{Binding UserName}" Height="23" TextWrapping="Wrap" Margin="5,0,0,0"/>
-                                    <Button Command="{Binding JoinGameCommand}" x:Name="JoinGame" Content="JOIN" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-            </Grid>
+                            <!-- Suggestion Suspects Title and Dropdown Box-->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Available Games" Margin="0 3" FontFamily="Broadway" TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="Black" FontSize="11"/>
+                                <ListBox x:Name="AvailableGamesLB" ItemsSource="{Binding GameStrings}" SelectedItem="{Binding SelectedGame}" Height="75" Margin="2,0,2,0"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Available Characters" Margin="0,3,0,3" Padding="4, 0" FontFamily="Broadway" TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="Black" FontSize="11"/>
+                                <ListBox x:Name="AvailableCharactersLB" ItemsSource="{Binding PeopleStrings}"  SelectedItem="{Binding SelectedPerson}" Height="75" Margin="2,0,2,0"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="User Name" Margin="4.5" Padding="0, 5, 0, 5" FontFamily="Broadway" FontSize="11" TextAlignment="Center" Foreground="Black"/>
+                                <TextBox x:Name="UserNameTB" Text="{Binding UserName}" Height="23" TextWrapping="Wrap" TextAlignment="Center"/>
+                                <Button Command="{Binding JoinGameCommand}" x:Name="JoinGame" Content="JOIN" Margin="0 10 0 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </StackPanel>
     </Border>
 </Window>
