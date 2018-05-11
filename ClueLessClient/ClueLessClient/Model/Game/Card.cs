@@ -52,9 +52,9 @@ namespace ClueLessClient.Model.Game
     {
         // Instance variables
         [DataMember]
-        public CardType cardType { get; }
+        public CardType cardType { get; set; }
         [DataMember]
-        public String cardValue { get; }
+        public String cardValue { get; set; }
 
         // Constructors
         // Usage:
