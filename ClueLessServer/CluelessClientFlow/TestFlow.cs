@@ -22,8 +22,12 @@ namespace CluelessClientFlow
             {
                 // Success
                 var lobbies = connect.Lobbies.GetLobbies();
+                Assert.IsNotNull(lobbies);
                 var lobby = connect.Lobbies.CreateLobby();
+                Assert.IsNotNull(lobby);
                 lobbies = connect.Lobbies.GetLobbies();
+                Assert.IsNotNull(lobbies);
+                Assert.AreNotEqual(0, lobbies.Count);
 
                 // Harry is host, he is already in game
                 Assert.IsFalse(connect.Lobbies.JoinLobby(lobby));
@@ -105,6 +109,37 @@ namespace CluelessClientFlow
                 //// Make sure each hand is unique
                 //Assert.AreNotEqual(previousPlayersCards, cards);
                 //previousPlayersCards = cards;
+            }
+
+            // take turn
+            Assert.IsTrue(connect.registerAsPlayer("Harry Potter"));
+            {
+                // Get game state to verify correct information
+                Game game = connect.Gameplay.GetState();
+                Assert.IsNotNull(game);
+
+                // API not complete
+                Command command = connect.Gameplay.WaitForCommand();
+                // It is Harry's turn, this returns a 'Take turn' command
+                Assert.AreEqual(CommandType.TakeTurn, command.command);
+
+                bool successful = connect.Gameplay.MovePlayerTo(new Location(0, 0, "Boardroom"));
+                // Assert.IsTrue(successful);
+
+                SuggestionResult result = connect.Gameplay.MakeSuggestion(new Accusation(Room.Ballroom, Suspect.Mustard, Weapon.Pipe));
+                // if null, no one could disprove
+                // Otherwise, result.card is the proof, and result.playerName is the owner of 'card'
+
+                // This is called by the 'other' player, not by Harry
+                successful = connect.Gameplay.DisproveSuggestion(new Card(Weapon.Pipe));
+
+                bool? correct = connect.Gameplay.MakeAccusation(new Accusation(Room.Ballroom, Suspect.Mustard, Weapon.Pipe));
+
+                successful = connect.Gameplay.EndTurn();
+                Assert.IsTrue(successful);
+
+                Accusation solution = connect.Gameplay.GetSolution();
+                Assert.IsNull(solution); // game is not finished. Solution not available until then
             }
         }
     }

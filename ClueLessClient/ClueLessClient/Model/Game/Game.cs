@@ -1,21 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ClueLessClient.Model.Game
 {
-    // TODO: Temporary hack to get code to build. Remove this
-    // line once Location is added to the project
-
+    [DataContract]
     public class Game
     {
+        // DataContract and DataMember serialize the variables to be
+        // sent over the network. Any added variables should be serialized.
+        [DataMember]
         private List<Player> players;  // Ryan changed from set to list
+        [DataMember]
         private Board board;
+        [DataMember]
         private Card[] caseFile;       // Casefile may be its own class, will leave as array for now
+        [DataMember]
         private int currentTurnIndex;  // The index in rotationOrders that starts with 0
+        [DataMember]
         public List<RealPlayer> rotationOrders;    // Also used for suggestions
+        [DataMember]
         public bool ended = false;
 
         private static readonly int MIN_PLAYERS = 3;
@@ -24,6 +31,7 @@ namespace ClueLessClient.Model.Game
         public Game()
         {
             players = new List<Player>();
+            rotationOrders = new List<RealPlayer>();
             currentTurnIndex = 0;
             // initialize these variables in 'startGame'
             board = null;

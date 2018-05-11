@@ -162,7 +162,6 @@
     <Compile Include="Models\AccusationModel.cs" />
     <Compile Include="Models\GameModel.cs" />
     <Compile Include="Helpers\PlayerDatabase.cs" />
-    <Compile Include="Models\GameStateModel.cs" />
     <Compile Include="Models\LocationModel.cs" />
     <Compile Include="Models\PlayerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

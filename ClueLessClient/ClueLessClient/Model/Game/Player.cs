@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ClueLessClient.Model.Game
 {
+    [DataContract]
     public class Player
     {
-        public string name { get; }
+        [DataMember]
+        public string name { get; set; }
+        [DataMember]
         public Location location { get; set; }
 
         public Player(string playerName)
@@ -26,8 +30,10 @@ namespace ClueLessClient.Model.Game
         }
     }
 
+    [DataContract]
     public class RealPlayer : Player
     {
+        [DataMember]
         public Card[] cards { set; get; }
 
         public RealPlayer(string playerName)
