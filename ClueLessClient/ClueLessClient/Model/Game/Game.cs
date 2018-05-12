@@ -25,9 +25,7 @@ namespace ClueLessClient.Model.Game
 
         private static readonly int MIN_PLAYERS = 3;
         private static readonly int MAX_PLAYERS = 6;
-
-        public EventHandler AddPlayerToRoomEvent;
-
+        
         public Game()
         {
             players = new List<Player>();
@@ -170,6 +168,10 @@ namespace ClueLessClient.Model.Game
             }
         }
 
+        public Board getBoard()
+        {
+            return board;
+        }
         // returns the first player after 'player' who can disprove the
         // accusation. If no other player can disprove, null is returned.
         public Player makeSuggestion(string player, Accusation accusation)
