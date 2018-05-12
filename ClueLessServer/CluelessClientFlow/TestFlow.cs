@@ -102,13 +102,12 @@ namespace CluelessClientFlow
                 Assert.IsTrue(connect.registerAsPlayer(playerName));
                 var cards = connect.Gameplay.GetPlayerHand();
 
-                // TODO: this is not implemented in Game.cs yet
-                //Assert.IsNotNull(cards);
-                //Assert.AreNotEqual(0, cards.Count);
+                Assert.IsNotNull(cards);
+                Assert.AreNotEqual(0, cards.Count);
 
                 //// Make sure each hand is unique
-                //Assert.AreNotEqual(previousPlayersCards, cards);
-                //previousPlayersCards = cards;
+                Assert.AreNotEqual(previousPlayersCards, cards);
+                previousPlayersCards = cards;
             }
 
             // take turn
