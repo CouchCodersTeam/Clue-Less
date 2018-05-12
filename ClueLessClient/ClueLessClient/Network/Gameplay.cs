@@ -40,12 +40,23 @@ namespace ClueLessClient.Network
             return null;
         }
 
-        public async Task<Command> WaitForCommand()
+        // For testing purpose ONLY!!
+        public void TestOnlySetLastSeenCommand(Command command)
+        {
+            lastSeenCommand = command;
+        }
+
+        public Command WaitForCommand()
+        {
+            return WaitForCommandAsync().Result;
+        }
+
+        public async Task<Command> WaitForCommandAsync()
         {
             // implement polling
             do
             {
-                var response = client.GetAsync("/command").Result;
+                var response = await client.GetAsync("/command").ConfigureAwait(false);
                 if (response.IsSuccessStatusCode)
                 {
                     Command command = Json.fromJson<Command>(response);
@@ -97,7 +108,7 @@ namespace ClueLessClient.Network
                     return null;
 
                 // Else, wait for disprove command
-                var disproveResponse = WaitForCommand().Result;
+                var disproveResponse = WaitForCommand();
 
                 if (disproveResponse.command == CommandType.DisproveResult)
                     return (DisproveData)disproveResponse.data;

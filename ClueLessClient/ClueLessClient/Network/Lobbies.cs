@@ -55,11 +55,18 @@ namespace ClueLessClient.Network
 
         public bool WaitForGameStart()
         {
+            return WaitForGameStartAsync().Result;
+        }
+
+        public async Task<bool> WaitForGameStartAsync()
+        {
             HttpResponseMessage response;
             do
             {
                 // TODO: Need to be able to break out of this loop in order to 'Leave Game'
-                response = client.GetAsync("/games/begin").Result;
+                response = await client.GetAsync("/games/begin").ConfigureAwait(false);
+                if (response.StatusCode == HttpStatusCode.RequestTimeout)
+                    await Task.Delay(3000);
 
             } while (response.StatusCode == HttpStatusCode.RequestTimeout);
 
