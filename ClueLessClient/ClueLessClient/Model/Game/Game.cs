@@ -111,35 +111,35 @@ namespace ClueLessClient.Model.Game
                 rotationOrders[i].cards = hands[i];
             }
 
-            if (player[0] != null) 
+            if (players[0] != null) 
             {
-                board.MovePlayer(player[0], new Location(0,3,"Hallway")); 
-                player[0].character = Suspect.Scarlet;
+                board.MovePlayer(players[0], new Location(0,3,"Hallway")); 
+                players[0].character = Suspect.Scarlet;
             }
-            if (player[1] != null)
+            if (players[1] != null)
             {
-                board.MovePlayer(player[1], new Location(1,4,"Hallway")); 
-                player[1].character = Suspect.Mustard;
+                board.MovePlayer(players[1], new Location(1,4,"Hallway")); 
+                players[1].character = Suspect.Mustard;
             }
-            if (player[2] != null)
+            if (players[2] != null)
             {
-                board.MovePlayer(player[2], new Location(4,3,"Hallway")); 
-                player[2].character = Suspect.White;
+                board.MovePlayer(players[2], new Location(4,3,"Hallway")); 
+                players[2].character = Suspect.White;
             }
-            if (player[3] != null)
+            if (players[3] != null)
             {
-                board.MovePlayer(player[3], new Location(4,1,"Hallway")); 
-                player[3].character = Suspect.Green;
+                board.MovePlayer(players[3], new Location(4,1,"Hallway")); 
+                players[3].character = Suspect.Green;
             }
-            if (player[4] != null)
+            if (players[4] != null)
             {
-                board.MovePlayer(player[4], new Location(3,0,"Hallway")); 
-                player[4].character = Suspect.Peacock;
+                board.MovePlayer(players[4], new Location(3,0,"Hallway")); 
+                players[4].character = Suspect.Peacock;
             }
-            if (player[5] != null)
+            if (players[5] != null)
             {
-                board.MovePlayer(player[5], new Location(1,0,"Hallway")); 
-                player[5].character = Suspect.Plum;
+                board.MovePlayer(players[5], new Location(1,0,"Hallway")); 
+                players[5].character = Suspect.Plum;
             }
            
 

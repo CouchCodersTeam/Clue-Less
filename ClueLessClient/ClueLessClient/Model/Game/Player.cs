@@ -14,6 +14,8 @@ namespace ClueLessClient.Model.Game
         public string name { get; set; }
         [DataMember]
         public Location location { get; set; }
+        [DataMember]
+        public Suspect character { get; set; }
 
         public Player(string playerName)
         {
