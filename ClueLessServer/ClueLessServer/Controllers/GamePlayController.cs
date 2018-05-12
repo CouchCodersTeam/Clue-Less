@@ -33,7 +33,7 @@ namespace ClueLessServer.Controllers
             return Ok(cards);
         }
 
-        [Route("charaters")]
+        [Route("characters")]
         [HttpGet]
         public IHttpActionResult GetAvailableCharacters()
         {
