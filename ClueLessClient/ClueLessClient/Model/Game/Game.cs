@@ -199,7 +199,13 @@ namespace ClueLessClient.Model.Game
         // accusation. If no other player can disprove, null is returned.
         public Player makeSuggestion(string player, Accusation accusation)
         {
-            return null;
+            foreach (Player player in players)
+                {
+                    if(player.hasCardIn(accusation) && !player.Name.Equals(playerName))
+                        {
+                        return player; // Return first player with a card in the suggestion to disprove
+                        }
+                }
         }
 
         // Returns true/false if accusation is correct. If false, 'player'

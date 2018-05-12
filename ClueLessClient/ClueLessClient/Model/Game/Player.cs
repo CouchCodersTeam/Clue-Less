@@ -30,6 +30,11 @@ namespace ClueLessClient.Model.Game
             Player other = (Player)obj;
             return this.name.Equals(other.name);
         }
+
+        public bool hasCardIn(Accusation accusation)
+            {
+            return cards.Any(new Card(accusation.suspect), new Card(accusation.weapon), new Card(accusation.room));
+            }
     }
 
     [DataContract]
