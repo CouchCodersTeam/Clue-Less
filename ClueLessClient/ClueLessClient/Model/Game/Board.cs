@@ -23,67 +23,85 @@ namespace ClueLessClient.Model.Game
             // the row array (Location[5][]), then initialize each row with a new
             // Location[5]
             // locations = new Location[5,5];
-            locations = new Location[5][];
-            for (int count = 0; count < 5; count++)
+            string[][] roomNames = new string[][]
             {
-                locations[count] = new Location[5];
+                new string[]{ "Study",         "Hallway",  "Hall",      "Hallway",  "Lounge"},
+
+                new string[]{ "Hallway",       null,       "Hallway",   null,       "Hallway"},
+
+                new string[]{ "Library",       "Hallway",  "Billiard",  "Hallway",  "Dining"},
+
+                new string[]{ "Hallway",       null,       "Hallway",   null,       "Hallway"},
+
+                new string[]{ "Conservatory",  "Hallway",  "Ballroom",  "Hallway",  "Kitchen"}
+            };
+
+            locations = new Location[roomNames.Length][];
+            for (int count = 0; count < locations.Length; count++)
+            {
+                locations[count] = new Location[roomNames[count].Length];
             }
 
-            locations[0][0] = new Location(0, 0, "Study");
-            locations[0][2] = new Location(0, 2, "Hall");
-            locations[0][4] = new Location(0, 4, "Lounge");
-            locations[2][0] = new Location(2, 0, "Library");
-            locations[2][2] = new Location(2, 2, "Billiard");
-            locations[2][4] = new Location(2, 4, "Dining");
-            locations[4][0] = new Location(4, 0, "Conservatory");
-            locations[4][2] = new Location(4, 2, "Ballroom");
-            locations[4][4] = new Location(4, 4, "Kitchen");
+            // rows are 'y', cols are 'x'
+            for (int row = 0; row < roomNames.Length; row++)
+            {
+                string[] rowValues = roomNames[row];
+                for (int col = 0; col < rowValues.Length; col++)
+                {
+                    var roomName = rowValues[col];
+                    if (roomName != null)
+                        locations[row][col] = new Location(col, row, roomName);
+                }
+            }
+        }
 
-            locations[0][1] = new Location(0, 1, "Hallway");
-            locations[0][3] = new Location(0, 3, "Hallway");
-            locations[2][1] = new Location(2, 1, "Hallway");
-            locations[2][3] = new Location(2, 3, "Hallway");
-            locations[4][1] = new Location(4, 1, "Hallway");
-            locations[4][3] = new Location(4, 3, "Hallway");
-            locations[1][0] = new Location(1, 0, "Hallway");
-            locations[1][2] = new Location(1, 2, "Hallway");
-            locations[1][4] = new Location(1, 4, "Hallway");
-            locations[3][0] = new Location(3, 0, "Hallway");
-            locations[3][2] = new Location(3, 2, "Hallway");
-            locations[3][4] = new Location(3, 4, "Hallway");
+        public bool MovePlayer(Player player, Location loc)
+        {
+            if (player.location != null)
+            {
+                // Player should have real location object
+                player.location.occupants.Remove(player);
+            }
+
+            Location newLocation = GetLocation(loc.xCoordinate, loc.yCoordinate);
+
+            newLocation.occupants.Add(player);
+            player.location = newLocation;
+
+            return true;
         }
 
         public Location GetLocation(int x, int y)
         {
-            return locations[x][y];
+            return locations[y][x];
         }
 
         public Location UpFrom(Location loc)
         {
             if (loc == null || loc.yCoordinate == 0)
                 return null;
-            return locations[loc.xCoordinate][loc.yCoordinate - 1];
+            return locations[loc.yCoordinate - 1][loc.xCoordinate];
         }
 
         public Location DownFrom(Location loc)
         {
             if (loc == null || loc.yCoordinate >= locations[loc.xCoordinate].Length - 1)
                 return null;
-            return locations[loc.xCoordinate][loc.yCoordinate + 1];
+            return locations[loc.yCoordinate + 1][loc.xCoordinate];
         }
 
         public Location LeftFrom(Location loc)
         {
             if (loc == null || loc.xCoordinate == 0)
                 return null;
-            return locations[loc.xCoordinate - 1][loc.yCoordinate];
+            return locations[loc.yCoordinate][loc.xCoordinate - 1];
         }
 
         public Location RightFrom(Location loc)
         {
             if (loc == null || loc.yCoordinate >= locations.Length - 1)
                 return null;
-            return locations[loc.xCoordinate + 1][loc.yCoordinate];
+            return locations[loc.yCoordinate][loc.xCoordinate + 1];
         }
     }
 

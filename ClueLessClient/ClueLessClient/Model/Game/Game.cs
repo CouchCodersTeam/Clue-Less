@@ -109,12 +109,37 @@ namespace ClueLessClient.Model.Game
                 rotationOrders[i].cards = hands[i];
             }
 
-            // TODO: set player locations
-            foreach (var player in players)
+            if (players[0] != null) 
             {
-                // FIXME: this is a hack to prevent crashes
-                player.location = new Location(0, 0, "My Room");
+                board.MovePlayer(players[0], new Location(0,3,"Hallway")); 
+                players[0].character = Suspect.Scarlet;
             }
+            if (players[1] != null)
+            {
+                board.MovePlayer(players[1], new Location(1,4,"Hallway")); 
+                players[1].character = Suspect.Mustard;
+            }
+            if (players[2] != null)
+            {
+                board.MovePlayer(players[2], new Location(4,3,"Hallway")); 
+                players[2].character = Suspect.White;
+            }
+            if (players[3] != null)
+            {
+                board.MovePlayer(players[3], new Location(4,1,"Hallway")); 
+                players[3].character = Suspect.Green;
+            }
+            if (players[4] != null)
+            {
+                board.MovePlayer(players[4], new Location(3,0,"Hallway")); 
+                players[4].character = Suspect.Peacock;
+            }
+            if (players[5] != null)
+            {
+                board.MovePlayer(players[5], new Location(1,0,"Hallway")); 
+                players[5].character = Suspect.Plum;
+            }
+           
 
         }
 

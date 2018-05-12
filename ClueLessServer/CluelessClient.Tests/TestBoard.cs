@@ -38,14 +38,14 @@ namespace CluelessClient.Tests
 
             Assert.AreEqual(new Hallway(2, 3), loc);
 
-//            Assert.AreEqual(new Location(2, 2, "Billiard"), board.UpFrom(loc));
-//            Assert.AreEqual(new Location(2, 4, "Dining"), board.DownFrom(loc));
-//            Assert.AreEqual(new Location(1, 3, "Billiard"), board.LeftFrom(loc));
-//            Assert.AreEqual(new Location(3, 3, "Billiard"), board.RightFrom(loc));
+            Assert.AreEqual(new Location(2, 2, "Billiard"), board.UpFrom(loc));
+            Assert.AreEqual(new Location(2, 4, "Ballroom"), board.DownFrom(loc));
+            Assert.IsNull(board.LeftFrom(loc));
+            Assert.IsNull(board.RightFrom(loc));
 
 
-//            Assert.ReferenceEquals(board.GetLocation(1, 0), board.RightFrom(loc));
-//            Assert.ReferenceEquals(board.GetLocation(0, 1), board.DownFrom(loc));
+            Assert.ReferenceEquals(board.GetLocation(2, 2), board.UpFrom(loc));
+            Assert.ReferenceEquals(board.GetLocation(2, 4), board.DownFrom(loc));
 
 
             loc = board.GetLocation(4, 4);
