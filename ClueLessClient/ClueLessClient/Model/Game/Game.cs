@@ -1,3 +1,4 @@
+using ClueLessClient.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -24,6 +25,8 @@ namespace ClueLessClient.Model.Game
 
         private static readonly int MIN_PLAYERS = 3;
         private static readonly int MAX_PLAYERS = 6;
+
+        public EventHandler AddPlayerToRoomEvent;
 
         public Game()
         {
@@ -112,7 +115,9 @@ namespace ClueLessClient.Model.Game
             foreach (var player in players)
             {
                 // FIXME: this is a hack to prevent crashes
-                player.location = new Location(1, 1, "My Room");
+                player.location = new Location(0, 0, "My Room");
+                //var args = new EventArgStructures.AddPlayerEventCommand(player.name, 1, 1);
+                //AddPlayerToRoomEvent(this, args);
             }
 
         }
@@ -144,6 +149,10 @@ namespace ClueLessClient.Model.Game
             }
         }
 
+        public List<Player> getPlayers()
+        {
+            return players;
+        }
         // TODO: getAvailableCharacters(), chooseCharacter()
         // Ryan doesn't care too much for this feature. Characters
         // could be assigned rather than chosen to make the setup

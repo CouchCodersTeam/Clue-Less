@@ -59,9 +59,9 @@ namespace ClueLessClient.Model.Game
     public class Location
     {
         [DataMember]
-        private int xCoordinate { get; set; }
+        public int xCoordinate { get; set; }
         [DataMember]
-        private int yCoordinate { get; set; }
+        public int yCoordinate { get; set; }
         [DataMember]
         public string locationName { get; set; }
         [DataMember]

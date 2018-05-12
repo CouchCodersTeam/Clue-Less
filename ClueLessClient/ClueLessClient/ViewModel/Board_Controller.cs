@@ -14,13 +14,15 @@ namespace ClueLessClient.ViewModel
     {
         //These enums might make more sense if defined elsewhere
         public enum Person { Scarlet, Mustard, Plum, Peacock, Green, White, None };
-        public enum Room { Study, Hall, Lounge, Library, Billiard, Dining, Conservatory, Ballroom, Kitchen,
+        public enum Room { None, Study, Hall, Lounge, Library, Billiard, Dining, Conservatory, Ballroom, Kitchen,
             StudyHall_Hallway, HallLounge_Hallway, StudyLibrary_Hallway, HallBilliardRoom_Hallway,
             LoungeDiningRoom_Hallway, LibraryBilliardRoom_Hallway, BilliardRoomDiningRoom_Hallway,
             LibraryConservatory_Hallway, BilliardRoomBallroom_Hallway, DiningRoomKitchen_Hallway,
-            ConservatoryBallroom_Hallway, BallroomKitchen_Hallway, None }
+            ConservatoryBallroom_Hallway, BallroomKitchen_Hallway }
 
         public enum Weapon { Candlestick, Knife, Rope, Revolver, LeadPipe, Wrench, None };
+
+        public Room[,] Board = new Room[6,6];
 
         //Used when receiving info on where people are located from the client
         public struct PersonLocation
@@ -151,7 +153,7 @@ namespace ClueLessClient.ViewModel
             GameStrings = new ObservableCollection<string>();
             UserName = "Type User Name";
             RaisePropertyChangedEvent("UserName");
-            
+
             AccusePeopleStrings = new ObservableCollection<string>();
             AccusePeopleStrings.Add("Miss Scarlet");
             AccusePeopleStrings.Add("Col Mustard");
@@ -233,6 +235,31 @@ namespace ClueLessClient.ViewModel
                 { Room.BallroomKitchen_Hallway, BallroomKitchen_HallwayOccupant }
             };
 
+            //Setup board
+            Board[0, 0] = Room.Study;
+            Board[1, 0] = Room.StudyHall_Hallway;
+            Board[2, 0] = Room.Hall;
+            Board[3, 0] = Room.HallLounge_Hallway;
+            Board[4, 0] = Room.Lounge;
+            Board[0, 1] = Room.StudyLibrary_Hallway;
+            Board[3, 1] = Room.HallBilliardRoom_Hallway;
+            Board[5, 1] = Room.LoungeDiningRoom_Hallway;
+
+            Board[0, 2] = Room.Library;
+            Board[1, 2] = Room.LibraryBilliardRoom_Hallway;
+            Board[2, 2] = Room.Billiard;
+            Board[3, 2] = Room.BilliardRoomDiningRoom_Hallway; 
+            Board[4, 2] = Room.Dining;
+
+            Board[0, 3] = Room.LibraryConservatory_Hallway;
+            Board[2, 3] = Room.BilliardRoomBallroom_Hallway;
+            Board[4, 3] = Room.DiningRoomKitchen_Hallway;
+
+            Board[0, 4] = Room.Conservatory;
+            Board[1, 4] = Room.ConservatoryBallroom_Hallway;
+            Board[2, 4] = Room.Ballroom;
+            Board[3, 4] = Room.BallroomKitchen_Hallway;
+            Board[4, 4] = Room.Kitchen;
             /*
             client.MoveEvent += this.HandleMoveEvent;
             client.SuggestionEvent += this.HandleDisprovingSuggestionEvent;
@@ -245,7 +272,7 @@ namespace ClueLessClient.ViewModel
         }
 
         //Moves a person from one location to another location
-        void MovePerson(Person person, Room fromHere, Room toHere)
+        void MovePerson(string person, Room fromHere, Room toHere)
         {
             if(RemovePersonFromRoom(person, fromHere))
             {
@@ -254,34 +281,37 @@ namespace ClueLessClient.ViewModel
             else
             {
                 //Can't move someone from one room to another room if they aren't in the room they're coming from!
-                MessageBox.Show($"Move Command Failed: " + person.ToString() + " was not in the "+ fromHere);
+                MessageBox.Show($"Move Command Failed: " + person + " was not in the "+ fromHere);
             }
         }
 
         //Remove a person from a room
-        bool RemovePersonFromRoom(Person person, Room room)
+        bool RemovePersonFromRoom(string person, Room room)
         {
             bool success = false;
-            if (RoomContents[room].Contains(person.ToString()))
+            if (RoomContents[room].Contains(person))
             {
                 success = true;
-                RoomContents[room].Remove(person.ToString());
+                RoomContents[room].Remove(person);
             }
             return success;
         }
 
         //Adds a person to a room if they weren't already in that roo
-        bool AddPersonToRoom(Person person, Room room)
+        bool AddPersonToRoom(string person, Room room)
         {
             bool success = false;
-            if (!RoomContents[room].Contains(person.ToString()))
+            if (room != Room.None)
             {
-                success = true;
-                RoomContents[room].Add(person.ToString());
-            }
-            else
-            {
-                MessageBox.Show($"Add Person to Room Command Failed: " + person.ToString() + " was already in the " + room);
+                if (!RoomContents[room].Contains(person))
+                {
+                    success = true;
+                    RoomContents[room].Add(person);
+                }
+                else
+                {
+                    MessageBox.Show($"Add Person to Room Command Failed: " + person.ToString() + " was already in the " + room);
+                }
             }
             return success;
         }
@@ -420,6 +450,15 @@ namespace ClueLessClient.ViewModel
                 {
                     AddCardToHand(card.cardValue);
                 }
+
+                ClueLessClient.Model.Game.Game game = connect.Gameplay.GetState();
+
+                List<Model.Game.Player> players = game.getPlayers();
+                foreach(Model.Game.Player player in players)
+                {
+                    AddPersonToRoom(player.name, Board[player.location.xCoordinate, player.location.yCoordinate]);
+                }
+
             }
            
         }
@@ -455,6 +494,13 @@ namespace ClueLessClient.ViewModel
             EventArgStructures.MoveEventCommand moveData = (EventArgStructures.MoveEventCommand) m;
 
             MovePerson(moveData.p, moveData.from, moveData.to);
+        }
+
+        void HandleAddPlayerEvent(object sender, EventArgs m)
+        {
+            EventArgStructures.AddPlayerEventCommand addData = (EventArgStructures.AddPlayerEventCommand)m;
+
+            AddPersonToRoom(addData.person, Board[addData.x, addData.y]);
         }
 
         void HandleGameOverEvent(object sender, EventArgs m)

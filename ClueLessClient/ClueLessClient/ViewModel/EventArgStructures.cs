@@ -10,15 +10,29 @@ namespace ClueLessClient.ViewModel
     {
         public class MoveEventCommand : EventArgs
         {
-            public Board_Controller.Person p;
+            public string p;
             public Board_Controller.Room from;
             public Board_Controller.Room to;
 
-            public MoveEventCommand(Board_Controller.Person p, Board_Controller.Room from, Board_Controller.Room to)
+            public MoveEventCommand(string p, Board_Controller.Room from, Board_Controller.Room to)
             {
                 this.p = p;
                 this.from = from;
                 this.to = to;
+            }
+        }
+
+        public class AddPlayerEventCommand : EventArgs
+        {
+            public string person;
+            public int x;
+            public int y;
+
+            public AddPlayerEventCommand(string person, int x, int y)
+            {
+                this.person = person;
+                this.x = x;
+                this.y = y;
             }
         }
 
