@@ -65,7 +65,17 @@ namespace ClueLessClient.ViewModel
         set
             {
                 _UserName = value;
-}
+            }
+        }
+
+        private string _CreateGameName;
+        public string CreateGameName
+        {
+            get { return _CreateGameName; }
+            set
+            {
+                _CreateGameName = value;
+            }
         }
 
         //Room contents
@@ -149,8 +159,11 @@ namespace ClueLessClient.ViewModel
 
             PeopleStrings = new ObservableCollection<string>();
             GameStrings = new ObservableCollection<string>();
-            UserName = "Type Name";
+            UserName = "Type User Name";
             RaisePropertyChangedEvent("UserName");
+
+            CreateGameName = "Type Game Name";
+            RaisePropertyChangedEvent("CreateGameName");
 
             AccusePeopleStrings = new ObservableCollection<string>();
             AccusePeopleStrings.Add("Miss Scarlet");
@@ -385,6 +398,34 @@ namespace ClueLessClient.ViewModel
             else
             {
                 MessageBox.Show("Failed to join game.  Please try again.");
+            }*/
+        }
+
+        //Creates a new game
+        //May add calls into the client to search/connect to a server
+        private void CreateGame()
+        {/*
+            if (client.CreateGame(CreateGameName, SelectedPerson, UserName))
+            {
+                List<string> cards = client.GetCards();
+                foreach (string card in cards)
+                {
+                    AddCardToHand(card);
+                }
+
+                List<Board_Controller.PersonLocation> boardState = client.GetBoardState();
+
+                foreach (Board_Controller.PersonLocation p in boardState)
+                {
+                    AddPersonToRoom(p.person, p.room);
+                }
+
+                //ToDo: Testing this functionality make sure to remove from final version
+                //client.DisproveSuggestion();
+            }
+            else
+            {
+                MessageBox.Show("Failed to create game.  Please try again.");
             }*/
         }
         // End of the functions used to interact
