@@ -1,9 +1,6 @@
 ﻿using ClueLessClient.Model.Game;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ClueLessClient.Network
@@ -12,10 +9,12 @@ namespace ClueLessClient.Network
     {
         // circular dependency
         private HttpClient client;
+        private Command lastSeenCommand;
 
         public Gameplay(HttpClient client)
         {
             this.client = client;
+            lastSeenCommand = null;
         }
 
         public List<Card> GetPlayerHand()
@@ -41,13 +40,40 @@ namespace ClueLessClient.Network
             return null;
         }
 
-        public Command WaitForCommand()
+        public async Task<Command> WaitForCommand()
         {
-            var response = client.GetAsync("/command").Result;
-            if (response.IsSuccessStatusCode)
+            // implement polling
+            do
             {
-                return Json.fromJson<Command>(response);
-            }
+                var response = client.GetAsync("/command").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    Command command = Json.fromJson<Command>(response);
+                    if (command != null && command.command != CommandType.Wait)
+                    {
+                        if ((lastSeenCommand == null) ||
+                            !lastSeenCommand.Equals(command))
+                        {
+                            lastSeenCommand = command;
+                            return command;
+                        }
+                        else if (command.command == CommandType.TakeTurn)
+                        {
+                            // this is a repeated command that's okay to break on
+                            return command;
+                        }
+
+                    }
+
+                    await Task.Delay(3000);
+                }
+                else
+                {
+                    break;
+                }
+
+            } while (true);
+
             return null;
         }
 
@@ -60,13 +86,23 @@ namespace ClueLessClient.Network
         }
 
         // returns 'null' if no other player can disprove
-        public SuggestionResult MakeSuggestion(Accusation accusation)
+        public DisproveData MakeSuggestion(Accusation accusation)
         {
             var json = Json.toJson(accusation);
             var response = client.PostAsync("/suggest", new CluelessJsonContent(json)).Result;
             if (response.IsSuccessStatusCode)
             {
-                return Json.fromJson<SuggestionResult>(response);
+                var data = Json.fromJson<SuggestionData>(response);
+                if (data.disprovingPlayer == null)
+                    return null;
+
+                // Else, wait for disprove command
+                var disproveResponse = WaitForCommand().Result;
+
+                if (disproveResponse.command == CommandType.DisproveResult)
+                    return (DisproveData)disproveResponse.data;
+                else
+                    return null;
             }
             return null;
         }
@@ -81,13 +117,13 @@ namespace ClueLessClient.Network
 
         // returns 'null' on network failure, otherwise returns 'true' if
         // accusation was correct or 'false' if accusation was incorrect
-        public bool? MakeAccusation(Accusation accusation)
+        public AccusationData MakeAccusation(Accusation accusation)
         {
             var json = Json.toJson(accusation);
             var response = client.PostAsync("/accuse", new CluelessJsonContent(json)).Result;
             if (response.IsSuccessStatusCode)
             {
-                return Json.fromJson<bool>(response);
+                return Json.fromJson<AccusationData>(response);
             }
             return null;
         }

@@ -1,4 +1,6 @@
-﻿using ClueLessServer.Models;
+﻿using ClueLessClient.Network;
+using ClueLessServer.Helpers;
+using ClueLessServer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,13 +82,19 @@ namespace ClueLessServer.Controllers
 
             PlayerModel player = auth.player;
             GameModel game = auth.game;
-            // TODO: start game, signal to other players that game has started
+
             if (!game.Hostname.Equals(player.Name))
                 return Unauthorized();
 
             if (game.start())
             {
-                // TODO: inform other clients
+                var cmd = new Command { command = CommandType.GameStart };
+                CommandInterface.SetCommandForEveryone(game, cmd);
+
+                var startPlayer = game.getGame().getPlayerTurn().name;
+                cmd = new Command { command = CommandType.TakeTurn };
+                CommandInterface.SetCommandForEveryone(game, cmd);
+
                 return StatusCode(HttpStatusCode.NoContent);
             }
             else

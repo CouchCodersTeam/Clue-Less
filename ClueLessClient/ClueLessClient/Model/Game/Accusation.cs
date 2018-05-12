@@ -23,5 +23,16 @@ namespace ClueLessClient.Model.Game
             this.suspect = _suspect;
             this.weapon = _weapon;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Accusation other = (Accusation)obj;
+            return room.Equals(other.room) &&
+                suspect.Equals(other.suspect) &&
+                weapon.Equals(other.weapon);
+        }
     }
 }
