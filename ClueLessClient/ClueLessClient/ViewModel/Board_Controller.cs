@@ -334,53 +334,210 @@ namespace ClueLessClient.ViewModel
         //Insert client/game functions into these
         private void MoveUp()
         {
+            List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+            Model.Game.Board board = connect.Gameplay.GetState().getBoard();
+
+            foreach(Model.Game.Player player in players)
+            {
+                if(player.name == UserName)
+                {
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
+                    Model.Game.Location newLoc = board.UpFrom(loc);
+                    if (loc != newLoc)
+                    {
+                        if (connect.Gameplay.MovePlayerTo(newLoc))
+                        {
+                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            WaitForCommand();
+                        }
+                    }
+                }
+            }
             //client.MoveUp();
             
         }
 
         private void MoveDown()
         {
+            List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+            Model.Game.Board board = connect.Gameplay.GetState().getBoard();
+
+            foreach (Model.Game.Player player in players)
+            {
+                if (player.name == UserName)
+                {
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
+                    Model.Game.Location newLoc = board.DownFrom(loc);
+                    if (loc != newLoc)
+                    {
+                        if (connect.Gameplay.MovePlayerTo(newLoc))
+                        {
+                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            WaitForCommand();
+                        }
+                    }
+                }
+            }
             //client.MoveDown();
         }
 
         private void MoveLeft()
         {
+            List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+            Model.Game.Board board = connect.Gameplay.GetState().getBoard();
+
+            foreach (Model.Game.Player player in players)
+            {
+                if (player.name == UserName)
+                {
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
+                    Model.Game.Location newLoc = board.LeftFrom(loc);
+                    if (loc != newLoc)
+                    {
+                        if (connect.Gameplay.MovePlayerTo(newLoc))
+                        {
+                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            WaitForCommand();
+                        }
+                    }
+                }
+            }
             //client.MoveLeft();
         }
 
         private void MoveRight()
         {
+            List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+            Model.Game.Board board = connect.Gameplay.GetState().getBoard();
+
+            foreach (Model.Game.Player player in players)
+            {
+                if (player.name == UserName)
+                {
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
+                    Model.Game.Location newLoc = board.RightFrom(loc);
+                    if (loc != newLoc)
+                    {
+                        if (connect.Gameplay.MovePlayerTo(newLoc))
+                        {
+                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            WaitForCommand();
+                        }
+                    }
+                }
+            }
             //client.MoveRight();
         }
 
         private void ActivateLoungeSecretPassage()
         {
+            List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+            Model.Game.Board board = connect.Gameplay.GetState().getBoard();
+
+            foreach (Model.Game.Player player in players)
+            {
+                if (player.name == UserName)
+                {
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
+
+                    if (loc.isSecretPassage() && loc.xCoordinate == 4 && loc.yCoordinate == 0)
+                    {
+                        Model.Game.Location newLoc = board.GetLocation(0, 4);
+                        if (connect.Gameplay.MovePlayerTo(newLoc))
+                        {
+                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            WaitForCommand();
+                        }
+                    }
+                }
+            }
             //client.ActivateLoungeSecretPassage();
         }
 
         private void ActivateConservatorySecretPassage()
         {
+            List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+            Model.Game.Board board = connect.Gameplay.GetState().getBoard();
+
+            foreach (Model.Game.Player player in players)
+            {
+                if (player.name == UserName)
+                {
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
+
+                    if (loc.isSecretPassage() && loc.xCoordinate == 0 && loc.yCoordinate == 4)
+                    {
+                        Model.Game.Location newLoc = board.GetLocation(4, 0);
+                        if (connect.Gameplay.MovePlayerTo(newLoc))
+                        {
+                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            WaitForCommand();
+                        }
+                    }
+                }
+            }
             //client.ActivateConservatorySecretPassage();
         }
 
         private void ActivateKitchenSecretPassage()
         {
+            List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+            Model.Game.Board board = connect.Gameplay.GetState().getBoard();
+
+            foreach (Model.Game.Player player in players)
+            {
+                if (player.name == UserName)
+                {
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
+
+                    if (loc.isSecretPassage() && loc.xCoordinate == 4 && loc.yCoordinate == 4)
+                    {
+                        Model.Game.Location newLoc = board.GetLocation(0, 0);
+                        if (connect.Gameplay.MovePlayerTo(newLoc))
+                        {
+                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            WaitForCommand();
+                        }
+                    }
+                }
+            }
+            WaitForCommand();
             //client.ActivateKitchenSecretPassage();
         }
 
 
         private void ActivateStudySecretPassage()
         {
+            List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+            Model.Game.Board board = connect.Gameplay.GetState().getBoard();
+
+            foreach (Model.Game.Player player in players)
+            {
+                if (player.name == UserName)
+                {
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
+
+                    if (loc.isSecretPassage() && loc.xCoordinate == 0 && loc.yCoordinate == 0)
+                    {
+                        Model.Game.Location newLoc = board.GetLocation(4, 4);
+                        if (connect.Gameplay.MovePlayerTo(newLoc))
+                        {
+                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            WaitForCommand();
+                        }
+                    }
+                }
+            }
+            WaitForCommand();
             //client.ActivateStudySecretPassage();
         }
 
         private void MakeSuggestion()
         {
-            /*bool success = client.MakeSuggestion(ConvertStringToPerson(SuggestionPerson), 
-                                                ConvertStringToRoom(SuggestionRoom), 
-                                                ConvertStringToWeapon(SuggestionWeapon));*/
-
             MessageBox.Show($"You have suggested that " + SuggestionPerson + " killed the victim using the " + SuggestionWeapon + " in the " + SuggestionRoom);
+            Model.Game.Accusation suggestion = new Model.Game.Accusation(ConvertStringToRoom(SuggestionRoom), ConvertStringToPerson(SuggestionPerson), ConvertStringToWeapon(SuggestionWeapon));
+
+            connect.Gameplay.MakeSuggestion(suggestion);
         }
 
         private void MakeAccusation()
@@ -389,6 +546,9 @@ namespace ClueLessClient.ViewModel
                                                 ConvertStringToRoom(AccuseRoom),
                                                 ConvertStringToWeapon(AccuseWeapon));*/
             MessageBox.Show($"You have accused " + AccusePerson + " of killing the victim using the " + AccuseWeapon + " in the " + AccuseRoom);
+            Model.Game.Accusation accusation = new Model.Game.Accusation(ConvertStringToRoom(AccuseRoom), ConvertStringToPerson(AccusePerson), ConvertStringToWeapon(AccuseWeapon));
+
+            connect.Gameplay.MakeAccusation(accusation);
         }
 
         //Initializes the game
@@ -466,6 +626,81 @@ namespace ClueLessClient.ViewModel
 
         //Start of the list of event handlers that take data from the client
 
+
+        private void WaitForCommand()
+        {
+            var incCommand = connect.Gameplay.WaitForCommand();
+            if (incCommand.command == CommandType.MovePlayer)
+            {
+                MoveData data = (MoveData)incCommand.data;
+                List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+
+                foreach(Model.Game.Player player in players)
+                {
+                    if (player.name == data.playerName)
+                    {
+                        MovePerson(data.playerName, Board[player.location.xCoordinate, player.location.yCoordinate], Board[data.location.xCoordinate, data.location.yCoordinate]);
+                    }
+                }
+                WaitForCommand();
+            }
+            else if (incCommand.command == CommandType.TakeTurn)
+            {
+                MessageBox.Show("It's your turn");
+            }
+            else if (incCommand.command == CommandType.AccusationMade)
+            {
+                AccusationData data = (AccusationData)incCommand.data;
+                //TODO: Add logic for when this is received
+                MessageBoxResult result = MessageBox.Show(data.playerName + "Has accused " + data.accusation.suspect +
+                                                    " of killing the victim using the " + data.accusation.weapon +
+                                                    " in the " + data.accusation.room + ". Can you disprove this?",
+                                                    "Accusation Received", MessageBoxButton.YesNo);
+                WaitForCommand();
+            }
+            else if (incCommand.command == CommandType.DisproveResult)
+            {
+                //TODO: Add logic for when this is received
+                DisproveData data = (DisproveData)incCommand.data;
+
+                MessageBox.Show("The suggestion was disproven by " + data.disprovingPlayer + " by revealing " + data.card.cardValue);
+
+                WaitForCommand();
+            }
+            else if (incCommand.command == CommandType.SuggestionMade)
+            {
+                SuggestionData data = (SuggestionData)incCommand.data;
+                //TODO: Add logic for when this is received
+                MessageBoxResult result = MessageBox.Show(data.playerName + "Has suggested that " + data.accusation.suspect +
+                                                    " killed the victim using the " + data.accusation.weapon +
+                                                    " in the " + data.accusation.room + ". Can you disprove this?",
+                                                    "Suggestion Received", MessageBoxButton.YesNo);
+                //If the user says they can disprove the suggestion, enable the disprove button and combobox
+                //Added a call to tell the client to stop what it's doing until it receives the disprove info
+                //May not be the best idea, but I'm open to suggestions
+                if (result == MessageBoxResult.Yes)
+                {
+                    DisproveEnabled = true;
+                    RaisePropertyChangedEvent("DisproveEnabled");
+                }
+                else
+                {
+                    DisproveEnabled = false;
+                    RaisePropertyChangedEvent("DisproveEnabled");
+                    WaitForCommand();
+                }
+            }
+            else if (incCommand.command == CommandType.TurnEnd)
+            {
+                //TODO: Add logic for when this is received
+                WaitForCommand();
+            }
+            else if (incCommand.command == CommandType.Wait)
+            {
+                //TODO: Add logic for when this is received
+                WaitForCommand();
+            }
+        }
         //Start of the list of event handlers that take data from the client
         void HandleAddGameEvent(object sender, EventArgs m)
         {
@@ -493,7 +728,7 @@ namespace ClueLessClient.ViewModel
         {
             EventArgStructures.MoveEventCommand moveData = (EventArgStructures.MoveEventCommand) m;
 
-            MovePerson(moveData.p, moveData.from, moveData.to);
+            MovePerson(moveData.p, Board[moveData.fromX, moveData.fromY], Board[moveData.toX, moveData.toY]);
         }
 
         void HandleAddPlayerEvent(object sender, EventArgs m)
@@ -646,78 +881,78 @@ namespace ClueLessClient.ViewModel
         //Switch from string to enum
         //Needed this for some of my GUI -> Enum action
         //Probably not ideal...
-        Person ConvertStringToPerson(string personName)
+        Model.Game.Suspect ConvertStringToPerson(string personName)
         {
             switch (personName)
             {
                 case "Miss Scarlet":
-                    return Person.Scarlet;
+                    return Model.Game.Suspect.Scarlet;
                 case "Col Mustard":
-                    return Person.Mustard;
+                    return Model.Game.Suspect.Mustard;
                 case "Mrs White":
-                    return Person.White;
+                    return Model.Game.Suspect.White;
                 case "Mr Green":
-                    return Person.Green;
+                    return Model.Game.Suspect.Green;
                 case "Mrs Peacock":
-                    return Person.Peacock;
+                    return Model.Game.Suspect.Peacock;
                 case "Prof Plum":
-                    return Person.Plum;
+                    return Model.Game.Suspect.Plum;
                 default:
-                    return Person.None; //should trigger an error if this comes out...
+                    return Model.Game.Suspect.Scarlet; //should trigger an error if this comes out...
             }
         }
 
         //Switch from string to enum
         //Needed this for some of my GUI -> Enum action
         //Probably not ideal...
-        Weapon ConvertStringToWeapon(string weaponName)
+        Model.Game.Weapon ConvertStringToWeapon(string weaponName)
         {
             switch (weaponName)
             {
                 case "Candlestick":
-                    return Weapon.Candlestick;
+                    return Model.Game.Weapon.Candlestick;
                 case "Knife":
-                    return Weapon.Knife;
+                    return Model.Game.Weapon.Knife;
                 case "Rope":
-                    return Weapon.Rope;
+                    return Model.Game.Weapon.Rope;
                 case "Revolver":
-                    return Weapon.Revolver;
+                    return Model.Game.Weapon.Revolver;
                 case "Lead Pipe":
-                    return Weapon.LeadPipe;
+                    return Model.Game.Weapon.Pipe;
                 case "Wrench":
-                    return Weapon.Wrench;
+                    return Model.Game.Weapon.Wrench;
                 default:
-                    return Weapon.None; //should trigger an error if this comes out...
+                    return Model.Game.Weapon.Candlestick; //should trigger an error if this comes out...
             }
         }
 
         //Switch from string to enum
         //Needed this for some of my GUI -> Enum action
         //Probably not ideal...
-        Room ConvertStringToRoom(string roomName)
+        Model.Game.Room ConvertStringToRoom(string roomName)
         {
             switch (roomName)
             {
                 case "Study":
-                    return Room.Study;
+                    return Model.Game.Room.Study;
                 case "Hall":
-                    return Room.Hall;
+                    return Model.Game.Room.Hall;
                 case "Lounge":
-                    return Room.Lounge;
+                    return Model.Game.Room.Lounge;
                 case "Library":
-                    return Room.Library;
+                    return Model.Game.Room.Library;
                 case "Billiard Room":
-                    return Room.Billiard;
+                    return Model.Game.Room.Billiard;
                 case "Dining Room":
-                    return Room.Dining;
+                    return Model.Game.Room.Dining;
                 case "Conservatory":
-                    return Room.Conservatory;
+                    return Model.Game.Room.Conservatory;
                 case "Ballroom":
-                    return Room.Ballroom;
+                    return Model.Game.Room.Ballroom;
                 case "Kitchen":
-                    return Room.Kitchen;
+                    return Model.Game.Room.Kitchen;
                 default:
-                    return Room.None;
+                    return Model.Game.Room.Study;
             }
         }
     }
