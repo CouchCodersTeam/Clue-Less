@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 namespace ClueLessClient.Model.Game
 {
     [DataContract]
+    [KnownType(typeof(RealPlayer))]
+    [KnownType(typeof(DummyPlayer))]
     public class Player
     {
         [DataMember]
@@ -58,6 +60,7 @@ namespace ClueLessClient.Model.Game
         }
     }
 
+    [DataContract]
     public class DummyPlayer : Player
     {
         public DummyPlayer(string playerName)

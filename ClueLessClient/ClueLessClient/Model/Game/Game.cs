@@ -6,6 +6,9 @@ using System.Runtime.Serialization;
 namespace ClueLessClient.Model.Game
 {
     [DataContract]
+    [KnownType(typeof(Player))]
+    [KnownType(typeof(RealPlayer))]
+    [KnownType(typeof(DummyPlayer))]
     public class Game
     {
         // DataContract and DataMember serialize the variables to be
@@ -109,6 +112,12 @@ namespace ClueLessClient.Model.Game
                 rotationOrders[i].cards = hands[i];
             }
 
+            // fill in dummy players
+            for (int i = players.Count; i < MAX_PLAYERS; i++)
+            {
+                players.Add(new DummyPlayer("Dummy Player"));
+            }
+
             if (players[0] != null) 
             {
                 board.MovePlayer(players[0], new Location(0,3,"Hallway")); 
@@ -174,10 +183,6 @@ namespace ClueLessClient.Model.Game
         {
             return players;
         }
-        // TODO: getAvailableCharacters(), chooseCharacter()
-        // Ryan doesn't care too much for this feature. Characters
-        // could be assigned rather than chosen to make the setup
-        // less complex. He'll do the work for it if desired.
 
         public bool movePlayer(string playerName, Location location)
         {
@@ -188,8 +193,7 @@ namespace ClueLessClient.Model.Game
             if (location.locationName == "Hallway" && location.occupants.Count != 0) {
                 return false;
             } else {
-                player.location = location;
-                return true;
+                return board.MovePlayer(player, location);
             }
         }
 

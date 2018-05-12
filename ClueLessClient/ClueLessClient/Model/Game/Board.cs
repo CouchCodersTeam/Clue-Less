@@ -107,6 +107,7 @@ namespace ClueLessClient.Model.Game
 
     // Combination of Room and Hallway class in original design
     [DataContract]
+    [KnownType(typeof(RealPlayer))]
     public class Location
     {
         [DataMember]
@@ -115,7 +116,9 @@ namespace ClueLessClient.Model.Game
         public int yCoordinate { get; set; }
         [DataMember]
         public string locationName { get; set; }
-        [DataMember]
+
+        // If we serialize this, this is a self referencing loop since player
+        // has location, and location has player
         public List<Player> occupants = new List<Player>();
 
         public Location(int x, int y, string name)
@@ -181,7 +184,7 @@ namespace ClueLessClient.Model.Game
 
         public override bool Equals(object obj)
         {
-            if (obj == null)
+            if (obj == null || GetType() != obj.GetType())
                 return false;
 
             Location other = (Location)obj;
