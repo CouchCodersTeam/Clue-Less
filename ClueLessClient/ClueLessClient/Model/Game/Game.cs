@@ -98,6 +98,15 @@ namespace ClueLessClient.Model.Game
             caseFile[2] = new Card(weapon);
 
             // Distribute cards upon starting the game?
+            Card[] deck = Deck.newShuffledDeck();
+            // remove caseFile values
+            deck = Array.FindAll(deck, card => !inCaseFile(card));
+
+            Card[][] hands = Deck.shuffleDeck(deck, rotationOrders.Count);
+            for (int i = 0; i < rotationOrders.Count; i++)
+            {
+                rotationOrders[i].cards = hands[i];
+            }
 
             // TODO: set player locations
             foreach (var player in players)
@@ -106,6 +115,11 @@ namespace ClueLessClient.Model.Game
                 player.location = new Location(1, 1, "My Room");
             }
 
+        }
+
+        private bool inCaseFile(Card card)
+        {
+            return Array.Find(caseFile, c => c.Equals(card)) != null;
         }
 
         // returns the player whose turn it is
@@ -122,9 +136,9 @@ namespace ClueLessClient.Model.Game
         // returns the cards for the given player
         public Card[] getPlayerHand(string playerName)
         {
-            Player player = new RealPlayer(playerName);
-            if (player is RealPlayer) {
-                return ((RealPlayer)player).cards;
+            RealPlayer player = rotationOrders.Find(x => x.name.Equals(playerName));
+            if (player != null) {
+                return player.cards;
             } else {
                 return null;
             }
@@ -134,12 +148,6 @@ namespace ClueLessClient.Model.Game
         // Ryan doesn't care too much for this feature. Characters
         // could be assigned rather than chosen to make the setup
         // less complex. He'll do the work for it if desired.
-
-        // TODO: serialize() function. This is for the /state API
-        // to have the client assure that its Game object is in
-        // sync with the server's game object. This function definition
-        // probably doesn't belong in 'Game'
-
 
         public bool movePlayer(string playerName, Location location)
         {
