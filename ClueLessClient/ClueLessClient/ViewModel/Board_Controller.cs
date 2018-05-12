@@ -612,7 +612,7 @@ namespace ClueLessClient.ViewModel
                 }
 
                 ClueLessClient.Model.Game.Game game = connect.Gameplay.GetState();
-                game.MoveEvent += this.HandleMoveEvent;
+
                 List<Model.Game.Player> players = game.getPlayers();
                 foreach(Model.Game.Player player in players)
                 {
