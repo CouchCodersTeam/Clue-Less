@@ -53,6 +53,22 @@ namespace ClueLessClient.Model.Game
             locations[3][4] = new Location(3, 4, "Hallway");
         }
 
+        public bool MovePlayer(Player player, Location loc)
+        {
+            if (player.location != null)
+            {
+                // Player should have real location object
+                player.location.occupants.Remove(player);
+            }
+
+            Location newLocation = GetLocation(loc.xCoordinate, loc.yCoordinate);
+
+            newLocation.occupants.Add(player);
+            player.location = newLocation;
+
+            return true;
+        }
+
         public Location GetLocation(int x, int y)
         {
             return locations[x][y];
