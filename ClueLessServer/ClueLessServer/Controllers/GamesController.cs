@@ -93,7 +93,7 @@ namespace ClueLessServer.Controllers
 
                 var startPlayer = game.getGame().getPlayerTurn().name;
                 cmd = new Command { command = CommandType.TakeTurn };
-                CommandInterface.SetCommandForEveryone(game, cmd);
+                CommandInterface.SetCommandForPlayer(startPlayer, cmd);
 
                 return StatusCode(HttpStatusCode.NoContent);
             }
