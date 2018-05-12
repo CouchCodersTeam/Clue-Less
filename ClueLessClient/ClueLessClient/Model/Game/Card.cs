@@ -54,9 +54,17 @@ namespace ClueLessClient.Model.Game
         [DataMember]
         public CardType cardType { get; set; }
         [DataMember]
-        public String cardValue { get; set; }
+        public string cardValue { get; set; }
 
         // Constructors
+
+        // DO NO USE DEFAULT CONSTRUCTOR
+        // USE ONLY FOR SERIALIZATION/DESERIALIZATION
+        // USED BY THE SYSTEM ONLY
+        public Card()
+        {
+        }
+
         // Usage:
         // Card card = new Card(Room.Study);
         public Card(Room room)
@@ -95,6 +103,16 @@ namespace ClueLessClient.Model.Game
         public String GetCardValue()
         {
             return cardValue;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            Card other = (Card)obj;
+            return cardType.Equals(other.cardType) &&
+                cardValue.Equals(other.cardValue);
         }
 
         // Usage:

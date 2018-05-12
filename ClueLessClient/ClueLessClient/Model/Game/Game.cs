@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClueLessClient.Model.Game
 {
@@ -101,6 +98,13 @@ namespace ClueLessClient.Model.Game
             caseFile[2] = new Card(weapon);
 
             // Distribute cards upon starting the game?
+
+            // TODO: set player locations
+            foreach (var player in players)
+            {
+                // FIXME: this is a hack to prevent crashes
+                player.location = new Location(1, 1, "My Room");
+            }
 
         }
 

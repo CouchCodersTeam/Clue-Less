@@ -1,11 +1,8 @@
 ﻿using ClueLessClient.Model.Game;
 using ClueLessClient.Network;
+using ClueLessServer.Helpers;
 using ClueLessServer.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Web.Http;
 
 namespace ClueLessServer.Controllers
@@ -40,10 +37,21 @@ namespace ClueLessServer.Controllers
             if (auth.result != null)
                 return auth.result;
 
+            var gameModel = auth.game;
+            var game = gameModel.getGame();
+            var player = auth.player;
 
-            // TODO: this will require waiting/async behavior
-            Command command = new Command();
-            command.command = CommandType.TakeTurn;
+            bool isTurn = isPlayerTurn(game, player);
+            Command command = CommandInterface.GetCommand(gameModel, player);
+
+            if (isTurn)
+            {
+                if (command == null)
+                {
+                    command = new Command { command = CommandType.TakeTurn };
+                    CommandInterface.SetCommandForPlayer(player.Name, command);
+                }
+            }
 
             return Ok(command);
         }
@@ -58,10 +66,17 @@ namespace ClueLessServer.Controllers
 
             var game = auth.game.getGame();
             var player = auth.player;
+            
+            if (!isPlayerTurn(game, player))
+                return Unauthorized();
 
             if (game.movePlayer(player.Name, location))
             {
-                // TODO: notify other players of move
+                Command command = new Command();
+                command.command = CommandType.MovePlayer;
+                command.data = new MoveData{ playerName = player.Name, location = location};
+                CommandInterface.SetCommandForEveryone(auth.game, command);
+
                 return Created("", "");
             }
 
@@ -72,6 +87,7 @@ namespace ClueLessServer.Controllers
         [HttpPost]
         public IHttpActionResult MakeSuggestion([FromBody] Accusation accusation)
         {
+            var body = Request.Content.ReadAsStringAsync().Result;
             AuthResult auth = authorizeAndVerifyGameStart();
             if (auth.result != null)
                 return auth.result;
@@ -81,23 +97,31 @@ namespace ClueLessServer.Controllers
             var game = auth.game.getGame();
             var player = auth.player;
 
+            if (!isPlayerTurn(game, player))
+                return Unauthorized();
+
+            Command command = new Command();
+            command.command = CommandType.SuggestionMade;
+
+            CommandInterface.SetCommandForEveryone(auth.game, command);
+
+            SuggestionData data = new SuggestionData { playerName = player.Name, accusation = accusation };
             var disprovingPlayer = game.makeSuggestion(player.Name, accusation);
-            if (disprovingPlayer == null)
+            
+            if (disprovingPlayer != null)
             {
-                // TODO: notify other players that no one could disprove
-                return Created("", "");
+                data.disprovingPlayer = disprovingPlayer.name;
+                var disproveCmd = new Command{ command = CommandType.DisproveSuggestion, data = data };
+                CommandInterface.SetCommandForPlayer(disprovingPlayer.name, disproveCmd);
+
+                var waitCmd = new Command { command = CommandType.Wait };
+                CommandInterface.SetCommandForPlayer(player.Name, waitCmd);
             }
 
-            // Receive this from 'DisproveSuggestion'
-            SuggestionResult result = null;
+            command.data = data;
+            CommandInterface.SetCommandForEveryone(auth.game, command);
 
-            // WARNING: Complicated
-            // TODO: notify disprovingPlayer to disprove,
-            // take disprovingcard from disprovingPlayer's
-            // call to 'DisproveSuggestion() and return to 'player' in this
-            // call
-
-            return Created("","");
+            return Created("", data);
         }
 
         [Route("disprove")]
@@ -108,11 +132,20 @@ namespace ClueLessServer.Controllers
             if (auth.result != null)
                 return auth.result;
 
-            SuggestionResult result = new SuggestionResult();
-            result.card = card;
-            result.playerName = auth.player.Name;
+            // TODO: authorize call from correct player
 
-            // TODO: send card to player that is waiting in MakeSuggestion call
+            DisproveData result = new DisproveData();
+            result.card = card;
+            result.card = new Card(Weapon.Pipe);
+            result.disprovingPlayer = auth.player.Name;
+
+            // remove player's need to disprove suggestion
+            CommandInterface.SetCommandForPlayer(result.disprovingPlayer, null);
+
+            // set command for current player's turn
+            var playerName = auth.game.getGame().getPlayerTurn().name;
+            var resultCmd = new Command { command = CommandType.DisproveResult, data = result };
+            CommandInterface.SetCommandForPlayer(playerName, resultCmd);
 
             return Created("", "");
         }
@@ -128,17 +161,24 @@ namespace ClueLessServer.Controllers
             var game = auth.game.getGame();
             var player = auth.player;
 
-            bool isCorrect = game.makeAccusation(player.Name, accusation);
-            if (isCorrect)
-            {
-                // TODO: notify everyone of game win/end
-            }
-            else
-            {
-                // notify everyone of incorrect guess
-            }
+            if (!isPlayerTurn(game, player))
+                return Unauthorized();
 
-            return Created("", isCorrect);
+            bool isCorrect = game.makeAccusation(player.Name, accusation);
+            AccusationData data = new AccusationData {
+                accusation = accusation,
+                playerName = player.Name,
+                accusationCorrect = isCorrect
+            };
+
+            var cmd = new Command {
+                command = CommandType.AccusationMade,
+                data = data
+            };
+
+            CommandInterface.SetCommandForEveryone(auth.game, cmd);
+
+            return Created("", data);
         }
 
         [Route("finish")]
@@ -149,8 +189,19 @@ namespace ClueLessServer.Controllers
             if (auth.result != null)
                 return auth.result;
 
+            var game = auth.game.getGame();
+            var player = auth.player;
 
-            // TODO
+            if (!isPlayerTurn(game, player))
+                return Unauthorized();
+
+            game.nextPlayer();
+
+            var cmd = new Command { command = CommandType.TurnEnd };
+            CommandInterface.SetCommandForEveryone(auth.game, cmd);
+
+            // remove 'TakeTurn' command from current player
+            CommandInterface.SetCommandForPlayer(auth.player.Name, null);
 
             return Created("", "");
         }
@@ -169,6 +220,11 @@ namespace ClueLessServer.Controllers
 
             // Game must be over for this API to be called
             return Ok(game.getGame().getSolution());
+        }
+
+        private bool isPlayerTurn(Game game, PlayerModel player)
+        {
+            return game.getPlayerTurn().name.Equals(player.Name);
         }
     }
 }
