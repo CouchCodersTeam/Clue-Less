@@ -52,6 +52,39 @@ namespace ClueLessClient.Model.Game
             locations[3][2] = new Location(3, 2, "Hallway");
             locations[3][4] = new Location(3, 4, "Hallway");
         }
+
+        public Location GetLocation(int x, int y)
+        {
+            return locations[x][y];
+        }
+
+        public Location UpFrom(Location loc)
+        {
+            if (loc == null || loc.yCoordinate == 0)
+                return null;
+            return locations[loc.xCoordinate][loc.yCoordinate - 1];
+        }
+
+        public Location DownFrom(Location loc)
+        {
+            if (loc == null || loc.yCoordinate >= locations[loc.xCoordinate].Length - 1)
+                return null;
+            return locations[loc.xCoordinate][loc.yCoordinate + 1];
+        }
+
+        public Location LeftFrom(Location loc)
+        {
+            if (loc == null || loc.xCoordinate == 0)
+                return null;
+            return locations[loc.xCoordinate - 1][loc.yCoordinate];
+        }
+
+        public Location RightFrom(Location loc)
+        {
+            if (loc == null || loc.yCoordinate >= locations.Length - 1)
+                return null;
+            return locations[loc.xCoordinate + 1][loc.yCoordinate];
+        }
     }
 
     // Combination of Room and Hallway class in original design
@@ -126,6 +159,17 @@ namespace ClueLessClient.Model.Game
                 (xCoordinate == 1 && yCoordinate == 3) ||
                 (xCoordinate == 3 && yCoordinate == 1) ||
                 (xCoordinate == 3 && yCoordinate == 3);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            Location other = (Location)obj;
+            return xCoordinate.Equals(other.xCoordinate) &&
+                yCoordinate.Equals(other.yCoordinate) &&
+                locationName.Equals(other.locationName);
         }
 
     }

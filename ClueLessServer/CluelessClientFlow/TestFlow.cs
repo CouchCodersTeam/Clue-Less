@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ClueLessClient.Network;
 using ClueLessClient.Model.Game;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace CluelessClientFlow
 {
@@ -34,6 +36,7 @@ namespace CluelessClientFlow
             }
 
             // Other player actions
+            Task<bool> ronWaitForGame = null;
             Assert.IsTrue(connect.registerAsPlayer("Ron Weasley"));
             {
                 // Success
@@ -57,9 +60,15 @@ namespace CluelessClientFlow
 
                 // Ron cannot start game because he is not the host
                 Assert.IsFalse(connect.Lobbies.StartGame());
+
+                // Async call is used for testing, WaitForGameStart() is a blocking call
+                // that waits until host player starts the game
+                ronWaitForGame = connect.Lobbies.WaitForGameStartAsync();
+                Assert.IsFalse(ronWaitForGame.IsCompleted);
             }
 
             // Have a third person join
+            Task<bool> hermioneWaitForGame = null; 
             Assert.IsTrue(connect.registerAsPlayer("Hermione"));
             {
                 // Success
@@ -70,14 +79,21 @@ namespace CluelessClientFlow
 
                 connect.registerToGame(lobby);
 
-                //if (!connect.Lobbies.WaitForGameStart())
-                //    throw new Exception("Unsuccessful Wait for game start");
+                hermioneWaitForGame = connect.Lobbies.WaitForGameStartAsync();
+                Assert.IsFalse(hermioneWaitForGame.IsCompleted);
             }
 
             // Host can start game
             Assert.IsTrue(connect.registerAsPlayer("Harry Potter"));
             {
                 Assert.IsTrue(connect.Lobbies.StartGame());
+
+                // Allow call to be sent to Hermione and Ron
+                Thread.Sleep(3100);
+                Assert.IsTrue(ronWaitForGame.IsCompleted); // response has come back
+                Assert.IsTrue(ronWaitForGame.Result); // game has started
+                Assert.IsTrue(hermioneWaitForGame.IsCompleted);
+                Assert.IsTrue(hermioneWaitForGame.Result);
             }
 
             // other players 'WaitForGameStart()' will now return true
@@ -100,6 +116,16 @@ namespace CluelessClientFlow
             {
                 // verify that each player has a hand of cards
                 Assert.IsTrue(connect.registerAsPlayer(playerName));
+
+                if (!playerName.Equals("Harry Potter")) // Harry will get message 'Take Turn'
+                {
+                    // WaitForCommand should return immediately and not wait here
+                    Command command = connect.Gameplay.WaitForCommand();
+                    Assert.AreEqual(CommandType.GameStart, command.command);
+                    // remove last seen command so that hermione won't block
+                    connect.Gameplay.TestOnlySetLastSeenCommand(null);
+                }
+
                 var cards = connect.Gameplay.GetPlayerHand();
 
                 Assert.IsNotNull(cards);
@@ -117,9 +143,7 @@ namespace CluelessClientFlow
                 Game game = connect.Gameplay.GetState();
                 Assert.IsNotNull(game);
 
-                // API not complete
-                Command command = connect.Gameplay.WaitForCommand().Result;
-                // It is Harry's turn, this returns a 'Take turn' command
+                Command command = connect.Gameplay.WaitForCommand();
                 Assert.AreEqual(CommandType.TakeTurn, command.command);
 
                 bool successful = connect.Gameplay.MovePlayerTo(new Location(0, 0, "Boardroom"));
