@@ -26,7 +26,7 @@ namespace ClueLessClient
         {
             InitializeComponent();
 
-            CluelessServerConnection connect = CluelessServerConnection.getConnection(
+            /*CluelessServerConnection connect = CluelessServerConnection.getConnection(
     "localhost", 50351);
 
             // Host actions
@@ -131,7 +131,7 @@ namespace ClueLessClient
                 successful = connect.Gameplay.EndTurn();
 
                 Accusation solution = connect.Gameplay.GetSolution();
-            }
+            }*/
         }
     }
 }

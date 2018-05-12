@@ -11,7 +11,9 @@ namespace ClueLessClient.Network
 
         public Lobbies Lobbies { get; }
         public Gameplay Gameplay { get; }
-        
+
+        public event EventHandler UserJoinedLobby;
+
         private CluelessServerConnection(string host, int port)
         {
             Lobbies = new Lobbies(client);
@@ -69,6 +71,5 @@ namespace ClueLessClient.Network
             client.DefaultRequestHeaders.Add("Session", lobby.Id.ToString());
             return true;
         }
-
     }
 }

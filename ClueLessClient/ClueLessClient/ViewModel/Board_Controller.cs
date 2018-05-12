@@ -67,17 +67,7 @@ namespace ClueLessClient.ViewModel
                 _UserName = value;
             }
         }
-
-        private string _CreateGameName;
-        public string CreateGameName
-        {
-            get { return _CreateGameName; }
-            set
-            {
-                _CreateGameName = value;
-            }
-        }
-
+        
         //Room contents
         public ObservableCollection<string> StudyOccupants { get; set; }
         public ObservableCollection<string> HallOccupants { get; set; }
@@ -161,10 +151,7 @@ namespace ClueLessClient.ViewModel
             GameStrings = new ObservableCollection<string>();
             UserName = "Type User Name";
             RaisePropertyChangedEvent("UserName");
-
-            CreateGameName = "Type Game Name";
-            RaisePropertyChangedEvent("CreateGameName");
-
+            
             AccusePeopleStrings = new ObservableCollection<string>();
             AccusePeopleStrings.Add("Miss Scarlet");
             AccusePeopleStrings.Add("Col Mustard");
@@ -318,6 +305,7 @@ namespace ClueLessClient.ViewModel
         private void MoveUp()
         {
             //client.MoveUp();
+            
         }
 
         private void MoveDown()
@@ -376,57 +364,64 @@ namespace ClueLessClient.ViewModel
         //Initializes the game
         //May add calls into the client to search/connect to a server
         private void JoinGame()
-        {/*
-            if (client.JoinGame(SelectedGame, SelectedPerson, UserName))
+        {
+            connect.registerAsPlayer(UserName);
+            List<RequestModels.Lobby> lobbies = connect.Lobbies.GetLobbies();
+
+            foreach (RequestModels.Lobby lobby in lobbies)
             {
-                List<string> cards = client.GetCards();
-                foreach (string card in cards)
+                if (lobby.Hostname == SelectedGame)
                 {
-                    AddCardToHand(card);
+                    connect.Lobbies.JoinLobby(lobby);
+
+                    connect.registerToGame(lobby);
                 }
-
-                List<Board_Controller.PersonLocation> boardState = client.GetBoardState();
-
-                foreach (Board_Controller.PersonLocation p in boardState)
-                {
-                    AddPersonToRoom(p.person, p.room);
-                }
-
-                //ToDo: Testing this functionality make sure to remove from final version
-                //client.DisproveSuggestion();
             }
-            else
-            {
-                MessageBox.Show("Failed to join game.  Please try again.");
-            }*/
         }
-
         //Creates a new game
         //May add calls into the client to search/connect to a server
         private void CreateGame()
-        {/*
-            if (client.CreateGame(CreateGameName, SelectedPerson, UserName))
+        {
+            connect.registerAsPlayer(UserName);
+            connect.Lobbies.CreateLobby();
+            RefreshGameList();
+        }
+
+        private void GetGames()
+        {
+            connect.registerAsPlayer(UserName);
+            RefreshGameList();
+        }
+
+        private void RefreshGameList()
+        {
+            List<RequestModels.Lobby> lobbies = connect.Lobbies.GetLobbies();
+
+            GameStrings.Clear();
+
+            foreach (RequestModels.Lobby lobby in lobbies)
             {
-                List<string> cards = client.GetCards();
-                foreach (string card in cards)
-                {
-                    AddCardToHand(card);
-                }
-
-                List<Board_Controller.PersonLocation> boardState = client.GetBoardState();
-
-                foreach (Board_Controller.PersonLocation p in boardState)
-                {
-                    AddPersonToRoom(p.person, p.room);
-                }
-
-                //ToDo: Testing this functionality make sure to remove from final version
-                //client.DisproveSuggestion();
+                GameStrings.Add(lobby.Hostname);
             }
-            else
+        }
+
+        private void StartGame()
+        {
+            if(connect.Lobbies.StartGame())
             {
-                MessageBox.Show("Failed to create game.  Please try again.");
-            }*/
+                MessageBox.Show("Game Started");
+            }
+
+            if (connect.Lobbies.WaitForGameStart())
+            {
+                List<Model.Game.Card> hand = connect.Gameplay.GetPlayerHand();
+
+                foreach (Model.Game.Card card in hand)
+                {
+                    AddCardToHand(card.cardValue);
+                }
+            }
+           
         }
         // End of the functions used to interact
 
@@ -584,6 +579,21 @@ namespace ClueLessClient.ViewModel
         public ICommand DisproveSuggestionCommand
         {
             get { return new DelegateCommand(DisproveSuggestion); }
+        }
+
+        public ICommand CreateGameCommand
+        {
+            get { return new DelegateCommand(CreateGame); }
+        }
+
+        public ICommand GetGamesCommand
+        {
+            get { return new DelegateCommand(GetGames); }
+        }
+        
+        public ICommand StartGameCommand
+        {
+            get { return new DelegateCommand(StartGame); }
         }
         //End of command list
 
