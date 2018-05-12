@@ -116,8 +116,6 @@ namespace ClueLessClient.Model.Game
             {
                 // FIXME: this is a hack to prevent crashes
                 player.location = new Location(0, 0, "My Room");
-                //var args = new EventArgStructures.AddPlayerEventCommand(player.name, 1, 1);
-                //AddPlayerToRoomEvent(this, args);
             }
 
         }
