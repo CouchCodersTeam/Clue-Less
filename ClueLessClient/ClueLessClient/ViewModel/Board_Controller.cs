@@ -541,7 +541,12 @@ namespace ClueLessClient.ViewModel
             MessageBox.Show($"You have accused " + AccusePerson + " of killing the victim using the " + AccuseWeapon + " in the " + AccuseRoom);
             Model.Game.Accusation accusation = new Model.Game.Accusation(ConvertStringToRoom(AccuseRoom), ConvertStringToPerson(AccusePerson), ConvertStringToWeapon(AccuseWeapon));
 
-            connect.Gameplay.MakeAccusation(accusation);
+            AccusationData data = connect.Gameplay.MakeAccusation(accusation);
+            string accusationMessage = (data.accusationCorrect) ?
+                "correct. The game is now over." : "incorrect. Gameplay will continue.";
+
+            MessageBoxResult result = MessageBox.Show("Your accusation was " + accusationMessage,
+                                "Accusation Received", MessageBoxButton.YesNo);
         }
 
         //Initializes the game
@@ -667,15 +672,22 @@ namespace ClueLessClient.ViewModel
                     AccusationData data = incCommand.data.accusationData;
                     bool accusationWasCorrect = data.accusationCorrect;
 
+                    string accusationMessage = (accusationWasCorrect) ?
+                        "The accusation was correct." : "The accusation was incorrect.";
+
                     //TODO: Add logic for when this is received
-                    MessageBoxResult result = MessageBox.Show(data.playerName + "Has accused " + data.accusation.suspect +
+                    MessageBoxResult result = MessageBox.Show(data.playerName + " has accused " + data.accusation.suspect +
                                                         " of killing the victim using the " + data.accusation.weapon +
-                                                        " in the " + data.accusation.room + ". Can you disprove this?",
+                                                        " in the " + data.accusation.room + ". " + accusationMessage,
                                                         "Accusation Received", MessageBoxButton.YesNo);
+                    if (accusationWasCorrect)
+                    {
+                        // TODO: further end game process?
+                        break;
+                    }
                 }
                 else if (incCommand.command == CommandType.DisproveResult)
                 {
-                    //TODO: Add logic for when this is received
                     DisproveData data = incCommand.data.disproveData;
 
                     MessageBox.Show("The suggestion was disproven by " + data.disprovingPlayer + " by revealing " + data.card.cardValue);
@@ -684,10 +696,23 @@ namespace ClueLessClient.ViewModel
                 else if (incCommand.command == CommandType.SuggestionMade)
                 {
                     SuggestionData data = incCommand.data.suggestData;
+                    string disprovePlayerName = data.disprovingPlayer;
+
+                    string disproveMessage = (disprovePlayerName == null) ?
+                        "No one can disprove." : disprovePlayerName + " can disprove the suggestion.";
+                    MessageBoxResult result = MessageBox.Show(data.playerName + " has suggested that " + data.accusation.suspect +
+                                    " killed the victim using the " + data.accusation.weapon +
+                                    " in the " + data.accusation.room + ". " + disproveMessage,
+                                    "Suggestion Received", MessageBoxButton.YesNo);
+
+                }
+                else if (incCommand.command == CommandType.DisproveSuggestion)
+                {
+                    SuggestionData data = incCommand.data.suggestData;
                     //TODO: Add logic for when this is received
                     MessageBoxResult result = MessageBox.Show(data.playerName + "Has suggested that " + data.accusation.suspect +
                                                         " killed the victim using the " + data.accusation.weapon +
-                                                        " in the " + data.accusation.room + ". Can you disprove this?",
+                                                        " in the " + data.accusation.room + ". Choose how to disprove this.",
                                                         "Suggestion Received", MessageBoxButton.YesNo);
                     //If the user says they can disprove the suggestion, enable the disprove button and combobox
                     //Added a call to tell the client to stop what it's doing until it receives the disprove info
@@ -715,7 +740,8 @@ namespace ClueLessClient.ViewModel
                     }
                     else if (incCommand.command == CommandType.Wait)
                     {
-                        //TODO: Add logic for when this is received
+                        // Ryan: No logic neccessary. Wait is used by WaitForCommand()
+                        // to keep waiting for command
                     }
                     else if (incCommand.command == CommandType.GameStart)
                     {

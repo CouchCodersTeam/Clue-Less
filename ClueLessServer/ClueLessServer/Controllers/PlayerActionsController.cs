@@ -89,7 +89,6 @@ namespace ClueLessServer.Controllers
         [HttpPost]
         public IHttpActionResult MakeSuggestion([FromBody] Accusation accusation)
         {
-            var body = Request.Content.ReadAsStringAsync().Result;
             AuthResult auth = authorizeAndVerifyGameStart();
             if (auth.result != null)
                 return auth.result;
