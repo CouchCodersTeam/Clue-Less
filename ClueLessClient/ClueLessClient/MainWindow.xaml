@@ -496,6 +496,7 @@
                             <StackPanel Grid.Column="1">
                                 <Button Command="{Binding MoveUpCommand}" x:Name="MoveUp_Button" Content="UP" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                 <Button Command="{Binding MoveDownCommand}" x:Name="MoveDown_Button" Content="DOWN" Margin="5 30 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <Button Command="{Binding EndTurnCommand}" x:Name="EndTurn_Button" Content="END TURN" Margin="5 15 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                             </StackPanel>
 
                             <!-- Move Right Button -->

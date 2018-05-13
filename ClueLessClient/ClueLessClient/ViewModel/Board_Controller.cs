@@ -350,7 +350,6 @@ namespace ClueLessClient.ViewModel
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
                             MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
-                            WaitForCommand();
                         }
                     }
                 }
@@ -375,7 +374,6 @@ namespace ClueLessClient.ViewModel
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
                             MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
-                            WaitForCommand();
                         }
                     }
                 }
@@ -399,7 +397,6 @@ namespace ClueLessClient.ViewModel
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
                             MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
-                            WaitForCommand();
                         }
                     }
                 }
@@ -423,7 +420,6 @@ namespace ClueLessClient.ViewModel
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
                             MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
-                            WaitForCommand();
                         }
                     }
                 }
@@ -448,7 +444,6 @@ namespace ClueLessClient.ViewModel
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
                             MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
-                            WaitForCommand();
                         }
                     }
                 }
@@ -473,7 +468,6 @@ namespace ClueLessClient.ViewModel
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
                             MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
-                            WaitForCommand();
                         }
                     }
                 }
@@ -498,7 +492,6 @@ namespace ClueLessClient.ViewModel
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
                             MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
-                            WaitForCommand();
                         }
                     }
                 }
@@ -524,7 +517,6 @@ namespace ClueLessClient.ViewModel
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
                             MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
-                            WaitForCommand();
                         }
                     }
                 }
@@ -621,6 +613,12 @@ namespace ClueLessClient.ViewModel
                 }
 
             }
+            WaitForCommand();
+        }
+
+        private void EndTurn()
+        {
+            connect.Gameplay.EndTurn();
             WaitForCommand();
         }
         // End of the functions used to interact
@@ -886,6 +884,11 @@ namespace ClueLessClient.ViewModel
         public ICommand StartGameCommand
         {
             get { return new DelegateCommand(StartGame); }
+        }
+
+        public ICommand EndTurnCommand
+        {
+            get { return new DelegateCommand(EndTurn); }
         }
         //End of command list
 
