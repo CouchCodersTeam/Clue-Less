@@ -666,7 +666,7 @@ namespace ClueLessClient.ViewModel
                 }
                 else if (incCommand.command == CommandType.SuggestionMade)
                 {
-                    SuggestionData data = (SuggestionData)incCommand.data;
+                    SuggestionData data = incCommand.data.suggestData;
                     //TODO: Add logic for when this is received
                     MessageBoxResult result = MessageBox.Show(data.playerName + "Has suggested that " + data.accusation.suspect +
                                                         " killed the victim using the " + data.accusation.weapon +
@@ -677,14 +677,28 @@ namespace ClueLessClient.ViewModel
                     //May not be the best idea, but I'm open to suggestions
                     if (result == MessageBoxResult.Yes)
                     {
-                        DisproveEnabled = true;
-                        RaisePropertyChangedEvent("DisproveEnabled");
-                        break;
+                        //If the user says they can disprove the suggestion, enable the disprove button and combobox
+                        //Added a call to tell the client to stop what it's doing until it receives the disprove info
+                        //May not be the best idea, but I'm open to suggestions
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            DisproveEnabled = true;
+                            RaisePropertyChangedEvent("DisproveEnabled");
+                            break;
+                        }
+                        else
+                        {
+                            DisproveEnabled = false;
+                            RaisePropertyChangedEvent("DisproveEnabled");
+                        }
                     }
-                    else
+                    else if (incCommand.command == CommandType.TurnEnd)
                     {
-                        DisproveEnabled = false;
-                        RaisePropertyChangedEvent("DisproveEnabled");
+                        //TODO: Add logic for when this is received
+                    }
+                    else if (incCommand.command == CommandType.Wait)
+                    {
+                        //TODO: Add logic for when this is received
                     }
                 }
             }
