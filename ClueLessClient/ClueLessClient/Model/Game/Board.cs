@@ -8,6 +8,21 @@ using System.Threading.Tasks;
 namespace ClueLessClient.Model.Game
 {
     [DataContract]
+    public class Coordinate
+    {
+        [DataMember]
+        public int x;
+        [DataMember]
+        public int y;
+
+        public Coordinate(int xCoordinate, int yCoordinate)
+        {
+            x = xCoordinate;
+            y = yCoordinate;
+        }
+    }
+
+    [DataContract]
     public class Board
     {
         // Multidimensional arrays are not serializable, but
@@ -55,20 +70,26 @@ namespace ClueLessClient.Model.Game
             }
         }
 
-        public bool MovePlayer(Player player, Location loc)
+        public bool MovePlayer(Player player, Coordinate loc)
         {
             if (player.location != null)
             {
                 // Player should have real location object
-                player.location.occupants.Remove(player);
+                Location playerLocation = GetLocation(player.location);
+                playerLocation.occupants.Remove(player);
             }
 
-            Location newLocation = GetLocation(loc.xCoordinate, loc.yCoordinate);
+            Location newLocation = GetLocation(loc);
 
             newLocation.occupants.Add(player);
-            player.location = newLocation;
+            player.location = loc;
 
             return true;
+        }
+
+        public Location GetLocation(Coordinate coord)
+        {
+            return GetLocation(coord.x, coord.y);
         }
 
         public Location GetLocation(int x, int y)
@@ -116,9 +137,7 @@ namespace ClueLessClient.Model.Game
         public int yCoordinate { get; set; }
         [DataMember]
         public string locationName { get; set; }
-
-        // If we serialize this, this is a self referencing loop since player
-        // has location, and location has player
+        [DataMember]
         public List<Player> occupants = new List<Player>();
 
         public Location(int x, int y, string name)
@@ -146,6 +165,11 @@ namespace ClueLessClient.Model.Game
                 occupants.Add(player);
                 return true;
             }
+        }
+
+        public Coordinate GetCoordinate()
+        {
+            return new Coordinate(xCoordinate, yCoordinate);
         }
 
         // Return true if the location is directly accessible without
