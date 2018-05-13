@@ -232,7 +232,8 @@ namespace ClueLessClient.ViewModel
                 { Room.BilliardRoomBallroom_Hallway, BilliardRoomBallroom_HallwayOccupant },
                 { Room.DiningRoomKitchen_Hallway, DiningRoomKitchen_HallwayOccupant },
                 { Room.ConservatoryBallroom_Hallway, ConservatoryBallroom_HallwayOccupant },
-                { Room.BallroomKitchen_Hallway, BallroomKitchen_HallwayOccupant }
+                { Room.BallroomKitchen_Hallway, BallroomKitchen_HallwayOccupant },
+                { Room.None, new ObservableCollection<string>() }
             };
 
             //Setup board
@@ -241,9 +242,10 @@ namespace ClueLessClient.ViewModel
             Board[2, 0] = Room.Hall;
             Board[3, 0] = Room.HallLounge_Hallway;
             Board[4, 0] = Room.Lounge;
+
             Board[0, 1] = Room.StudyLibrary_Hallway;
-            Board[3, 1] = Room.HallBilliardRoom_Hallway;
-            Board[5, 1] = Room.LoungeDiningRoom_Hallway;
+            Board[2, 1] = Room.HallBilliardRoom_Hallway;
+            Board[4, 1] = Room.LoungeDiningRoom_Hallway;
 
             Board[0, 2] = Room.Library;
             Board[1, 2] = Room.LibraryBilliardRoom_Hallway;
@@ -347,7 +349,7 @@ namespace ClueLessClient.ViewModel
                     {
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
-                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
                             WaitForCommand();
                         }
                     }
@@ -372,7 +374,7 @@ namespace ClueLessClient.ViewModel
                     {
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
-                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
                             WaitForCommand();
                         }
                     }
@@ -396,7 +398,7 @@ namespace ClueLessClient.ViewModel
                     {
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
-                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
                             WaitForCommand();
                         }
                     }
@@ -420,7 +422,7 @@ namespace ClueLessClient.ViewModel
                     {
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
-                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
                             WaitForCommand();
                         }
                     }
@@ -445,7 +447,7 @@ namespace ClueLessClient.ViewModel
                         Model.Game.Location newLoc = board.GetLocation(0, 4);
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
-                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
                             WaitForCommand();
                         }
                     }
@@ -470,7 +472,7 @@ namespace ClueLessClient.ViewModel
                         Model.Game.Location newLoc = board.GetLocation(4, 0);
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
-                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
                             WaitForCommand();
                         }
                     }
@@ -495,7 +497,7 @@ namespace ClueLessClient.ViewModel
                         Model.Game.Location newLoc = board.GetLocation(0, 0);
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
-                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
                             WaitForCommand();
                         }
                     }
@@ -521,7 +523,7 @@ namespace ClueLessClient.ViewModel
                         Model.Game.Location newLoc = board.GetLocation(4, 4);
                         if (connect.Gameplay.MovePlayerTo(newLoc))
                         {
-                            MovePerson(player.name, Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
+                            MovePerson(player.character.ToString(), Board[loc.xCoordinate, loc.yCoordinate], Board[newLoc.xCoordinate, newLoc.yCoordinate]);
                             WaitForCommand();
                         }
                     }
@@ -634,12 +636,18 @@ namespace ClueLessClient.ViewModel
                 {
                     MoveData data = incCommand.data.moveData;
                     List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
-
+                    
                     foreach (Model.Game.Player player in players)
                     {
+                        //this is stupid and I don't care
+                        foreach (Room room in Board)
+                        {
+                            RemovePersonFromRoom(player.character.ToString(), room);
+                        }
+
                         if (player.name == data.playerName)
                         {
-                            MovePerson(data.playerName, Board[player.location.xCoordinate, player.location.yCoordinate], Board[data.location.xCoordinate, data.location.yCoordinate]);
+                            AddPersonToRoom(player.character.ToString(), Board[player.location.xCoordinate, player.location.yCoordinate]);
                         }
                     }
                 }
