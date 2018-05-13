@@ -120,36 +120,34 @@ namespace ClueLessClient.Model.Game
 
             if (players[0] != null) 
             {
-                board.MovePlayer(players[0], new Location(0,3,"Hallway")); 
+                board.MovePlayer(players[0], new Coordinate(0,3)); 
                 players[0].character = Suspect.Scarlet;
             }
             if (players[1] != null)
             {
-                board.MovePlayer(players[1], new Location(1,4,"Hallway")); 
+                board.MovePlayer(players[1], new Coordinate(1,4)); 
                 players[1].character = Suspect.Mustard;
             }
             if (players[2] != null)
             {
-                board.MovePlayer(players[2], new Location(4,3,"Hallway")); 
+                board.MovePlayer(players[2], new Coordinate(4,3)); 
                 players[2].character = Suspect.White;
             }
             if (players[3] != null)
             {
-                board.MovePlayer(players[3], new Location(4,1,"Hallway")); 
+                board.MovePlayer(players[3], new Coordinate(4,1)); 
                 players[3].character = Suspect.Green;
             }
             if (players[4] != null)
             {
-                board.MovePlayer(players[4], new Location(3,0,"Hallway")); 
+                board.MovePlayer(players[4], new Coordinate(3,0)); 
                 players[4].character = Suspect.Peacock;
             }
             if (players[5] != null)
             {
-                board.MovePlayer(players[5], new Location(1,0,"Hallway")); 
+                board.MovePlayer(players[5], new Coordinate(1,0)); 
                 players[5].character = Suspect.Plum;
             }
-           
-
         }
 
         private bool inCaseFile(Card card)
@@ -187,13 +185,14 @@ namespace ClueLessClient.Model.Game
         public bool movePlayer(string playerName, Location location)
         {
             Player player = players.Find(x => x.name.Equals(playerName));
-            if (!player.location.isNextTo(location)) { return false; }
+            Location playerLocation = board.GetLocation(player.location);
+            if (!playerLocation.isNextTo(location)) { return false; }
 
             // Can't move to occupied hallways
             if (location.locationName == "Hallway" && location.occupants.Count != 0) {
                 return false;
             } else {
-                return board.MovePlayer(player, location);
+                return board.MovePlayer(player, location.GetCoordinate());
             }
         }
 
@@ -205,18 +204,15 @@ namespace ClueLessClient.Model.Game
         // accusation. If no other player can disprove, null is returned.
         public Player makeSuggestion(string playerName, Accusation accusation)
         {
-            foreach (Player player in players)
+            int indexCheck = currentTurnIndex;
+            do
             {
-                if (player is RealPlayer)
-                {
-                    var realPlayer = (RealPlayer)player;
-                    if (realPlayer.hasCardIn(accusation) && !realPlayer.name.Equals(playerName))
-                    {
-                        return player; // Return first player with a card in the suggestion to disprove
-                    }
+                indexCheck = (indexCheck + 1) % rotationOrders.Count;
+                var realPlayer = rotationOrders[indexCheck];
+                if (realPlayer.hasCardIn(accusation) && !realPlayer.name.Equals(playerName))
+                    return realPlayer;
 
-                }
-            }
+            } while (indexCheck != currentTurnIndex);
 
             return null;
         }

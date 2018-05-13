@@ -344,7 +344,7 @@ namespace ClueLessClient.ViewModel
             {
                 if(player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location);
                     Model.Game.Location newLoc = board.UpFrom(loc);
                     if (loc != newLoc)
                     {
@@ -368,7 +368,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location);
                     Model.Game.Location newLoc = board.DownFrom(loc);
                     if (loc != newLoc)
                     {
@@ -391,7 +391,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location);
                     Model.Game.Location newLoc = board.LeftFrom(loc);
                     if (loc != newLoc)
                     {
@@ -414,7 +414,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location);
                     Model.Game.Location newLoc = board.RightFrom(loc);
                     if (loc != newLoc)
                     {
@@ -437,7 +437,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location);
 
                     if (loc.isSecretPassage() && loc.xCoordinate == 4 && loc.yCoordinate == 0)
                     {
@@ -461,7 +461,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location);
 
                     if (loc.isSecretPassage() && loc.xCoordinate == 0 && loc.yCoordinate == 4)
                     {
@@ -485,7 +485,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location);
 
                     if (loc.isSecretPassage() && loc.xCoordinate == 4 && loc.yCoordinate == 4)
                     {
@@ -510,7 +510,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location);
 
                     if (loc.isSecretPassage() && loc.xCoordinate == 0 && loc.yCoordinate == 0)
                     {
@@ -525,12 +525,12 @@ namespace ClueLessClient.ViewModel
             //client.ActivateStudySecretPassage();
         }
 
-        private void MakeSuggestion()
+        private async void MakeSuggestion()
         {
             MessageBox.Show($"You have suggested that " + SuggestionPerson + " killed the victim using the " + SuggestionWeapon + " in the " + SuggestionRoom);
             Model.Game.Accusation suggestion = new Model.Game.Accusation(ConvertStringToRoom(SuggestionRoom), ConvertStringToPerson(SuggestionPerson), ConvertStringToWeapon(SuggestionWeapon));
 
-            connect.Gameplay.MakeSuggestion(suggestion);
+            await connect.Gameplay.MakeSuggestionAsync(suggestion);
         }
 
         private void MakeAccusation()
@@ -589,15 +589,21 @@ namespace ClueLessClient.ViewModel
             }
         }
 
-        private void StartGame()
+        private async void StartGame()
         {
+            bool gameStart = false;
             if (connect.Lobbies.StartGame())
             {
-                MessageBox.Show("Game Started");
+                gameStart = true;
+            }
+            else
+            {
+                gameStart = await connect.Lobbies.WaitForGameStartAsync();
             }
 
-            if (connect.Lobbies.WaitForGameStart())
+            if (gameStart)
             {
+                MessageBox.Show("Game Started");
                 List<Model.Game.Card> hand = connect.Gameplay.GetPlayerHand();
 
                 foreach (Model.Game.Card card in hand)
@@ -610,11 +616,11 @@ namespace ClueLessClient.ViewModel
                 List<Model.Game.Player> players = game.getPlayers();
                 foreach(Model.Game.Player player in players)
                 {
-                    AddPersonToRoom(player.character.ToString(), Board[player.location.xCoordinate, player.location.yCoordinate]);
+                    AddPersonToRoom(player.character.ToString(), Board[player.location.x, player.location.y]);
                 }
 
+                WaitForCommand();
             }
-            WaitForCommand();
         }
 
         private void EndTurn()
@@ -647,7 +653,7 @@ namespace ClueLessClient.ViewModel
 
                         if (player.name == data.playerName)
                         {
-                            AddPersonToRoom(player.character.ToString(), Board[player.location.xCoordinate, player.location.yCoordinate]);
+                            AddPersonToRoom(player.character.ToString(), Board[player.location.x, player.location.y]);
                         }
                     }
                 }
@@ -659,6 +665,8 @@ namespace ClueLessClient.ViewModel
                 else if (incCommand.command == CommandType.AccusationMade)
                 {
                     AccusationData data = incCommand.data.accusationData;
+                    bool accusationWasCorrect = data.accusationCorrect;
+
                     //TODO: Add logic for when this is received
                     MessageBoxResult result = MessageBox.Show(data.playerName + "Has accused " + data.accusation.suspect +
                                                         " of killing the victim using the " + data.accusation.weapon +
@@ -671,6 +679,7 @@ namespace ClueLessClient.ViewModel
                     DisproveData data = incCommand.data.disproveData;
 
                     MessageBox.Show("The suggestion was disproven by " + data.disprovingPlayer + " by revealing " + data.card.cardValue);
+                    break; // This is the active player
                 }
                 else if (incCommand.command == CommandType.SuggestionMade)
                 {

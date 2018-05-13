@@ -105,8 +105,6 @@ namespace ClueLessServer.Controllers
             Command command = new Command();
             command.command = CommandType.SuggestionMade;
 
-            CommandInterface.SetCommandForEveryone(auth.game, command);
-
             SuggestionData data = new SuggestionData { playerName = player.Name, accusation = accusation };
             var cmdData = new CommandData { suggestData = data };
             var disprovingPlayer = game.makeSuggestion(player.Name, accusation);
