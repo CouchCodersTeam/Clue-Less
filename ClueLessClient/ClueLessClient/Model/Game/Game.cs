@@ -199,15 +199,22 @@ namespace ClueLessClient.Model.Game
         }
         // returns the first player after 'player' who can disprove the
         // accusation. If no other player can disprove, null is returned.
-        public Player makeSuggestion(string player, Accusation accusation)
+        public Player makeSuggestion(string playerName, Accusation accusation)
         {
             foreach (Player player in players)
+            {
+                if (player is RealPlayer)
                 {
-                    if(player.hasCardIn(accusation) && !player.Name.Equals(playerName))
-                        {
+                    var realPlayer = (RealPlayer)player;
+                    if (realPlayer.hasCardIn(accusation) && !realPlayer.name.Equals(playerName))
+                    {
                         return player; // Return first player with a card in the suggestion to disprove
-                        }
+                    }
+
                 }
+            }
+
+            return null;
         }
 
         // Returns true/false if accusation is correct. If false, 'player'

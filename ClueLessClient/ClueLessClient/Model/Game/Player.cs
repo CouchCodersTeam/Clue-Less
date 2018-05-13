@@ -31,10 +31,6 @@ namespace ClueLessClient.Model.Game
             return this.name.Equals(other.name);
         }
 
-        public bool hasCardIn(Accusation accusation)
-            {
-            return cards.Any(new Card(accusation.suspect), new Card(accusation.weapon), new Card(accusation.room));
-            }
     }
 
     [DataContract]
@@ -47,7 +43,14 @@ namespace ClueLessClient.Model.Game
          : base(playerName)
         {
         }
-            
+
+        public bool hasCardIn(Accusation accusation)
+        {
+            return cards.Contains(new Card(accusation.suspect))
+                || cards.Contains(new Card(accusation.weapon))
+                || cards.Contains(new Card(accusation.room));
+        }
+
         public bool Move (Location location)
         {
             // TODO: check if move is valid
