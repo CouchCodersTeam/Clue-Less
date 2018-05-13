@@ -74,7 +74,9 @@ namespace ClueLessServer.Controllers
             {
                 Command command = new Command();
                 command.command = CommandType.MovePlayer;
-                command.data = new MoveData{ playerName = player.Name, location = location};
+                command.data = new CommandData {
+                    moveData = new MoveData { playerName = player.Name, location = location }
+                };
                 CommandInterface.SetCommandForEveryone(auth.game, command);
 
                 return Created("", "");
@@ -106,19 +108,20 @@ namespace ClueLessServer.Controllers
             CommandInterface.SetCommandForEveryone(auth.game, command);
 
             SuggestionData data = new SuggestionData { playerName = player.Name, accusation = accusation };
+            var cmdData = new CommandData { suggestData = data };
             var disprovingPlayer = game.makeSuggestion(player.Name, accusation);
             
             if (disprovingPlayer != null)
             {
                 data.disprovingPlayer = disprovingPlayer.name;
-                var disproveCmd = new Command{ command = CommandType.DisproveSuggestion, data = data };
+                var disproveCmd = new Command{ command = CommandType.DisproveSuggestion, data = cmdData };
                 CommandInterface.SetCommandForPlayer(disprovingPlayer.name, disproveCmd);
 
                 var waitCmd = new Command { command = CommandType.Wait };
                 CommandInterface.SetCommandForPlayer(player.Name, waitCmd);
             }
 
-            command.data = data;
+            command.data = cmdData;
             CommandInterface.SetCommandForEveryone(auth.game, command);
 
             return Created("", data);
@@ -138,13 +141,14 @@ namespace ClueLessServer.Controllers
             result.card = card;
             result.card = new Card(Weapon.Pipe);
             result.disprovingPlayer = auth.player.Name;
+            var cmdData = new CommandData { disproveData = result };
 
             // remove player's need to disprove suggestion
             CommandInterface.SetCommandForPlayer(result.disprovingPlayer, null);
 
             // set command for current player's turn
             var playerName = auth.game.getGame().getPlayerTurn().name;
-            var resultCmd = new Command { command = CommandType.DisproveResult, data = result };
+            var resultCmd = new Command { command = CommandType.DisproveResult, data = cmdData };
             CommandInterface.SetCommandForPlayer(playerName, resultCmd);
 
             return Created("", "");
@@ -173,7 +177,7 @@ namespace ClueLessServer.Controllers
 
             var cmd = new Command {
                 command = CommandType.AccusationMade,
-                data = data
+                data = new CommandData { accusationData = data }
             };
 
             CommandInterface.SetCommandForEveryone(auth.game, cmd);
