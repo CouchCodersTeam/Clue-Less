@@ -48,11 +48,6 @@ namespace ClueLessClient.Network
 
         public Command WaitForCommand()
         {
-            return WaitForCommandAsync().Result;
-        }
-
-        public async Task<Command> WaitForCommandAsync()
-        {
             // implement polling
             do
             {
@@ -76,7 +71,7 @@ namespace ClueLessClient.Network
 
                     }
 
-                    await Task.Delay(3000);
+                    Task.Delay(3000);
                 }
                 else
                 {
