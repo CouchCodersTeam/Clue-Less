@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows;
 using ClueLessClient.Network;
+using System.Threading;
 
 namespace ClueLessClient.ViewModel
 {
@@ -590,7 +591,7 @@ namespace ClueLessClient.ViewModel
 
         private void StartGame()
         {
-            if(connect.Lobbies.StartGame())
+            if (connect.Lobbies.StartGame())
             {
                 MessageBox.Show("Game Started");
             }
@@ -626,11 +627,11 @@ namespace ClueLessClient.ViewModel
         //Start of the list of event handlers that take data from the client
 
 
-        private void WaitForCommand()
+        private async void WaitForCommand()
         {
             while (true)
             {
-                var incCommand = connect.Gameplay.WaitForCommand();
+                var incCommand = await connect.Gameplay.WaitForCommandAsync();
                 if (incCommand.command == CommandType.MovePlayer)
                 {
                     MoveData data = incCommand.data.moveData;
