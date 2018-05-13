@@ -115,6 +115,8 @@ namespace ClueLessClient.ViewModel
         public string DisproveCard { get; set; }
         public bool DisproveEnabled { get; set; }
 
+        public bool TurnEnabled { get; set; }
+
         public Dictionary<Room, ObservableCollection<string>> RoomContents { get; set; }
 
         //Test Client used to try things out
@@ -210,6 +212,7 @@ namespace ClueLessClient.ViewModel
             MyCards = new ObservableCollection<string>();
 
             DisproveEnabled = false;
+            TurnEnabled = false;
 
             RoomContents = new Dictionary<Room, ObservableCollection<string>>()
             {
@@ -631,6 +634,8 @@ namespace ClueLessClient.ViewModel
         private void EndTurn()
         {
             connect.Gameplay.EndTurn();
+            TurnEnabled = false;
+            RaisePropertyChangedEvent("TurnEnabled");
             WaitForCommand();
         }
         // End of the functions used to interact
@@ -650,14 +655,16 @@ namespace ClueLessClient.ViewModel
                     
                     foreach (Model.Game.Player player in players)
                     {
-                        //this is stupid and I don't care
-                        foreach (Room room in Board)
-                        {
-                            RemovePersonFromRoom(player.character.ToString(), room);
-                        }
+                        
 
                         if (player.name == data.playerName)
                         {
+                            //this isn't ideal, I'm clearing that one person off the board
+                            //then adding them to their new spot
+                            foreach (Room room in Board)
+                            {
+                                RemovePersonFromRoom(player.character.ToString(), room);
+                            }
                             AddPersonToRoom(player.character.ToString(), Board[player.location.x, player.location.y]);
                         }
                     }
@@ -665,6 +672,8 @@ namespace ClueLessClient.ViewModel
                 else if (incCommand.command == CommandType.TakeTurn)
                 {
                     MessageBox.Show("It's your turn");
+                    TurnEnabled = true;
+                    RaisePropertyChangedEvent("TurnEnabled");
                     break;
                 }
                 else if (incCommand.command == CommandType.AccusationMade)
@@ -823,7 +832,7 @@ namespace ClueLessClient.ViewModel
 
         void DisproveSuggestion()
         {
-            /*bool success = client.ReceiveDisproval(DisproveCard);
+            bool success = connect.Gameplay.DisproveSuggestion( ConvertStringToCard(DisproveCard));
 
             if (success)
             {
@@ -832,7 +841,7 @@ namespace ClueLessClient.ViewModel
             else
             {
                 MessageBox.Show("Failed to disprove suggestion");
-            }*/
+            }
             DisproveEnabled = false;
             RaisePropertyChangedEvent("DisproveEnabled");
         }
@@ -1008,6 +1017,79 @@ namespace ClueLessClient.ViewModel
                 default:
                     return Model.Game.Room.Study;
             }
+        }
+
+        Model.Game.Card ConvertStringToCard(string cardName)
+        {
+            Model.Game.Card card;
+            card = new Model.Game.Card();
+            switch (cardName)
+            {
+                case "Miss Scarlet":
+                     card = new Model.Game.Card(Model.Game.Suspect.Scarlet);
+                    break;
+                case "Col Mustard":
+                    card = new Model.Game.Card(Model.Game.Suspect.Mustard);
+                    break;
+                case "Mrs White":
+                    card = new Model.Game.Card(Model.Game.Suspect.White);
+                    break;
+                case "Mr Green":
+                    card = new Model.Game.Card(Model.Game.Suspect.Green);
+                    break;
+                case "Mrs Peacock":
+                    card = new Model.Game.Card(Model.Game.Suspect.Peacock);
+                    break;
+                case "Prof Plum":
+                    card = new Model.Game.Card(Model.Game.Suspect.Plum);
+                    break;
+                case "Study":
+                    card = new Model.Game.Card(Model.Game.Room.Study);
+                    break;
+                case "Hall":
+                    card = new Model.Game.Card(Model.Game.Room.Hall);
+                    break;
+                case "Lounge":
+                    card = new Model.Game.Card(Model.Game.Room.Lounge);
+                    break;
+                case "Library":
+                    card = new Model.Game.Card(Model.Game.Room.Library);
+                    break;
+                case "Billiard Room":
+                    card = new Model.Game.Card(Model.Game.Room.Billiard);
+                    break;
+                case "Dining Room":
+                    card = new Model.Game.Card(Model.Game.Room.Dining);
+                    break;
+                case "Conservatory":
+                    card = new Model.Game.Card(Model.Game.Room.Conservatory);
+                    break;
+                case "Ballroom":
+                    card = new Model.Game.Card(Model.Game.Room.Ballroom);
+                    break;
+                case "Kitchen":
+                    card = new Model.Game.Card(Model.Game.Room.Kitchen);
+                    break;
+                case "Candlestick":
+                    card = new Model.Game.Card(Model.Game.Weapon.Candlestick);
+                    break;
+                case "Knife":
+                    card = new Model.Game.Card(Model.Game.Weapon.Knife);
+                    break;
+                case "Rope":
+                    card = new Model.Game.Card(Model.Game.Weapon.Rope);
+                    break;
+                case "Revolver":
+                    card = new Model.Game.Card(Model.Game.Weapon.Revolver);
+                    break;
+                case "Lead Pipe":
+                    card = new Model.Game.Card(Model.Game.Weapon.Pipe);
+                    break;
+                case "Wrench":
+                    card = new Model.Game.Card(Model.Game.Weapon.Wrench);
+                    break;
+            }
+            return card;
         }
     }
 }

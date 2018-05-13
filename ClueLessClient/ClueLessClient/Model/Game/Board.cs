@@ -176,7 +176,7 @@ namespace ClueLessClient.Model.Game
         // Return true if the location is directly accessible without
         // considering the occupants in hallways.
         public bool isNextTo(Location location) {
-            if (location.isInvalid()) { return false; }
+            if (location == null || location.isInvalid()) { return false; }
 
             if (xCoordinate == location.xCoordinate) {
                 return Math.Abs(yCoordinate - location.yCoordinate) == 1;

@@ -458,7 +458,7 @@
 
                             <!-- Accusation Button & Weapon Dropdown Box -->
                             <StackPanel Grid.Column="1">
-                                <Button Command="{Binding MakeAccusationCommand}" x:Name="Accuse_Button" Content="ACCUSE" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <Button Command="{Binding MakeAccusationCommand}" IsEnabled="{Binding Path=TurnEnabled}" x:Name="Accuse_Button" Content="ACCUSE" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                 <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
                                 <ComboBox ItemsSource="{Binding Path=AccuseWeaponStrings}" SelectedValue="{Binding Path=AccuseWeapon}" x:Name="AccuseWeapon_Dropdown" SelectedIndex="0" Padding="2" >
                                 </ComboBox>
@@ -489,19 +489,19 @@
 
                             <!-- Move Left Button -->
                             <StackPanel Grid.Column="0">
-                                <Button Command="{Binding MoveLeftCommand}" x:Name="MoveLeft_Button" Content="LEFT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <Button Command="{Binding MoveLeftCommand}" IsEnabled="{Binding Path=TurnEnabled}" x:Name="MoveLeft_Button" Content="LEFT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                             </StackPanel>
 
                             <!-- Move Up & Move Down Buttons -->
                             <StackPanel Grid.Column="1">
-                                <Button Command="{Binding MoveUpCommand}" x:Name="MoveUp_Button" Content="UP" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                <Button Command="{Binding MoveDownCommand}" x:Name="MoveDown_Button" Content="DOWN" Margin="5 30 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                <Button Command="{Binding EndTurnCommand}" x:Name="EndTurn_Button" Content="END TURN" Margin="5 15 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <Button Command="{Binding MoveUpCommand}" IsEnabled="{Binding Path=TurnEnabled}" x:Name="MoveUp_Button" Content="UP" Margin="5 10 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <Button Command="{Binding MoveDownCommand}" IsEnabled="{Binding Path=TurnEnabled}" x:Name="MoveDown_Button" Content="DOWN" Margin="5 30 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                    <Button Command="{Binding EndTurnCommand}" IsEnabled="{Binding Path=TurnEnabled}" x:Name="EndTurn_Button" Content="END TURN" Margin="5 15 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                             </StackPanel>
 
                             <!-- Move Right Button -->
                             <StackPanel Grid.Column="3">
-                                <Button Command="{Binding MoveRightCommand}" x:Name="MoveRight_Button" Content="RIGHT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <Button Command="{Binding MoveRightCommand}" IsEnabled="{Binding Path=TurnEnabled}" x:Name="MoveRight_Button" Content="RIGHT" Margin="5 35 5 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
@@ -528,7 +528,7 @@
 
                             <!-- Suggestion Button & Weapon Dropdown Box -->
                             <StackPanel Grid.Column="1">
-                                <Button Command="{Binding MakeSuggestionCommand}" x:Name="Suggest_Button" Content="SUGGEST" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
+                                <Button Command="{Binding MakeSuggestionCommand}" IsEnabled="{Binding Path=TurnEnabled}" x:Name="Suggest_Button" Content="SUGGEST" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                 <TextBox Text="Weapon" Margin="0 0 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
                                 <ComboBox ItemsSource="{Binding Path=SuggestWeaponStrings}" SelectedValue="{Binding Path=SuggestionWeapon}" x:Name="SuggestWeapon_Dropdown" SelectedIndex="0" Padding="2" />
                                 <Button Command="{Binding DisproveSuggestionCommand}" IsEnabled="{Binding Path=DisproveEnabled}" x:Name="Disprove" Content="DISPROVE" Margin="0 10 0 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
