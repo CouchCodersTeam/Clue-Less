@@ -111,7 +111,7 @@ namespace ClueLessClient.Network
                 var disproveResponse = WaitForCommand();
 
                 if (disproveResponse.command == CommandType.DisproveResult)
-                    return (DisproveData)disproveResponse.data;
+                    return disproveResponse.data.disproveData;
                 else
                     return null;
             }

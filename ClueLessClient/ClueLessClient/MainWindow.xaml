@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ClueLessClient"
         xmlns:viewmodel="clr-namespace:ClueLessClient.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="675" Width="1200"
+        Title="MainWindow" Height="625" Width="1200"
         DataContext="{DynamicResource Board_Controller}">
     <Window.Resources>
         <viewmodel:Board_Controller x:Key="Board_Controller"/>
@@ -522,7 +522,7 @@
                             <StackPanel Grid.Column="0">
                                 <TextBox Text="Suspect" Margin="0 18 0 0" FontFamily="Broadway" FontSize="8" TextAlignment="Center" Foreground="Black" />
                                 <ComboBox ItemsSource="{Binding Path=SuggestPeopleStrings}" SelectedValue="{Binding Path=SuggestionPerson}" x:Name="SuggestSuspect_Dropdown" SelectedIndex="0" Padding="2" />
-                                
+
                             </StackPanel>
 
                             <!-- Suggestion Button & Weapon Dropdown Box -->
@@ -547,25 +547,18 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="2*" />
                             </Grid.ColumnDefinitions>
 
                             <!-- Suggestion Suspects Title and Dropdown Box-->
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="Available Games" Margin="0 3" FontFamily="Broadway" TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="Black" FontSize="11"/>
-                                <ListBox x:Name="AvailableGamesLB" ItemsSource="{Binding GameStrings}" SelectedItem="{Binding SelectedGame}" Height="131" Margin="2,0,2,0"/>
+                                <ListBox x:Name="AvailableGamesLB" ItemsSource="{Binding GameStrings}" SelectedItem="{Binding SelectedGame}" Height="86" Margin="2,0,1.6,0"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Text="Available Characters" Margin="0,3,0,3" Padding="4, 0" FontFamily="Broadway" TextAlignment="Center" TextWrapping="WrapWithOverflow" Foreground="Black" FontSize="11"/>
-                                <ListBox x:Name="AvailableCharactersLB" ItemsSource="{Binding PeopleStrings}"  SelectedItem="{Binding SelectedPerson}" Height="131" Margin="2,0,2,0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="2">
                                 <TextBlock Text="User Name" Margin="4.5 5" FontFamily="Broadway" FontSize="11" TextAlignment="Center" Foreground="Black"/>
                                 <TextBox x:Name="UserNameTB" Text="{Binding UserName}" Height="18" TextWrapping="Wrap" TextAlignment="Center"/>
                                 <Button Command="{Binding JoinGameCommand}" x:Name="JoinGame" Content="JOIN GAME" Margin="0 2 0 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                <TextBlock Text="Create Game" Margin="4.5 5" FontFamily="Broadway" FontSize="11" TextAlignment="Center" Foreground="Black"/>
                                 <Button x:Name="CreateGameButton" Command="{Binding CreateGameCommand}" Content="CREATE GAME" Margin="0 2 0 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
-                                <TextBlock Text="Get Games" Margin="4.5 5" FontFamily="Broadway" FontSize="11" TextAlignment="Center" Foreground="Black"/>
                                 <Button x:Name="GetGamesButton" Command="{Binding GetGamesCommand}" Content="GET GAMES" Margin="0 2 0 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                                 <Button x:Name="StartGamesButton" Command="{Binding StartGameCommand}" Content="START GAME" Margin="0 2 0 0" FontFamily="Broadway" FontSize="12" Background="#FF646464" Foreground="White"/>
                             </StackPanel>

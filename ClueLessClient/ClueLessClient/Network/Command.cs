@@ -23,13 +23,14 @@ namespace ClueLessClient.Network
     }
 
     [DataContract]
+    [KnownType(typeof(MoveData))]
     public class Command
     {
         [DataMember]
         public CommandType command { get; set; }
 
         [DataMember]
-        public object data { get; set; } // the command determines what this object is
+        public CommandData data { get; set; } // the command determines what data is stored inside
 
         public override bool Equals(object obj)
         {
@@ -37,8 +38,56 @@ namespace ClueLessClient.Network
                 return false;
 
             Command other = (Command)obj;
-            return command == other.command && data.Equals(other.data);
+            if (command == other.command)
+            {
+                if (data == null)
+                    return other.data == null;
+                else
+                    return data.Equals(other.data); // this isn't working
+            }
+            return false;
         }
+    }
+
+    [DataContract]
+    public class CommandData
+    {
+        // this is a collection of all possible command data
+        [DataMember]
+        public MoveData moveData { get; set; }
+        [DataMember]
+        public SuggestionData suggestData { get; set; }
+        [DataMember]
+        public DisproveData disproveData { get; set; }
+        [DataMember]
+        public AccusationData accusationData { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            CommandData other = (CommandData)obj;
+
+            if (moveData == null && other.moveData != null)
+                return false;
+            else if (moveData != null)
+                return moveData.Equals(other.moveData);
+            else if (suggestData == null && other.suggestData != null)
+                return false;
+            else if (suggestData != null)
+                return suggestData.Equals(other.suggestData);
+            else if (disproveData == null && other.disproveData != null)
+                return false;
+            else if (disproveData != null)
+                return disproveData.Equals(other.disproveData);
+            else if (accusationData == null && other.accusationData != null)
+                return false;
+            else if (accusationData != null)
+                return accusationData.Equals(other.accusationData);
+
+            return false;
+        }
+
     }
 
     // Data associated with the 'MovePlayer' command
@@ -49,6 +98,15 @@ namespace ClueLessClient.Network
         public string playerName { get; set; }
         [DataMember]
         public Location location { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            MoveData other = (MoveData)obj;
+            return playerName.Equals(other.playerName)
+                && location.Equals(other.location);
+        }
     }
 
     public class SuggestionData
@@ -62,6 +120,16 @@ namespace ClueLessClient.Network
         // accusation, returns null if no one can disprove
         [DataMember]
         public string disprovingPlayer { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            SuggestionData other = (SuggestionData)obj;
+            return playerName.Equals(other.playerName)
+                && accusation.Equals(other.accusation)
+                && disprovingPlayer.Equals(other.disprovingPlayer);
+        }
     }
 
     [DataContract]
@@ -73,6 +141,16 @@ namespace ClueLessClient.Network
         public Card card { get; set; }
         [DataMember]
         public string disprovingPlayer { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            var other = (DisproveData)obj;
+            return card.Equals(other.card)
+                && disprovingPlayer.Equals(other.disprovingPlayer);
+        }
+
     }
 
     [DataContract]
@@ -86,5 +164,16 @@ namespace ClueLessClient.Network
         public string playerName { get; set; }
         [DataMember]
         public bool accusationCorrect { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+            var other = (AccusationData)obj;
+            return playerName.Equals(other.playerName)
+                && accusation.Equals(other.accusation)
+                && accusationCorrect.Equals(other.accusationCorrect);
+        }
+
     }
 }

@@ -632,7 +632,7 @@ namespace ClueLessClient.ViewModel
                 var incCommand = connect.Gameplay.WaitForCommand();
                 if (incCommand.command == CommandType.MovePlayer)
                 {
-                    MoveData data = (MoveData)incCommand.data;
+                    MoveData data = incCommand.data.moveData;
                     List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
 
                     foreach (Model.Game.Player player in players)
@@ -650,7 +650,7 @@ namespace ClueLessClient.ViewModel
                 }
                 else if (incCommand.command == CommandType.AccusationMade)
                 {
-                    AccusationData data = (AccusationData)incCommand.data;
+                    AccusationData data = incCommand.data.accusationData;
                     //TODO: Add logic for when this is received
                     MessageBoxResult result = MessageBox.Show(data.playerName + "Has accused " + data.accusation.suspect +
                                                         " of killing the victim using the " + data.accusation.weapon +
@@ -660,7 +660,7 @@ namespace ClueLessClient.ViewModel
                 else if (incCommand.command == CommandType.DisproveResult)
                 {
                     //TODO: Add logic for when this is received
-                    DisproveData data = (DisproveData)incCommand.data;
+                    DisproveData data = incCommand.data.disproveData;
 
                     MessageBox.Show("The suggestion was disproven by " + data.disprovingPlayer + " by revealing " + data.card.cardValue);
                 }
@@ -686,14 +686,6 @@ namespace ClueLessClient.ViewModel
                         DisproveEnabled = false;
                         RaisePropertyChangedEvent("DisproveEnabled");
                     }
-                }
-                else if (incCommand.command == CommandType.TurnEnd)
-                {
-                    //TODO: Add logic for when this is received
-                }
-                else if (incCommand.command == CommandType.Wait)
-                {
-                    //TODO: Add logic for when this is received
                 }
             }
         }

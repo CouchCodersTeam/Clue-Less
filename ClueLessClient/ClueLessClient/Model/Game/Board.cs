@@ -151,7 +151,7 @@ namespace ClueLessClient.Model.Game
         // Return true if the location is directly accessible without
         // considering the occupants in hallways.
         public bool isNextTo(Location location) {
-            if (!location.isValid()) { return false; }
+            if (location.isInvalid()) { return false; }
 
             if (xCoordinate == location.xCoordinate) {
                 return Math.Abs(yCoordinate - location.yCoordinate) == 1;
@@ -175,7 +175,8 @@ namespace ClueLessClient.Model.Game
         }
 
         // Return true iff the location is neither hallway nor room
-        public bool isValid() {
+        public bool isInvalid() {
+            // these are the locations of the 'null' locations
             return (xCoordinate == 1 && yCoordinate == 1) ||
                 (xCoordinate == 1 && yCoordinate == 3) ||
                 (xCoordinate == 3 && yCoordinate == 1) ||
