@@ -46,7 +46,7 @@ namespace ClueLessServer.Controllers
 
             if (isTurn)
             {
-                if (command == null)
+                if (CommandInterface.GetCommandForPlayer(player.Name) == null)
                 {
                     command = new Command { command = CommandType.TakeTurn };
                     CommandInterface.SetCommandForPlayer(player.Name, command);
@@ -206,6 +206,11 @@ namespace ClueLessServer.Controllers
 
             // remove 'TakeTurn' command from current player
             CommandInterface.SetCommandForPlayer(auth.player.Name, null);
+
+            // Set command for next player's turn
+            cmd = new Command { command = CommandType.TakeTurn };
+            var nextPlayer = game.getPlayerTurn();
+            CommandInterface.SetCommandForPlayer(nextPlayer.name, cmd);
 
             return Created("", "");
         }

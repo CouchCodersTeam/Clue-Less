@@ -214,15 +214,46 @@ namespace CluelessClientFlow
                 // Otherwise, result.card is the proof, and result.playerName is the owner of 'card'
 
                 // This is called by the 'other' player, not by Harry
-                successful = connect.Gameplay.DisproveSuggestion(new Card(Weapon.Pipe));
+//                successful = connect.Gameplay.DisproveSuggestion(new Card(Weapon.Pipe));
 
-                AccusationData data = connect.Gameplay.MakeAccusation(new Accusation(Room.Ballroom, Suspect.Mustard, Weapon.Pipe));
+                Accusation accusation = new Accusation(Room.Ballroom, Suspect.Mustard, Weapon.Pipe);
+                AccusationData data = connect.Gameplay.MakeAccusation(accusation);
+                Assert.IsNotNull(data);
+                Assert.AreEqual(accusation, data.accusation);
+                Assert.IsFalse(data.accusationCorrect);
 
                 successful = connect.Gameplay.EndTurn();
                 Assert.IsTrue(successful);
 
                 Accusation solution = connect.Gameplay.GetSolution();
                 Assert.IsNull(solution); // game is not finished. Solution not available until then
+
+                // it is now Ron's turn
+                Assert.IsTrue(connect.registerAsPlayer("Ron Weasley"));
+
+                Command finalCmd = connect.Gameplay.WaitForCommand();
+                Assert.IsNotNull(finalCmd);
+                Assert.AreEqual(CommandType.TakeTurn, finalCmd.command);
+
+                successful = connect.Gameplay.EndTurn();
+                Assert.IsTrue(successful);
+
+                // Hermione's turn
+                Assert.IsTrue(connect.registerAsPlayer("Hermione"));
+
+                finalCmd = connect.Gameplay.WaitForCommand();
+                Assert.IsNotNull(finalCmd);
+                Assert.AreEqual(CommandType.TakeTurn, finalCmd.command);
+
+                successful = connect.Gameplay.EndTurn();
+                Assert.IsTrue(successful);
+
+                // Harry's turn again
+                Assert.IsTrue(connect.registerAsPlayer("Harry Potter"));
+
+                finalCmd = connect.Gameplay.WaitForCommand();
+                Assert.IsNotNull(finalCmd);
+                Assert.AreEqual(CommandType.TakeTurn, finalCmd.command);
             }
         }
     }
