@@ -129,6 +129,7 @@ namespace ClueLessClient.Model.Game
     // Combination of Room and Hallway class in original design
     [DataContract]
     [KnownType(typeof(RealPlayer))]
+    [KnownType(typeof(DummyPlayer))]
     public class Location
     {
         [DataMember]

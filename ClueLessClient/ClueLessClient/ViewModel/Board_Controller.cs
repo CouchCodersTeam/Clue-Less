@@ -525,12 +525,12 @@ namespace ClueLessClient.ViewModel
             //client.ActivateStudySecretPassage();
         }
 
-        private void MakeSuggestion()
+        private async void MakeSuggestion()
         {
             MessageBox.Show($"You have suggested that " + SuggestionPerson + " killed the victim using the " + SuggestionWeapon + " in the " + SuggestionRoom);
             Model.Game.Accusation suggestion = new Model.Game.Accusation(ConvertStringToRoom(SuggestionRoom), ConvertStringToPerson(SuggestionPerson), ConvertStringToWeapon(SuggestionWeapon));
 
-            connect.Gameplay.MakeSuggestion(suggestion);
+            await connect.Gameplay.MakeSuggestionAsync(suggestion);
         }
 
         private void MakeAccusation()
@@ -589,15 +589,21 @@ namespace ClueLessClient.ViewModel
             }
         }
 
-        private void StartGame()
+        private async void StartGame()
         {
+            bool gameStart = false;
             if (connect.Lobbies.StartGame())
             {
-                MessageBox.Show("Game Started");
+                gameStart = true;
+            }
+            else
+            {
+                gameStart = await connect.Lobbies.WaitForGameStartAsync();
             }
 
-            if (connect.Lobbies.WaitForGameStart())
+            if (gameStart)
             {
+                MessageBox.Show("Game Started");
                 List<Model.Game.Card> hand = connect.Gameplay.GetPlayerHand();
 
                 foreach (Model.Game.Card card in hand)
@@ -613,8 +619,8 @@ namespace ClueLessClient.ViewModel
                     AddPersonToRoom(player.character.ToString(), Board[player.location.x, player.location.y]);
                 }
 
+                WaitForCommand();
             }
-            WaitForCommand();
         }
 
         private void EndTurn()
@@ -659,6 +665,8 @@ namespace ClueLessClient.ViewModel
                 else if (incCommand.command == CommandType.AccusationMade)
                 {
                     AccusationData data = incCommand.data.accusationData;
+                    bool accusationWasCorrect = data.accusationCorrect;
+
                     //TODO: Add logic for when this is received
                     MessageBoxResult result = MessageBox.Show(data.playerName + "Has accused " + data.accusation.suspect +
                                                         " of killing the victim using the " + data.accusation.weapon +
@@ -671,6 +679,7 @@ namespace ClueLessClient.ViewModel
                     DisproveData data = incCommand.data.disproveData;
 
                     MessageBox.Show("The suggestion was disproven by " + data.disprovingPlayer + " by revealing " + data.card.cardValue);
+                    break; // This is the active player
                 }
                 else if (incCommand.command == CommandType.SuggestionMade)
                 {

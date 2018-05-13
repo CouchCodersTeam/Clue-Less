@@ -97,7 +97,7 @@ namespace ClueLessClient.Network
         }
 
         // returns 'null' if no other player can disprove
-        public DisproveData MakeSuggestion(Accusation accusation)
+        public async Task<DisproveData> MakeSuggestionAsync(Accusation accusation)
         {
             var json = Json.toJson(accusation);
             var response = client.PostAsync("/suggest", new CluelessJsonContent(json)).Result;
@@ -108,7 +108,7 @@ namespace ClueLessClient.Network
                     return null;
 
                 // Else, wait for disprove command
-                var disproveResponse = WaitForCommand();
+                var disproveResponse = await WaitForCommandAsync();
 
                 if (disproveResponse.command == CommandType.DisproveResult)
                     return disproveResponse.data.disproveData;
