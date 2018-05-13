@@ -344,7 +344,7 @@ namespace ClueLessClient.ViewModel
             {
                 if(player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
                     Model.Game.Location newLoc = board.UpFrom(loc);
                     if (loc != newLoc)
                     {
@@ -368,7 +368,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
                     Model.Game.Location newLoc = board.DownFrom(loc);
                     if (loc != newLoc)
                     {
@@ -391,7 +391,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
                     Model.Game.Location newLoc = board.LeftFrom(loc);
                     if (loc != newLoc)
                     {
@@ -414,7 +414,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
                     Model.Game.Location newLoc = board.RightFrom(loc);
                     if (loc != newLoc)
                     {
@@ -437,7 +437,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
 
                     if (loc.isSecretPassage() && loc.xCoordinate == 4 && loc.yCoordinate == 0)
                     {
@@ -461,7 +461,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
 
                     if (loc.isSecretPassage() && loc.xCoordinate == 0 && loc.yCoordinate == 4)
                     {
@@ -485,7 +485,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
 
                     if (loc.isSecretPassage() && loc.xCoordinate == 4 && loc.yCoordinate == 4)
                     {
@@ -510,7 +510,7 @@ namespace ClueLessClient.ViewModel
             {
                 if (player.name == UserName)
                 {
-                    Model.Game.Location loc = player.location;
+                    Model.Game.Location loc = board.GetLocation(player.location.xCoordinate, player.location.yCoordinate);
 
                     if (loc.isSecretPassage() && loc.xCoordinate == 0 && loc.yCoordinate == 0)
                     {
@@ -707,10 +707,6 @@ namespace ClueLessClient.ViewModel
                     else if (incCommand.command == CommandType.Wait)
                     {
                         //TODO: Add logic for when this is received
-                    }
-                    else if (incCommand.command == CommandType.GameStart)
-                    {
-
                     }
                 }
             }
