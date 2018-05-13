@@ -501,7 +501,6 @@ namespace ClueLessClient.ViewModel
                     }
                 }
             }
-            WaitForCommand();
             //client.ActivateKitchenSecretPassage();
         }
 
@@ -528,7 +527,6 @@ namespace ClueLessClient.ViewModel
                     }
                 }
             }
-            WaitForCommand();
             //client.ActivateStudySecretPassage();
         }
 
@@ -616,11 +614,11 @@ namespace ClueLessClient.ViewModel
                 List<Model.Game.Player> players = game.getPlayers();
                 foreach(Model.Game.Player player in players)
                 {
-                    AddPersonToRoom(player.name, Board[player.location.xCoordinate, player.location.yCoordinate]);
+                    AddPersonToRoom(player.character.ToString(), Board[player.location.xCoordinate, player.location.yCoordinate]);
                 }
 
             }
-           
+            WaitForCommand();
         }
         // End of the functions used to interact
 
@@ -629,76 +627,74 @@ namespace ClueLessClient.ViewModel
 
         private void WaitForCommand()
         {
-            var incCommand = connect.Gameplay.WaitForCommand();
-            if (incCommand.command == CommandType.MovePlayer)
+            while (true)
             {
-                MoveData data = (MoveData)incCommand.data;
-                List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
-
-                foreach(Model.Game.Player player in players)
+                var incCommand = connect.Gameplay.WaitForCommand();
+                if (incCommand.command == CommandType.MovePlayer)
                 {
-                    if (player.name == data.playerName)
+                    MoveData data = (MoveData)incCommand.data;
+                    List<Model.Game.Player> players = connect.Gameplay.GetState().getPlayers();
+
+                    foreach (Model.Game.Player player in players)
                     {
-                        MovePerson(data.playerName, Board[player.location.xCoordinate, player.location.yCoordinate], Board[data.location.xCoordinate, data.location.yCoordinate]);
+                        if (player.name == data.playerName)
+                        {
+                            MovePerson(data.playerName, Board[player.location.xCoordinate, player.location.yCoordinate], Board[data.location.xCoordinate, data.location.yCoordinate]);
+                        }
                     }
                 }
-                WaitForCommand();
-            }
-            else if (incCommand.command == CommandType.TakeTurn)
-            {
-                MessageBox.Show("It's your turn");
-            }
-            else if (incCommand.command == CommandType.AccusationMade)
-            {
-                AccusationData data = (AccusationData)incCommand.data;
-                //TODO: Add logic for when this is received
-                MessageBoxResult result = MessageBox.Show(data.playerName + "Has accused " + data.accusation.suspect +
-                                                    " of killing the victim using the " + data.accusation.weapon +
-                                                    " in the " + data.accusation.room + ". Can you disprove this?",
-                                                    "Accusation Received", MessageBoxButton.YesNo);
-                WaitForCommand();
-            }
-            else if (incCommand.command == CommandType.DisproveResult)
-            {
-                //TODO: Add logic for when this is received
-                DisproveData data = (DisproveData)incCommand.data;
-
-                MessageBox.Show("The suggestion was disproven by " + data.disprovingPlayer + " by revealing " + data.card.cardValue);
-
-                WaitForCommand();
-            }
-            else if (incCommand.command == CommandType.SuggestionMade)
-            {
-                SuggestionData data = (SuggestionData)incCommand.data;
-                //TODO: Add logic for when this is received
-                MessageBoxResult result = MessageBox.Show(data.playerName + "Has suggested that " + data.accusation.suspect +
-                                                    " killed the victim using the " + data.accusation.weapon +
-                                                    " in the " + data.accusation.room + ". Can you disprove this?",
-                                                    "Suggestion Received", MessageBoxButton.YesNo);
-                //If the user says they can disprove the suggestion, enable the disprove button and combobox
-                //Added a call to tell the client to stop what it's doing until it receives the disprove info
-                //May not be the best idea, but I'm open to suggestions
-                if (result == MessageBoxResult.Yes)
+                else if (incCommand.command == CommandType.TakeTurn)
                 {
-                    DisproveEnabled = true;
-                    RaisePropertyChangedEvent("DisproveEnabled");
+                    MessageBox.Show("It's your turn");
+                    break;
                 }
-                else
+                else if (incCommand.command == CommandType.AccusationMade)
                 {
-                    DisproveEnabled = false;
-                    RaisePropertyChangedEvent("DisproveEnabled");
-                    WaitForCommand();
+                    AccusationData data = (AccusationData)incCommand.data;
+                    //TODO: Add logic for when this is received
+                    MessageBoxResult result = MessageBox.Show(data.playerName + "Has accused " + data.accusation.suspect +
+                                                        " of killing the victim using the " + data.accusation.weapon +
+                                                        " in the " + data.accusation.room + ". Can you disprove this?",
+                                                        "Accusation Received", MessageBoxButton.YesNo);
                 }
-            }
-            else if (incCommand.command == CommandType.TurnEnd)
-            {
-                //TODO: Add logic for when this is received
-                WaitForCommand();
-            }
-            else if (incCommand.command == CommandType.Wait)
-            {
-                //TODO: Add logic for when this is received
-                WaitForCommand();
+                else if (incCommand.command == CommandType.DisproveResult)
+                {
+                    //TODO: Add logic for when this is received
+                    DisproveData data = (DisproveData)incCommand.data;
+
+                    MessageBox.Show("The suggestion was disproven by " + data.disprovingPlayer + " by revealing " + data.card.cardValue);
+                }
+                else if (incCommand.command == CommandType.SuggestionMade)
+                {
+                    SuggestionData data = (SuggestionData)incCommand.data;
+                    //TODO: Add logic for when this is received
+                    MessageBoxResult result = MessageBox.Show(data.playerName + "Has suggested that " + data.accusation.suspect +
+                                                        " killed the victim using the " + data.accusation.weapon +
+                                                        " in the " + data.accusation.room + ". Can you disprove this?",
+                                                        "Suggestion Received", MessageBoxButton.YesNo);
+                    //If the user says they can disprove the suggestion, enable the disprove button and combobox
+                    //Added a call to tell the client to stop what it's doing until it receives the disprove info
+                    //May not be the best idea, but I'm open to suggestions
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        DisproveEnabled = true;
+                        RaisePropertyChangedEvent("DisproveEnabled");
+                        break;
+                    }
+                    else
+                    {
+                        DisproveEnabled = false;
+                        RaisePropertyChangedEvent("DisproveEnabled");
+                    }
+                }
+                else if (incCommand.command == CommandType.TurnEnd)
+                {
+                    //TODO: Add logic for when this is received
+                }
+                else if (incCommand.command == CommandType.Wait)
+                {
+                    //TODO: Add logic for when this is received
+                }
             }
         }
         //Start of the list of event handlers that take data from the client
