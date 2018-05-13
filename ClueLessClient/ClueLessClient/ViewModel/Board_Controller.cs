@@ -571,7 +571,8 @@ namespace ClueLessClient.ViewModel
         private void CreateGame()
         {
             connect.registerAsPlayer(UserName);
-            connect.Lobbies.CreateLobby();
+            var lobby = connect.Lobbies.CreateLobby();
+            connect.registerToGame(lobby);
             RefreshGameList();
         }
 
